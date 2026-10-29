@@ -1,6 +1,10 @@
-# regatta.tech on AWS — moving the marketing site off Netlify (29 Oct 2026)
+# regatta.tech on AWS — plan B (written 29 Oct 2026, not in use)
 
-**Why.** regatta.tech (the public marketing site, not the Regatta app) is on a Netlify account nobody can locate; the company pays for it from the HSBC account but no Netlify mail reaches daniela@iditarod.bio. The domain's DNS is at GoDaddy, so the domain itself is under our control. We host the new site in Iditarod's AWS account and point the domain at it. The Netlify site is never touched; it simply stops receiving traffic.
+> **Status.** On 29 Oct 2026 the Netlify account that hosts regatta.tech was found, so the new site was published there (see the repo README). This guide is the fallback for the day Netlify is no longer wanted. Steps 1–2 (Route 53 hosted zone) were already done that day; the zone `Z0337142YM9ANNYG6YXQ` exists and holds a copy of the current records. Step 2 (changing the name servers at GoDaddy) needs access to whichever GoDaddy account holds the domain, which is still unknown.
+>
+> If you follow this guide, change the two `<form>` tags in `site/home/index.html` from `action="/thanks/" data-netlify="true" netlify-honeypot="bot-field"` to `action="/api/pilot"` before uploading (the AWS stack has its own form receiver; Netlify Forms only work on Netlify).
+
+**Why.** regatta.tech (the public marketing site, not the Regatta app) is on a Netlify account nobody can locate; the company pays for it but no Netlify mail reaches the company inbox. The domain's DNS is at GoDaddy, so the domain itself is under our control. We host the new site in Iditarod's AWS account and point the domain at it. The Netlify site is never touched; it simply stops receiving traffic.
 
 ```
 browser ── https://regatta.tech ──► CloudFront (ACM certificate) ──► S3 bucket (site files, private)
@@ -103,7 +107,7 @@ curl -I https://www.regatta.tech
 ## 7. Afterwards
 
 - Check the inbox of each notification address for "AWS Notification - Subscription Confirmation" and click **Confirm subscription**. Then send one test through the form on the live site; the email arrives within seconds.
-- Tell Austin the site has moved and that the Netlify subscription can be cancelled whenever the account turns up (the charge is visible in the HSBC statements). Nothing on Netlify is needed any more.
+- Tell Austin the site has moved and that the Netlify subscription can be cancelled whenever appropriate. Nothing on Netlify is needed any more.
 - Commit `regatta-website/` to its own GitHub repo (`regatta-app/regatta-website`).
 
 ---
