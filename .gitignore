@@ -2,3 +2,6 @@
 _to_delete/
 node_modules/
 *.zip
+*.pdf
+*.pptx
+*.key
