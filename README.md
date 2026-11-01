@@ -11,7 +11,7 @@ aws/    plan B: CloudFormation template + guide to host the same files on AWS (n
 
 **Netlify**, project `regatta-website`, with the custom domain regatta.tech already attached. The project used to deploy from a third-party GitHub repo (an Astro build); that link was removed on 29 Oct 2026 and the site is now published from the plain files in `site/`.
 
-The "Request a pilot" form uses Netlify Forms (`data-netlify="true"` on the `<form>` in `site/home/index.html`); submissions show up under *Forms* in the Netlify project. Form name: `pilot`; fields `name` (optional), `email`, `organization`. Netlify re-reads the fields on each deploy, so adding or renaming one needs no change in the Netlify UI.
+The "Request a pilot" form uses Netlify Forms (`data-netlify="true"` on the `<form>` in `site/home/index.html`); submissions show up under *Forms* in the Netlify project. Form name: `pilot`; fields `email`, `organization`.
 
 `site/_headers` sets long browser caching for `assets/` (Netlify reads it at deploy time).
 
