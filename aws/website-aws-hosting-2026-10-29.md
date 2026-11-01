@@ -17,7 +17,7 @@ DNS: GoDaddy keeps the domain registration; Route 53 serves the records.
 
 | File | What it is |
 |---|---|
-| `site/` | The site as served: `index.html`, `home/`, `evidence/`, `thanks/`, `404.html`, `assets/`. |
+| `site/` | The site as served: `index.html`, `home/`, `privacy/`, `thanks/`, `404.html`, `assets/`. |
 | `aws/regatta-website.yaml` | CloudFormation template: bucket, certificate, CloudFront, URL redirects, form receiver. |
 | `aws/website-aws-hosting-2026-10-29.md` | This guide. |
 
