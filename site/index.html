@@ -41,7 +41,6 @@ a:focus-visible{outline:2px solid #F05910;outline-offset:3px}
 (function(){var v=document.querySelector('video');if(!v)return;try{
 if(!window.matchMedia)return;
 if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-if(!window.matchMedia('(min-width: 768px)').matches)return;
 if(navigator.connection&&navigator.connection.saveData)return;
 v.src=v.getAttribute('data-src');v.muted=true;v.autoplay=true;
 var p=v.play();if(p&&p.catch)p.catch(function(){});}catch(e){}})();
