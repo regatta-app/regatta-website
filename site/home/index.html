@@ -30,7 +30,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 .btn-ghost:hover { border-color: rgba(243, 246, 251, 0.75) !important; }
 .btn-solid:hover { background: #E8500F !important; }
 .text-link:hover { color: #FF5A1F !important; }
-.ref-link { color: #FF5A1F; text-decoration: none; font-size: 0.5em; vertical-align: super; line-height: 0; margin-left: 2px; }
+.ref-link { color: #FF5A1F; text-decoration: none; font-family: 'Inter', system-ui, sans-serif; font-size: 13px; font-weight: 600; vertical-align: super; line-height: 0; margin-left: 3px; }
 .ref-link:hover { text-decoration: underline; }
 .stat-num { font-size: clamp(44px, 5cqi, 60px); }
 .field { display: flex; flex-direction: column; gap: 6px; text-align: left; }
@@ -62,24 +62,24 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 
 <section class="rv" aria-labelledby="fail-title" style="border-top: 1px solid rgba(243, 246, 251, 0.08);">
 <div style="max-width: 1200px; margin: 0 auto; padding: clamp(56px, 7cqi, 96px) clamp(16px, 4cqi, 40px); display: flex; flex-direction: column; gap: clamp(32px, 4cqi, 48px);">
-<h2 id="fail-title" style="margin: 0; max-width: 880px; font-family: 'Tenor Sans', 'Times New Roman', serif; font-weight: 400; font-size: clamp(1.75rem, 3.1cqi, 2.6rem); line-height: 1.14; text-wrap: balance; color: #F3F6FB;">Where trials fail</h2>
+<h2 id="fail-title" style="margin: 0; max-width: 880px; font-family: 'Tenor Sans', 'Times New Roman', serif; font-weight: 400; font-size: clamp(1.75rem, 3.1cqi, 2.6rem); line-height: 1.14; text-wrap: balance; color: #F3F6FB;">Where trials fail<a class="ref-link" href="#ref-1" aria-label="Reference 1">1</a></h2>
 <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); gap: 32px 40px;">
 <li style="display: flex; flex-direction: column; gap: 12px; padding-top: 18px; border-top: 1px solid rgba(243, 246, 251, 0.2);">
 <p style="margin: 0; min-height: 2.8em; display: flex; align-items: baseline; gap: 10px; font-size: 15px; font-weight: 600; line-height: 1.4; letter-spacing: 0.08em; text-transform: uppercase; color: #F3F6FB;"><span style="color: #9AACC6;">01</span><span>Identify responsive patients</span></p>
 <p style="margin: 16px 0 0; font-size: 13px; font-weight: 600; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; color: #8397B3;">Industry</p>
-<p style="margin: 0; font-size: 60px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #F3F6FB;" class="stat-num">3.1x<a class="ref-link" href="#ref-1" aria-label="Reference 1">1</a></p>
+<p style="margin: 0; font-size: 60px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #F3F6FB;" class="stat-num">3.1x</p>
 <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #9AACC6;">higher approval odds when trials find and pick patients by marker</p>
 </li>
 <li style="display: flex; flex-direction: column; gap: 12px; padding-top: 18px; border-top: 1px solid rgba(243, 246, 251, 0.2);">
 <p style="margin: 0; min-height: 2.8em; display: flex; align-items: baseline; gap: 10px; font-size: 15px; font-weight: 600; line-height: 1.4; letter-spacing: 0.08em; text-transform: uppercase; color: #F3F6FB;"><span style="color: #8397B3;">02</span><span>Detect early toxicity</span></p>
 <p style="margin: 16px 0 0; font-size: 13px; font-weight: 500; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; color: #8397B3;">Industry</p>
-<p style="margin: 0; font-size: 60px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #F3F6FB;" class="stat-num">17%<a class="ref-link" href="#ref-1" aria-label="Reference 1">1</a></p>
+<p style="margin: 0; font-size: 60px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #F3F6FB;" class="stat-num">17%</p>
 <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #9AACC6;">of late-stage drugs fail on safety</p>
 </li>
 <li style="display: flex; flex-direction: column; gap: 12px; padding-top: 18px; border-top: 1px solid rgba(243, 246, 251, 0.2);">
 <p style="margin: 0; min-height: 2.8em; display: flex; align-items: baseline; gap: 10px; font-size: 15px; font-weight: 600; line-height: 1.4; letter-spacing: 0.08em; text-transform: uppercase; color: #F3F6FB;"><span style="color: #8397B3;">03</span><span>Calculate effective doses</span></p>
 <p style="margin: 16px 0 0; font-size: 13px; font-weight: 500; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; color: #8397B3;">Industry</p>
-<p style="margin: 0; font-size: 60px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #F3F6FB;" class="stat-num">45%<a class="ref-link" href="#ref-1" aria-label="Reference 1">1</a></p>
+<p style="margin: 0; font-size: 60px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #F3F6FB;" class="stat-num">45%</p>
 <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #9AACC6;">of Phase 3 trials of targeted cancer drugs cut or change the Phase 1 dose</p>
 </li>
 </ul>
