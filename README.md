@@ -3,7 +3,7 @@
 The public site at https://regatta.tech. This is **not** the Regatta app (that lives in `regatta-app/regatta`).
 
 ```
-site/   the files that are served (index.html at the top; home/, evidence/, thanks/, 404.html, assets/)
+site/   the files that are served (index.html at the top; home/, privacy/, thanks/, 404.html, assets/)
 aws/    plan B: CloudFormation template + guide to host the same files on AWS (not in use)
 ```
 
@@ -11,7 +11,7 @@ aws/    plan B: CloudFormation template + guide to host the same files on AWS (n
 
 **Netlify**, project `regatta-website`, with the custom domain regatta.tech already attached. The project used to deploy from a third-party GitHub repo (an Astro build); that link was removed on 29 Oct 2026 and the site is now published from the plain files in `site/`.
 
-The "Request a pilot" form uses Netlify Forms (`data-netlify="true"` on the two `<form>` tags in `site/home/index.html`); submissions show up under *Forms* in the Netlify project. Form name: `pilot`.
+The "Request a pilot" form uses Netlify Forms (`data-netlify="true"` on the `<form>` in `site/home/index.html`); submissions show up under *Forms* in the Netlify project. Form name: `pilot`; fields `name` (optional), `email`, `organization`. Netlify re-reads the fields on each deploy, so adding or renaming one needs no change in the Netlify UI.
 
 `site/_headers` sets long browser caching for `assets/` (Netlify reads it at deploy time).
 
@@ -30,5 +30,6 @@ A Route 53 hosted zone for regatta.tech was created in Iditarod's AWS account (u
 
 ## Notes
 
-- The footer links to `https://regatta.tech/privacy/`, which does not exist in `site/` yet.
+- `site/assets/og.png` (1200×630) is the preview image used by Slack, LinkedIn and X when the site is linked; regenerate it if the app screenshot changes.
+- `site/privacy/index.html` is the privacy policy; the company postal address and privacy contact email are still placeholders in square brackets.
 - `aws/` is a complete, tested-by-review alternative (S3 + CloudFront + ACM, plus a Lambda/SNS receiver for the form) for the day Netlify is no longer wanted; see `aws/website-aws-hosting-2026-10-29.md`.
