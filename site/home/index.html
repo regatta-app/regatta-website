@@ -27,6 +27,12 @@ body{margin:0}</style>
 <style>
 a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid #FF5A1F; outline-offset: 3px; }
 .text-link:hover { color: #FF5A1F !important; border-color: #FF5A1F !important; }
+.btn-ghost { transition: border-color .15s ease; }
+.btn-ghost:hover { border-color: rgba(243, 246, 251, 0.7) !important; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .rv { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  .js .rv.in { opacity: 1; transform: none; }
+}
 </style>
 </head>
 <body>
@@ -35,7 +41,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 <section aria-labelledby="hero-title" style="position: relative; overflow: hidden; background: radial-gradient(90% 60% at 50% -8%, rgba(43, 104, 186, 0.42), rgba(7, 24, 51, 0) 62%), #071833;">
 <header style="position: relative; width: 100%; max-width: 1200px; box-sizing: border-box; margin: 0 auto; padding: 18px clamp(16px, 4cqi, 40px); display: flex; align-items: center; justify-content: space-between; gap: 16px;">
 <a href="#top" style="color: #F3F6FB; text-decoration: none; font-family: 'Cormorant SC', Georgia, serif; font-weight: 600; font-size: clamp(20px, 1.9cqi, 26px); line-height: 1; letter-spacing: 0.14em; text-transform: uppercase;">Regatta</a>
-<a href="#pilot" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1px solid rgba(243, 246, 251, 0.35); border-radius: 999px; color: #F3F6FB; font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap;">Request a pilot</a>
+<a href="#pilot" class="btn-ghost" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1px solid rgba(243, 246, 251, 0.35); border-radius: 999px; color: #F3F6FB; font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap;">Request a pilot</a>
 </header>
 <div style="position: relative; max-width: 1160px; margin: 0 auto; padding: clamp(40px, 6cqi, 88px) clamp(16px, 4cqi, 40px) clamp(56px, 6cqi, 88px); display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center;">
 <h1 id="hero-title" style="margin: 0; max-width: 1080px; font-family: 'Tenor Sans', 'Times New Roman', serif; font-weight: 400; font-size: clamp(2.25rem, 4.8cqi, 3.75rem); line-height: 1.08; letter-spacing: -0.01em; text-wrap: balance; color: #F3F6FB;">Regatta machines decipher your data to inform clinical decisions</h1>
@@ -47,20 +53,20 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 </div>
 </section>
 
-<section aria-label="What Regatta does" style="border-top: 1px solid rgba(243, 246, 251, 0.08);">
+<section aria-label="What Regatta does" class="rv" style="">
 <div style="max-width: 1200px; margin: 0 auto; padding: clamp(56px, 7cqi, 96px) clamp(16px, 4cqi, 40px); display: flex; flex-direction: column; gap: clamp(32px, 4cqi, 48px);">
 <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); gap: 16px;">
-<li style="display: flex; flex-direction: column; gap: 12px; padding: 28px 26px 30px; background: #F5EEE3; border: 1px solid #F5EEE3; border-radius: 14px; color: #0D3769;">
-<p style="margin: 0; min-height: 2.8em; display: flex; align-items: baseline; gap: 10px; font-size: 13px; font-weight: 600; line-height: 1.4; letter-spacing: 0.08em; text-transform: uppercase; color: #0D3769;"><span>Identify responsive patients</span></p>
-<p style="margin: 16px 0 0; font-size: 12px; font-weight: 600; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; color: #AD3F09;">Regatta</p>
-<p style="margin: 0; font-size: 60px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #D24510;">3.1x</p>
-<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #4E5A6B;">higher approval odds when trials find and pick patients by marker</p>
+<li style="display: flex; flex-direction: column; gap: 12px; padding: 28px 26px 30px; background: rgba(243, 246, 251, 0.03); border: 1px solid rgba(243, 246, 251, 0.12); border-radius: 14px;">
+<p style="margin: 0; min-height: 2.8em; display: flex; align-items: baseline; gap: 10px; font-size: 13px; font-weight: 600; line-height: 1.4; letter-spacing: 0.08em; text-transform: uppercase; color: #F3F6FB;"><span>Identify responsive patients</span></p>
+<p style="margin: 16px 0 0; font-size: 12px; font-weight: 600; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; color: #FF5A1F;">Regatta</p>
+<p style="margin: 0; font-size: 60px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #FF5A1F;">3.1x</p>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #9AACC6;">higher approval odds when trials find and pick patients by marker</p>
 </li>
-<li style="display: flex; flex-direction: column; gap: 12px; padding: 28px 26px 30px; background: #F5EEE3; border: 1px solid #F5EEE3; border-radius: 14px; color: #0D3769;">
-<p style="margin: 0; min-height: 2.8em; display: flex; align-items: baseline; gap: 10px; font-size: 13px; font-weight: 600; line-height: 1.4; letter-spacing: 0.08em; text-transform: uppercase; color: #0D3769;"><span>Forecast in-licensed drug performance</span></p>
-<p style="margin: 16px 0 0; font-size: 12px; font-weight: 600; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; color: #AD3F09;">Regatta</p>
-<p style="margin: 0; font-size: 60px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #D24510;">79%</p>
-<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #4E5A6B;">success rate of top-rated Regatta trials; industry average 65%</p>
+<li style="display: flex; flex-direction: column; gap: 12px; padding: 28px 26px 30px; background: rgba(243, 246, 251, 0.03); border: 1px solid rgba(243, 246, 251, 0.12); border-radius: 14px;">
+<p style="margin: 0; min-height: 2.8em; display: flex; align-items: baseline; gap: 10px; font-size: 13px; font-weight: 600; line-height: 1.4; letter-spacing: 0.08em; text-transform: uppercase; color: #F3F6FB;"><span>Forecast in-licensed drug performance</span></p>
+<p style="margin: 16px 0 0; font-size: 12px; font-weight: 600; line-height: 1.4; letter-spacing: 0.12em; text-transform: uppercase; color: #FF5A1F;">Regatta</p>
+<p style="margin: 0; font-size: 60px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #FF5A1F;">79%</p>
+<p style="margin: 0; font-size: 15px; line-height: 1.55; color: #9AACC6;">success rate of top-rated Regatta trials; industry average 65%</p>
 </li>
 <li style="display: flex; flex-direction: column; gap: 12px; padding: 28px 26px 30px; background: rgba(243, 246, 251, 0.03); border: 1px solid rgba(243, 246, 251, 0.12); border-radius: 14px;">
 <p style="margin: 0; min-height: 2.8em; display: flex; align-items: baseline; gap: 10px; font-size: 13px; font-weight: 600; line-height: 1.4; letter-spacing: 0.08em; text-transform: uppercase; color: #F3F6FB;"><span>Detect early toxicity</span></p>
@@ -80,7 +86,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 </div>
 </section>
 
-<section aria-labelledby="owned-title" style="border-top: 1px solid rgba(243, 246, 251, 0.08);">
+<section aria-labelledby="owned-title" class="rv" style="">
 <div style="max-width: 1200px; margin: 0 auto; padding: clamp(56px, 7cqi, 96px) clamp(16px, 4cqi, 40px); display: flex; flex-direction: column; gap: clamp(32px, 4cqi, 48px);">
 <h2 id="owned-title" style="margin: 0; max-width: 880px; font-family: 'Tenor Sans', 'Times New Roman', serif; font-weight: 400; font-size: clamp(1.75rem, 3.1cqi, 2.6rem); line-height: 1.14; text-wrap: balance; color: #F3F6FB;">We install and continuously upgrade wholly owned AI</h2>
 <ol style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 16px 40px;">
@@ -144,7 +150,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 </div>
 </section>
 
-<section aria-label="Team and investors" style="border-top: 1px solid rgba(243, 246, 251, 0.08);">
+<section aria-label="Team and investors" class="rv" style="">
 <div style="max-width: 1200px; margin: 0 auto; padding: clamp(48px, 6cqi, 80px) clamp(16px, 4cqi, 40px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px 64px;">
 <div style="flex: 1 1 420px; min-width: 0; display: flex; align-items: center; gap: 24px;">
 <img src="/assets/austin-cole.jpg" alt="Austin Cole" style="flex: 0 0 auto; display: block; width: 104px; height: 104px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px rgba(243, 246, 251, 0.16);">
@@ -172,7 +178,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 </div>
 </section>
 
-<section id="pilot" aria-labelledby="pilot-title" style="padding: clamp(24px, 4cqi, 56px) clamp(16px, 4cqi, 40px) clamp(64px, 8cqi, 112px);">
+<section id="pilot" class="rv" aria-labelledby="pilot-title" style="padding: clamp(24px, 4cqi, 56px) clamp(16px, 4cqi, 40px) clamp(64px, 8cqi, 112px);">
 <div style="max-width: 1040px; margin: 0 auto; box-sizing: border-box; padding: clamp(40px, 6cqi, 80px) clamp(20px, 4cqi, 56px); border-radius: 20px; background: #F5EEE3; color: #0D3769; display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center;">
 <h2 id="pilot-title" style="margin: 0; font-family: 'Tenor Sans', 'Times New Roman', serif; font-weight: 400; font-size: clamp(1.75rem, 3.1cqi, 2.6rem); line-height: 1.14; color: #0D3769;">Pilots use no identifiable data</h2>
 <p style="margin: 0; max-width: 40em; font-size: clamp(1rem, 1.3cqi, 1.125rem); line-height: 1.6; color: #0D3769;">A pilot installs Regatta in your cloud and connects it to one of your trial, safety or document systems. It reads only blinded, pooled data. Your team asks it questions in plain language. You own what it builds.</p>
@@ -193,7 +199,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 </div>
 </section>
 
-<footer style="border-top: 1px solid rgba(243, 246, 251, 0.08);">
+<footer class="rv" style="">
 <div style="max-width: 1200px; margin: 0 auto; padding: 28px clamp(16px, 4cqi, 40px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px;">
 <span style="font-family: 'Cormorant SC', Georgia, serif; font-weight: 600; font-size: 18px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; color: #F3F6FB;">Regatta</span>
 <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #8397B3;">© 2026 Regatta · <a href="/privacy/" style="color: #F3F6FB;">Privacy</a></p>
@@ -201,5 +207,16 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 </footer>
 
 </div>
+<script>
+(function(){
+  document.documentElement.classList.add('js');
+  var els=document.querySelectorAll('.rv');
+  if(!('IntersectionObserver' in window)){for(var i=0;i<els.length;i++)els[i].classList.add('in');return;}
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{rootMargin:'0px 0px -10% 0px',threshold:0.08});
+  for(var j=0;j<els.length;j++)io.observe(els[j]);
+})();
+</script>
 </body>
 </html>

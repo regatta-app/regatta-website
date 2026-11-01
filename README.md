@@ -31,5 +31,5 @@ A Route 53 hosted zone for regatta.tech was created in Iditarod's AWS account (u
 ## Notes
 
 - `site/assets/og.png` (1200×630) is the preview image used by Slack, LinkedIn and X when the site is linked; regenerate it if the app screenshot changes.
-- `site/privacy/index.html` is the privacy policy; the company postal address and privacy contact email are still placeholders in square brackets.
+- `site/privacy/index.html` is the privacy policy. It has no Contact section yet (company name, postal address, privacy email); a TODO comment marks where it goes.
 - `aws/` is a complete, tested-by-review alternative (S3 + CloudFront + ACM, plus a Lambda/SNS receiver for the form) for the day Netlify is no longer wanted; see `aws/website-aws-hosting-2026-10-29.md`.
