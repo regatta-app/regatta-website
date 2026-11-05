@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regatta — Your own AI analyst for clinical decisions</title>
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/icons/favicon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
-<title>Regatta — Your own AI analyst for clinical decisions</title>
+<meta name="theme-color" content="#071833">
 <meta name="description" content="A wholly owned AI analyst installed in your trial, safety and document systems: forecast approval odds, detect toxicity, identify responsive patients.">
-<meta name="theme-color" content="#F3F6FB">
-<link rel="canonical" href="https://regatta.tech/home/">
+<link rel="canonical" href="https://regatta.tech/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Regatta">
 <meta property="og:locale" content="en_US">
-<meta property="og:url" content="https://regatta.tech/home/">
+<meta property="og:url" content="https://regatta.tech/">
 <meta property="og:title" content="Regatta — Your own AI analyst for clinical decisions">
 <meta property="og:description" content="A wholly owned AI analyst installed in your trial, safety and document systems: forecast approval odds, detect toxicity, identify responsive patients.">
 <meta property="og:image" content="https://regatta.tech/assets/og.png">
@@ -25,598 +25,57 @@
 <meta name="twitter:title" content="Regatta — Your own AI analyst for clinical decisions">
 <meta name="twitter:description" content="A wholly owned AI analyst installed in your trial, safety and document systems: forecast approval odds, detect toxicity, identify responsive patients.">
 <meta name="twitter:image" content="https://regatta.tech/assets/og.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://regatta.tech/#organization",
+      "name": "Regatta",
+      "url": "https://regatta.tech/",
+      "logo": "https://regatta.tech/assets/icons/favicon-192.png",
+      "image": "https://regatta.tech/assets/og.png",
+      "description": "Regatta installs and continuously upgrades a wholly owned AI analyst inside pharma and biotech organizations to inform clinical decisions.",
+      "founder": { "@type": "Person", "name": "Austin Cole", "jobTitle": "Founder-CEO" },
+      "parentOrganization": { "@type": "Organization", "name": "Iditarod Bio, Inc." },
+      "contactPoint": { "@type": "ContactPoint", "contactType": "sales", "url": "https://regatta.tech/home/#meet" }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://regatta.tech/#website",
+      "url": "https://regatta.tech/",
+      "name": "Regatta",
+      "publisher": { "@id": "https://regatta.tech/#organization" },
+      "inLanguage": "en"
+    }
+  ]
+}
+</script>
 <link rel="preload" href="/assets/fonts/tenor-sans-latin-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<style>
-html{background:#071833;scroll-behavior:smooth;scroll-padding-top:var(--hdr,63px)}body{margin:0}
-/* reveal: a .reveal section fills the viewport, content centred, and waits underneath while the section before it scrolls away */
-#home>section{position:relative;z-index:10;box-shadow:0 24px 64px rgba(7,24,51,.3)}
-#home>section.reveal{z-index:var(--z,1);min-height:calc(100vh - var(--hdr,63px));min-height:calc(100svh - var(--hdr,63px));display:flex;flex-direction:column;justify-content:center;will-change:transform}
-#home>section.reveal>.rv{width:100%;box-sizing:border-box}
-#home>section.reveal::after{content:"";position:absolute;inset:0;z-index:5;background:#071833;opacity:var(--dim,0);pointer-events:none}
-.hdr{border-bottom:0}
-.logo{display:inline-flex;align-items:center;gap:12px;color:#0D3769;text-decoration:none}.logo:hover{color:#0D3769;opacity:1}.logo-mark{display:block;width:auto;height:26px;flex:0 0 auto}.logo-word{font-family:'Cormorant SC',Georgia,serif;font-weight:600;font-size:24px;line-height:1;letter-spacing:.14em;text-transform:uppercase;transform:translateY(1px);font-size:22px}
-.hdr .nav a{color:#0D3769}.hdr .nav a:hover{color:#0D3769;opacity:.65}
-.hdr .btn-ghost{border-color:rgba(13,55,105,.4);color:#0D3769;min-height:38px;padding:0 18px;font-size:14px}.hdr .btn-ghost:hover{border-color:#0D3769;color:#0D3769;background:rgba(13,55,105,.05)}
-.hdr .burger{color:#0D3769}
-.hdr .menu-link{color:#0D3769;border-bottom-color:rgba(13,55,105,.1)}.hdr .menu-link:hover{color:#0D3769;opacity:.65}
-@media (max-width:720px){.logo-mark{height:22px}.logo-word{font-size:19px}.hdr header{padding:9px 20px !important}}
-@keyframes fadeup{from{opacity:0;transform:translateY(80px)}to{opacity:1;transform:none}}
-@keyframes fadein{from{opacity:0}to{opacity:1}}
-.hf{animation:fadein 2.2s cubic-bezier(.165,.84,.44,1) both;animation-delay:.2s}.hf.d1{animation-delay:.3s}.hf.d2{animation-delay:2.6s}.hf.d3{animation-delay:2.9s}
-.js h1.words{animation:none;opacity:1}.js h1.words .w{display:inline-block;opacity:0;transform:translateX(-14px);animation:wordin 1.3s cubic-bezier(.22,.61,.36,1) both;animation-delay:calc(.5s + var(--i) * .13s)}
-@keyframes wordin{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
-.hero-sails{animation:fadein 3s ease both;animation-delay:.6s}
-.chev{display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin:0 auto 28px;color:#F3F6FB;opacity:.75;text-decoration:none}.chev:hover{opacity:1;color:#F3F6FB}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}.chev svg{animation:bob 2.4s ease-in-out infinite}
-.js .st{opacity:0;transform:translateY(34px);transition:opacity 1.5s cubic-bezier(.22,.61,.36,1),transform 1.5s cubic-bezier(.22,.61,.36,1);transition-delay:var(--d,0s)}.js .rv.in .st{opacity:1;transform:none}
-.hero-fx{will-change:transform,opacity}#top.leaving .hero-fx{transition:transform .8s cubic-bezier(.55,0,.3,1),opacity .6s ease !important;transform:translateY(-22vh) !important;opacity:0 !important}
-@media (prefers-reduced-motion: reduce){.hf,.chev svg,.sail,.hero-sails,.js h1.words .w{animation:none;opacity:1;transform:none}.js .st{opacity:1;transform:none;transition:none}.hero-fx{transform:none !important;opacity:1 !important}}
-.sail{transform-box:fill-box;transform-origin:50% 100%;transform:translate(var(--dx,0),0)}
-@media (prefers-reduced-motion: no-preference){.sail{animation:wave 5s ease-in-out infinite}.s2{animation-delay:-1.7s}.s3{animation-delay:-3.4s}}
-@keyframes wave{0%,100%{transform:translate(var(--dx,0),0) skewX(0deg) scaleY(1)}50%{transform:translate(var(--dx,0),-12px) skewX(-4deg) scaleY(1.03)}}
-a{color:#F3F6FB;transition:opacity .15s ease}a:hover{color:#F3F6FB;opacity:.75}
-.nav a{color:#F3F6FB;text-decoration:none;font-size:15px;font-weight:500}
-.nav a:hover{color:#F3F6FB;opacity:.75}
-.btn-light{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border-radius:999px;background:#F5EEE3;color:#0D3769;font-size:15px;font-weight:600;text-decoration:none}
-.btn-light:hover{background:#F5EEE3;color:#0D3769;opacity:.88}
-.btn-ghost{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border:1px solid rgba(243,246,251,.45);border-radius:999px;color:#F3F6FB;font-size:15px;font-weight:500;text-decoration:none}
-.btn-ghost:hover{border-color:#F3F6FB;color:#F3F6FB;opacity:1}
-.btn-dark{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 26px;border-radius:999px;background:#F5EEE3;color:#0D3769;font-size:15px;font-weight:600;text-decoration:none;border:0;font-family:inherit;cursor:pointer}
-.btn-dark{transition:opacity .15s ease}.btn-dark:hover{background:#F5EEE3;color:#0D3769;opacity:.88}
-.line-input{width:100%;min-width:0;height:48px;box-sizing:border-box;padding:0 4px;border:0;border-bottom:1px solid rgba(243,246,251,.4);border-radius:0;background:transparent;font-family:inherit;font-size:17px;color:#F3F6FB}
-.line-input::placeholder{color:#8397B3;opacity:1}
-.line-input:focus{outline:none;border-bottom-color:#F3F6FB}
-.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.menu-panel[hidden]{display:none !important}@media (min-width:721px){.menu-panel{display:none !important}}
-.menu-link{display:flex;align-items:center;min-height:52px;color:#F3F6FB;text-decoration:none;font-size:18px;border-bottom:1px solid rgba(243,246,251,.1)}.menu-link:hover{color:#F3F6FB;opacity:.75}
-.quiet{color:#F3F6FB;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(243,246,251,.4);transition:text-decoration-color .15s ease}.quiet:hover{color:#F3F6FB;opacity:1;text-decoration-color:rgba(243,246,251,.9)}
-.burger{display:none;align-items:center;justify-content:center;width:44px;height:44px;border:0;background:transparent;color:#F3F6FB;cursor:pointer;padding:0}
-@media (max-width:720px){.nav{display:none !important}.hdr-cta{display:none !important}.burger{display:flex}header{padding:14px 20px !important}.btn-ghost{min-height:40px;padding:0 14px;font-size:14px}[style*="grid-template-columns"]{grid-template-columns:minmax(0,1fr) !important;gap:32px !important}h1{font-size:40px !important;max-width:none !important}h2{font-size:32px !important}h3{font-size:22px !important}section>div,footer>div{padding-left:20px !important;padding-right:20px !important;padding-top:72px !important;padding-bottom:72px !important}footer>div{padding-top:28px !important;padding-bottom:28px !important}.chev{margin-bottom:20px}}
-
-
-/* ===== embeddable part starts here ===== */
-.rg-demo{--rg-bg:#F5EEE3; --rg-ink:#0D3769; --rg-ink2:rgba(13,55,105,.74); --rg-ink3:rgba(13,55,105,.5); --rg-rule:rgba(13,55,105,.26); --rg-hair:rgba(13,55,105,.15); --rg-raise:rgba(13,55,105,.06); --rg-track:rgba(13,55,105,.09); --rg-sig:#F05910; --rg-gold:#CAA229; --rg-ok:#2E8B57;
-  --rg-fh:'Tenor Sans',Georgia,serif; --rg-fb:'Inter',system-ui,sans-serif; --rg-fm:'Cormorant SC',Georgia,serif;
-  position:relative;width:100%;max-width:980px;aspect-ratio:980/560;border-radius:16px;overflow:hidden;
-  box-shadow:0 0 0 1px rgba(243,246,251,.16),0 40px 100px -30px rgba(0,0,0,.7);background:var(--rg-bg);}
-.rg-stage{position:absolute;left:0;top:0;width:980px;height:560px;transform-origin:0 0;
-  font-family:var(--rg-fb);color:var(--rg-ink);background:var(--rg-bg);display:flex;-webkit-font-smoothing:antialiased;}
-
-/* rail */
-.rg-rail{width:70px;flex:0 0 70px;border-right:1px solid var(--rg-hair);display:flex;flex-direction:column;align-items:center;padding-top:26px;gap:34px;}
-.rg-rail .mark{width:34px;height:auto;margin-bottom:6px}
-.rg-rail svg.ic{width:24px;height:24px;stroke:var(--rg-ink2);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.rg-rail svg.ic.on{stroke:var(--rg-ink)}
-
-/* main */
-.rg-main{flex:1;display:flex;flex-direction:column;min-width:0;padding:0 44px 28px;box-sizing:border-box;}
-.rg-head{display:flex;align-items:center;justify-content:center;gap:14px;height:118px;flex:0 0 118px;
-  transition:height .55s cubic-bezier(.4,0,.2,1),flex-basis .55s cubic-bezier(.4,0,.2,1),opacity .35s ease,transform .55s ease;}
-.rg-head .mark{width:60px;height:auto}
-.rg-head .wm{font-family:var(--rg-fm);font-weight:600;font-size:48px;letter-spacing:.12em;line-height:1;color:var(--rg-ink);margin-top:4px}
-.sent .rg-head{height:34px;flex-basis:34px;opacity:0;transform:translateY(-10px)}
-
-/* thread */
-.rg-thread{flex:1;min-height:0;display:flex;flex-direction:column;gap:14px;padding:6px 0 0;}
-.rg-msg{opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease}
-.rg-msg.in{opacity:1;transform:none}
-.rg-user{align-self:flex-end;max-width:70%;background:var(--rg-raise);border:1px solid var(--rg-hair);border-radius:12px 12px 4px 12px;padding:10px 14px;font-size:15px;line-height:1.45;color:var(--rg-ink)}
-.rg-stepsw{display:flex;flex-direction:column}
-.rg-steps{list-style:none;margin:0;padding:0;font-size:13px;color:var(--rg-ink2);display:flex;flex-direction:column;gap:3px;max-height:80px;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .3s ease}
-.done .rg-steps{max-height:0;opacity:0}
-.rg-how{font-size:12px;color:var(--rg-ink2);display:flex;align-items:center;gap:6px;max-height:0;opacity:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .3s ease .2s}
-.rg-how .tri{display:inline-block;width:0;height:0;border:5px solid transparent;border-left:7px solid var(--rg-ink2);border-right:0}
-.done .rg-how{max-height:20px;opacity:1}
-.rg-steps li{display:flex;gap:9px;align-items:baseline;opacity:0;transform:translateX(-4px);transition:opacity .3s ease,transform .3s ease}
-.rg-steps li.in{opacity:1;transform:none}
-.rg-steps .sm{width:14px;flex:0 0 14px;text-align:center;font-weight:600;color:var(--rg-ok)}
-.rg-steps li.run .sm{color:var(--rg-ink2);animation:rgdots 1.1s steps(2,end) infinite}
-@keyframes rgdots{0%{opacity:1}50%{opacity:.25}}
-.rg-ans{font-size:15px;line-height:1.5;color:var(--rg-ink);max-width:760px}
-.rg-ans b{font-weight:600}
-
-/* assistant block: thinking mark + content column */
-.rg-asst{display:grid;grid-template-columns:50px 1fr;column-gap:14px;row-gap:14px;align-items:start}
-.rg-asst > .rg-markcell{grid-column:1;grid-row:1}
-.rg-asst > .rg-col{grid-column:2;display:flex;flex-direction:column;gap:14px;min-width:0}
-/* ===== REGATTA THINKING MARK (app live.css, t246: no ring, 50 px, only the sails) ===== */
-.rg-think{--rg-size:50px;--rg-navy:#0D3769;--rg-gold:#CAA229;--rg-orange:#F05910;
-  position:relative;width:var(--rg-size);display:inline-grid;place-items:center;flex:none;vertical-align:middle}
-.rg-think svg{width:100%;height:auto;overflow:visible;display:block}
-.rg-think path{animation:rg-wave 1.3s ease-in-out infinite}
-.rg-think path:nth-child(1){fill:var(--rg-gold)}
-.rg-think path:nth-child(2){fill:var(--rg-orange);animation-delay:.15s}
-.rg-think path:nth-child(3){fill:var(--rg-navy);animation-delay:.3s}
-@keyframes rg-wave{0%,100%{transform:translateY(0)}50%{transform:translateY(-16%)}}
-.rg-think.still path{animation:none}
-.rg-markcell{opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease;margin-top:-8px}
-.rg-markcell.in{opacity:1;transform:none}
-
-/* chart, flat on the cream like the rest of the thread */
-.rg-card{padding:4px 0 0;width:100%;max-width:640px;box-sizing:border-box}
-.rg-card .ct{font-family:var(--rg-fh);font-size:15.5px;color:var(--rg-ink);margin:0 0 3px}
-.rg-card .cs{font-size:11.5px;color:var(--rg-ink3);margin:0 0 10px;letter-spacing:.02em}
-.rg-chart{display:block;width:100%;height:auto;font-family:var(--rg-fb)}
-.rg-chart .lbl{font-size:12.5px;fill:var(--rg-ink);font-weight:600}
-.rg-chart .val{font-size:12px;fill:var(--rg-ink2);opacity:0;transition:opacity .4s ease;paint-order:stroke;stroke:var(--rg-bg);stroke-width:3px;stroke-linejoin:round}
-.rg-chart .bar{fill:var(--rg-ink);transform:scaleX(0);transform-origin:0 50%;transform-box:fill-box;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
-.rg-chart .bar.top{fill:var(--rg-sig)}
-.rg-chart .track{fill:rgba(13,55,105,.07)}
-.rg-chart .base{stroke:var(--rg-gold);stroke-width:1.5;stroke-dasharray:4 4;opacity:0;transition:opacity .5s ease}
-.rg-chart .basel{font-size:11px;fill:#8a6d12;font-weight:600;opacity:0;transition:opacity .5s ease}
-.rg-chart.go .bar{transform:scaleX(1)}
-.rg-chart.go .val,.rg-chart.go .base,.rg-chart.go .basel{opacity:1}
-.rg-chart.go .b1{transition-delay:.05s}.rg-chart.go .b2{transition-delay:.17s}.rg-chart.go .b3{transition-delay:.29s}.rg-chart.go .b4{transition-delay:.41s}.rg-chart.go .b5{transition-delay:.53s}
-.rg-chart.go .val{transition-delay:.9s}.rg-chart.go .base,.rg-chart.go .basel{transition-delay:1.25s}
-
-/* ask box */
-.rg-ask{position:relative;flex:0 0 auto;margin-top:16px;border:2px solid var(--rg-ink);border-radius:12px;background:var(--rg-bg);box-sizing:border-box;
-  height:330px;padding:34px 44px 28px;display:flex;flex-direction:column;justify-content:space-between;
-  transition:height .55s cubic-bezier(.4,0,.2,1),padding .55s cubic-bezier(.4,0,.2,1),border-width .3s ease;}
-.sent .rg-ask{height:62px;padding:0 20px 0 24px;flex-direction:row;align-items:center;border-width:1.5px}
-.rg-q{font-family:var(--rg-fh);font-size:34px;line-height:1.25;color:var(--rg-ink);min-height:1.3em;flex:1;display:flex;align-items:flex-start;
-  transition:font-size .55s cubic-bezier(.4,0,.2,1)}
-.sent .rg-q{font-size:17px;align-items:center}
-.rg-q .ph{color:#7E8DA6}
-.rg-q .caret{display:inline-block;width:2px;height:1.05em;background:var(--rg-ink);margin-left:2px;vertical-align:-0.12em;animation:rgblink 1s steps(1,end) infinite}
-.sent .rg-q .caret,.rg-q .caret.off{display:none}
-@keyframes rgblink{50%{opacity:0}}
-.rg-ask .row{display:flex;align-items:center;justify-content:space-between;transition:opacity .3s ease}
-.sent .rg-ask .row{width:auto;margin-left:14px}
-.rg-ask .clip{width:22px;height:22px;stroke:var(--rg-ink2);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:opacity .25s ease,width .3s ease}
-.sent .rg-ask .clip{width:0;opacity:0}
-.rg-btn{font-family:var(--rg-fb);font-weight:600;font-size:16px;letter-spacing:.14em;color:var(--rg-ink);background:transparent;border:1.5px solid var(--rg-rule);border-radius:7px;padding:16px 36px;transition:transform .12s ease,background .12s ease,padding .55s cubic-bezier(.4,0,.2,1),font-size .55s ease}
-.rg-btn.press{transform:scale(.96);background:var(--rg-raise);border-color:var(--rg-ink)}
-.sent .rg-btn{padding:8px 18px;font-size:13px}
-
-/* loop fade */
-.rg-stage.fade .rg-main{transition:opacity .5s ease;opacity:0}
-.rg-stage.nofade .rg-main{transition:none}
-
-@media (prefers-reduced-motion:reduce){
-  .rg-stage *{transition:none!important;animation:none!important}
-}
-</style>
+<style>html{background:#000000}body{margin:0}
+a:focus-visible{outline:2px solid #F05910;outline-offset:3px}
+.enter{transition:background-color .15s ease,border-color .15s ease}
+.enter:hover{background:rgba(255,255,255,.22)!important;border-color:rgba(255,255,255,.9)!important}</style>
 </head>
 <body>
-<div style="font-family: 'Inter', system-ui, sans-serif; color: #F3F6FB; background: #071833; line-height: 1.6; -webkit-font-smoothing: antialiased;">
-
-<!-- HEADER (sticky) + HERO -->
-<div id="hdr" class="hdr" style="position: sticky; top: 0; z-index: 20; background: #F3F6FB;">
-<header class="hf" style="width: 100%; box-sizing: border-box; max-width: 1200px; margin: 0 auto; padding: 12px 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
-<a href="/home/" class="totop logo" aria-label="Regatta — home"><svg class="logo-mark" viewBox="0 0 815 589" aria-hidden="true" focusable="false"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z" fill="#CAA229"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z" fill="#F05910"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z" fill="#0D3769"/></svg><span class="logo-word">Regatta</span></a>
-<div style="display: flex; align-items: center; gap: 20px;">
-<nav class="nav" aria-label="Main" style="display: flex; align-items: center; gap: 36px; margin-right: 16px;"><a href="#product">Product</a><a href="#company">Company</a></nav>
-<a href="#meet" class="btn-ghost hdr-cta">Let’s meet</a>
-<button type="button" class="burger" aria-label="Menu" aria-expanded="false" aria-controls="menu-panel" id="burger"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4 7H20M4 12H20M4 17H20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-</div>
-</header>
-<nav aria-label="Menu" class="menu-panel" id="menu-panel" hidden style="display: flex; flex-direction: column; padding: 8px 20px 20px; border-top: 1px solid rgba(13, 55, 105, 0.1);">
-<a href="#product" class="menu-link">Product</a>
-<a href="#company" class="menu-link">Company</a>
-<a href="#meet" class="menu-link">Let’s meet</a>
-</nav>
-</div>
-<div id="home">
-<section id="top" style="position: relative; overflow: hidden; min-height: calc(100vh - var(--hdr, 63px)); min-height: calc(100svh - var(--hdr, 63px)); display: flex; flex-direction: column; background: #071833; color: #F3F6FB;">
-<svg class="hero-fx hero-sails" viewBox="0 0 1440 620" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;"><g transform="translate(640 30) scale(1.08)"><g class="sail s1" style="--dx: 0px"><path d="M40 548.687L525.249 1L440.642 338.206Z" fill="#F3F6FB" fill-opacity="0.02" stroke="#F3F6FB" stroke-opacity="0.11" stroke-width="1.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></g><g class="sail s2" style="--dx: 140.6px"><path d="M40 548.687L525.249 1L440.642 338.206Z" fill="#F3F6FB" fill-opacity="0.03" stroke="#F3F6FB" stroke-opacity="0.14" stroke-width="1.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></g><g class="sail s3" style="--dx: 288.7px"><path d="M40 548.687L525.249 1L440.642 338.206Z" fill="#F3F6FB" fill-opacity="0.02" stroke="#F3F6FB" stroke-opacity="0.11" stroke-width="1.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></g></g></svg>
-<div class="hero-fx" style="position: relative; flex: 1 1 auto; width: 100%; box-sizing: border-box; max-width: 1200px; margin: 0 auto; padding: 48px 40px 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; text-align: center;">
-<h1 class="hf d1" style="margin: 0; max-width: 20ch; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 64px; line-height: 1.08; letter-spacing: -0.01em; color: #F3F6FB;">Regatta machines decipher your data to inform clinical decisions</h1>
-</div>
-<a href="#product" id="chev" class="chev hf d2 hero-fx" aria-label="Go to the next section" style="position: relative;"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path d="M5 9L12 16L19 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-</section>
-
-<!-- PRODUCT: what Regatta is -->
-<section id="product" aria-labelledby="product-title" style="background: #F3F6FB;">
-<div class="rv" style="max-width: 1200px; margin: 0 auto; padding: 112px 40px; display: flex; flex-direction: column; gap: 64px;">
-<div style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px 96px; align-items: start;">
-<h2 id="product-title" class="st" style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 48px; line-height: 1.1; color: #0D3769;">An AI analyst that lives inside your company</h2>
-<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column;">
-<li class="st" style="padding: 18px 0; border-top: 1px solid rgba(13, 55, 105, 0.18); font-size: 20px; line-height: 1.5; color: #0D3769;">Runs on your servers or your cloud</li>
-<li class="st" style="padding: 18px 0; border-top: 1px solid rgba(13, 55, 105, 0.18); font-size: 20px; line-height: 1.5; color: #0D3769;">Reads your trial, safety and document systems</li>
-<li class="st" style="padding: 18px 0; border-top: 1px solid rgba(13, 55, 105, 0.18); border-bottom: 1px solid rgba(13, 55, 105, 0.18); font-size: 20px; line-height: 1.5; color: #0D3769;">Answers your team in plain language</li>
-</ul>
-</div>
-<div class="st" style="width: 100%; max-width: 980px; margin: 0 auto;">
-<div class="rg-demo" id="rgdemo" aria-label="Demo of the Regatta app: a question is typed and the app answers with a chart" role="img">
-<div class="rg-stage" id="rgstage">
-  <aside class="rg-rail" aria-hidden="true">
-    <svg class="mark" viewBox="0 0 815 589"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z" fill="#CAA229"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z" fill="#F05910"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z" fill="#0D3769"/></svg>
-    <svg class="ic on" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>
-    <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
-    <svg class="ic" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
-  </aside>
-  <div class="rg-main">
-    <div class="rg-head" aria-hidden="true">
-      <svg class="mark" viewBox="0 0 815 589"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z" fill="#CAA229"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z" fill="#F05910"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z" fill="#0D3769"/></svg>
-      <span class="wm">REGATTA</span>
-    </div>
-
-    <div class="rg-thread" id="thread">
-      <div class="rg-msg rg-user" id="umsg"></div>
-      <div class="rg-asst">
-      <div class="rg-markcell" id="markcell"><span class="rg-think" id="think" aria-hidden="true"><svg viewBox="0 0 815 589"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z"/></svg></span></div>
-      <div class="rg-col">
-      <div class="rg-stepsw rg-msg" id="steps" aria-hidden="true">
-        <ul class="rg-steps">
-          <li id="st1"><span class="sm">✓</span><span>Reading the book · 5 trials, 3 sources</span></li>
-          <li id="st2"><span class="sm">✓</span><span>Base rates · Phase 3, oncology, 2018–2025</span></li>
-          <li id="st3"><span class="sm">✓</span><span>Drawing the chart</span></li>
-        </ul>
-        <div class="rg-how"><span class="tri"></span><span>How this was found · 3 steps · 2 files</span></div>
-      </div>
-      <p class="rg-ans rg-msg" id="ans">Five readouts qualify. <b>NVL-212</b> leads at 71% — well above the 58% base rate for Phase 3 oncology — and three others sit close to or below it. The chart is saved to your book.</p>
-      <div class="rg-card rg-msg" id="card">
-        <p class="ct">Approval odds · Phase 3 oncology readouts, 2026</p>
-        <p class="cs">Regatta forecast · base rate from 412 comparable trials</p>
-        <svg class="rg-chart" id="chart" viewBox="0 0 600 134" aria-hidden="true">
-          <!-- rows every 24px: label x=0..90, track x=100..560 (460 wide) -->
-          <g transform="translate(0,4)">
-            <text class="lbl" x="0" y="13">NVL-212</text>
-            <rect class="track" x="100" y="2" width="460" height="14" rx="3"/>
-            <rect class="bar top b1" x="100" y="2" width="326.6" height="14" rx="3"/>
-            <text class="val" x="434" y="13">71%</text>
-          </g>
-          <g transform="translate(0,28)">
-            <text class="lbl" x="0" y="13">ARX-07</text>
-            <rect class="track" x="100" y="2" width="460" height="14" rx="3"/>
-            <rect class="bar b2" x="100" y="2" width="290.0" height="14" rx="3"/>
-            <text class="val" x="398" y="13">63%</text>
-          </g>
-          <g transform="translate(0,52)">
-            <text class="lbl" x="0" y="13">TQ-1180</text>
-            <rect class="track" x="100" y="2" width="460" height="14" rx="3"/>
-            <rect class="bar b3" x="100" y="2" width="257.6" height="14" rx="3"/>
-            <text class="val" x="366" y="13">56%</text>
-          </g>
-          <g transform="translate(0,76)">
-            <text class="lbl" x="0" y="13">MB-440</text>
-            <rect class="track" x="100" y="2" width="460" height="14" rx="3"/>
-            <rect class="bar b4" x="100" y="2" width="216.2" height="14" rx="3"/>
-            <text class="val" x="324" y="13">47%</text>
-          </g>
-          <g transform="translate(0,100)">
-            <text class="lbl" x="0" y="13">SOL-9</text>
-            <rect class="track" x="100" y="2" width="460" height="14" rx="3"/>
-            <rect class="bar b5" x="100" y="2" width="156.4" height="14" rx="3"/>
-            <text class="val" x="264" y="13">34%</text>
-          </g>
-          <!-- base rate 58% → x = 100 + 0.58*460 = 366.8 -->
-          <line class="base" x1="366.8" y1="0" x2="366.8" y2="120"/>
-          <text class="basel" x="372" y="131">base rate 58%</text>
-        </svg>
-      </div>
-      </div>
-      </div>
-    </div>
-
-    <div class="rg-ask" aria-hidden="true">
-      <div class="rg-q"><span id="qtext"><span class="ph">Ask about any clinical asset, trial, date, odds…</span></span><span class="caret off" id="caret"></span></div>
-      <div class="row">
-        <svg class="clip" viewBox="0 0 24 24"><path d="M21 11.5l-8.8 8.8a5.5 5.5 0 0 1-7.8-7.8l9.2-9.2a3.5 3.5 0 0 1 5 5l-9.2 9.2a1.5 1.5 0 0 1-2.1-2.1L15.5 7"/></svg>
-        <button class="rg-btn" id="askbtn" type="button" tabindex="-1">ASK</button>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- WHAT IT DOES -->
-<section id="does" aria-labelledby="does-title" style="background: #071833;">
-<div class="rv" style="max-width: 1200px; margin: 0 auto; padding: 112px 40px; display: flex; flex-direction: column; gap: 56px;">
-<div style="display: flex; flex-direction: column; gap: 20px; max-width: 760px;">
-
-<h2 class="st" id="does-title" style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 44px; line-height: 1.12; color: #F3F6FB;">Capabilities</h2>
-</div>
-<ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;">
-<li class="st" style="display: flex; flex-direction: column; gap: 14px; padding: 40px; border: 1px solid rgba(243, 246, 251, 0.16); border-radius: 16px; border-style: none">
-<h3 style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.25; color: #F3F6FB;">Identify responsive patients</h3>
-<p style="margin: 8px 0 0; font-size: 56px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; color: #FF5A1F;">3.1x</p>
-<p style="margin: 0; font-size: 17px; line-height: 1.55; color: #C3CFDF;">higher approval odds when trials find and pick patients by marker</p>
-</li>
-<li class="st" style="display: flex; flex-direction: column; gap: 14px; padding: 40px; border: 1px solid rgba(243, 246, 251, 0.16); border-radius: 16px; border-style: none">
-<h3 style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.25; color: #F3F6FB;">Forecast in-licensed drug performance</h3>
-<p style="margin: 8px 0 0; font-size: 56px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; color: #FF5A1F;">79%</p>
-<p style="margin: 0; font-size: 17px; line-height: 1.55; color: #C3CFDF;">success rate of top-rated Regatta trials; industry average 65%</p>
-</li>
-<li class="st" style="display: flex; flex-direction: column; gap: 14px; padding: 40px; border: 1px solid rgba(243, 246, 251, 0.16); border-radius: 16px; border-style: none">
-<h3 style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.25; color: #F3F6FB;">Detect early toxicity</h3>
-<p style="margin: 8px 0 0; font-size: 56px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; color: #FF5A1F;">17%</p>
-<p style="margin: 0; font-size: 17px; line-height: 1.55; color: #C3CFDF;">of late-stage drugs fail on safety</p>
-</li>
-<li class="st" style="display: flex; flex-direction: column; gap: 14px; padding: 40px; border: 1px solid rgba(243, 246, 251, 0.16); border-radius: 16px; border-style: none">
-<h3 style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.25; color: #F3F6FB;">Calculate effective doses</h3>
-<p style="margin: 8px 0 0; font-size: 56px; font-weight: 300; line-height: 1; letter-spacing: -0.02em; color: #FF5A1F;">45%</p>
-<p style="margin: 0; font-size: 17px; line-height: 1.55; color: #C3CFDF;">of Phase 3 trials of targeted cancer drugs cut or change the Phase 1 dose</p>
-</li>
-</ul>
-</div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section id="how" class="reveal" aria-labelledby="how-title" style="background: #F3F6FB; color: #0D3769;">
-<div class="rv" style="max-width: 1200px; margin: 0 auto; padding: 128px 40px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px 96px; align-items: start;">
-<h2 id="how-title" class="st" style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 48px; line-height: 1.1; color: #0D3769;">We install and continuously upgrade your wholly owned AI</h2>
-<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column;">
-<li class="st" style="display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 24px; padding: 36px 0; border-top: 1px solid rgba(13, 55, 105, 0.18);">
-<span aria-hidden="true" style="font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 56px; line-height: 1; color: #0D3769;">01</span>
-<div style="display: flex; flex-direction: column; gap: 8px;">
-<h3 style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.25; color: #0D3769;">One-time installation</h3>
-<p style="margin: 0; max-width: 46ch; font-size: 18px; line-height: 1.6; color: #4E5A6B;">We install Regatta into your servers or on your cloud and embed it in your trial, safety and document systems.</p>
-</div>
-</li>
-<li class="st" style="display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 24px; padding: 36px 0; border-top: 1px solid rgba(13, 55, 105, 0.18);">
-<span aria-hidden="true" style="font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 56px; line-height: 1; color: #0D3769;">02</span>
-<div style="display: flex; flex-direction: column; gap: 8px;">
-<h3 style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.25; color: #0D3769;">Monthly upgrades</h3>
-<p style="margin: 0; max-width: 46ch; font-size: 18px; line-height: 1.6; color: #4E5A6B;">We ensure your models and AI infrastructure are state-of-the-art and compliant.</p>
-</div>
-</li>
-<li class="st" style="display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 24px; padding: 36px 0; border-top: 1px solid rgba(13, 55, 105, 0.18); border-bottom: 1px solid rgba(13, 55, 105, 0.18);">
-<span aria-hidden="true" style="font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 56px; line-height: 1; color: #0D3769;">03</span>
-<div style="display: flex; flex-direction: column; gap: 8px;">
-<h3 style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.25; color: #0D3769;">A dedicated team</h3>
-<p style="margin: 0; max-width: 46ch; font-size: 18px; line-height: 1.6; color: #4E5A6B;">Round the clock server support, and a representative dedicated to your team.</p>
-</div>
-</li>
-</ol>
-</div>
-</section>
-
-<!-- WHY OWN YOUR AI -->
-<section id="why" aria-labelledby="why-title" style="background: #071833; color: #F3F6FB;">
-<div class="rv" style="max-width: 1200px; margin: 0 auto; padding: 112px 40px; display: flex; flex-direction: column; gap: 56px;">
-<div style="display: flex; flex-direction: column; gap: 20px; max-width: 820px;">
-
-<h2 class="st" id="why-title" style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 44px; line-height: 1.12; color: #F3F6FB;">Our partners control Regatta</h2>
-</div>
-<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;">
-<article class="st" aria-labelledby="closed-title" style="display: flex; flex-direction: column; gap: 24px; padding: 40px; border-radius: 16px; background: #F5EEE3; color: #0D3769;">
-<div style="display: flex; flex-direction: column; gap: 6px;">
-<h3 id="closed-title" style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 28px; line-height: 1.2; color: #0D3769;">Closed model providers</h3>
-<p style="margin: 0; font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4E5A6B;">OpenAI · Anthropic · Google · Azure · Bedrock</p>
-</div>
-<dl style="margin: 0; display: flex; flex-direction: column;">
-<div style="display: flex; flex-direction: column; gap: 4px; padding: 16px 0; border-top: 1px solid rgba(13, 55, 105, 0.16);"><dt style="font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4E5A6B;">Business model</dt><dd style="margin: 0; font-size: 20px; color: #0D3769;">Bill by metered use</dd></div>
-<div style="display: flex; flex-direction: column; gap: 4px; padding: 16px 0; border-top: 1px solid rgba(13, 55, 105, 0.16);"><dt style="font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4E5A6B;">Outputs</dt><dd style="margin: 0; font-size: 20px; color: #0D3769;">Not reproducible or auditable</dd></div>
-<div style="display: flex; flex-direction: column; gap: 4px; padding: 16px 0; border-top: 1px solid rgba(13, 55, 105, 0.16);"><dt style="font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4E5A6B;">Cost driver</dt><dd style="margin: 0; font-size: 20px; color: #0D3769;">Closed model token price</dd></div>
-<div style="display: flex; flex-direction: column; gap: 4px; padding: 16px 0; border-top: 1px solid rgba(13, 55, 105, 0.16);"><dt style="font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4E5A6B;">Data ownership</dt><dd style="margin: 0; font-size: 20px; color: #0D3769;">Set by the provider</dd></div>
-<div style="display: flex; flex-direction: column; gap: 4px; padding: 16px 0 0; border-top: 1px solid rgba(13, 55, 105, 0.16);"><dt style="font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #4E5A6B;">Model propriety</dt><dd style="margin: 0; font-size: 20px; color: #0D3769;">The lab’s</dd></div>
-</dl>
-</article>
-<article class="st" aria-labelledby="regatta-title" style="display: flex; flex-direction: column; gap: 24px; padding: 40px; border-radius: 16px; background: #0D3769; color: #F3F6FB; box-shadow: 0 0 0 1px rgba(243, 246, 251, 0.14);">
-<div style="display: flex; flex-direction: column; gap: 6px;">
-<h3 id="regatta-title" style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 28px; line-height: 1.2; color: #F3F6FB;">Regatta</h3>
-<p style="margin: 0; font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Built into your organization</p>
-</div>
-<dl style="margin: 0; display: flex; flex-direction: column;">
-<div style="display: flex; flex-direction: column; gap: 4px; padding: 16px 0; border-top: 1px solid rgba(240, 89, 16, 0.75);"><dt style="font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Business model</dt><dd style="margin: 0; font-size: 20px; font-weight: 600; color: #FFFFFF;">Fixed build fee + ongoing maintenance</dd></div>
-<div style="display: flex; flex-direction: column; gap: 4px; padding: 16px 0; border-top: 1px solid rgba(240, 89, 16, 0.75);"><dt style="font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Outputs</dt><dd style="margin: 0; font-size: 20px; font-weight: 600; color: #FFFFFF;">Reproducible and auditable on known hardware</dd></div>
-<div style="display: flex; flex-direction: column; gap: 4px; padding: 16px 0; border-top: 1px solid rgba(240, 89, 16, 0.75);"><dt style="font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Cost driver</dt><dd style="margin: 0; font-size: 20px; font-weight: 600; color: #FFFFFF;">Server hosting to support team</dd></div>
-<div style="display: flex; flex-direction: column; gap: 4px; padding: 16px 0; border-top: 1px solid rgba(240, 89, 16, 0.75);"><dt style="font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Data ownership</dt><dd style="margin: 0; font-size: 20px; font-weight: 600; color: #FFFFFF;">You retain all data</dd></div>
-<div style="display: flex; flex-direction: column; gap: 4px; padding: 16px 0 0; border-top: 1px solid rgba(240, 89, 16, 0.75);"><dt style="font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Model propriety</dt><dd style="margin: 0; font-size: 20px; font-weight: 600; color: #FFFFFF;">You directly manage the model</dd></div>
-</dl>
-</article>
-</div>
-</div>
-</section>
-
-<!-- COMPANY -->
-<section id="company" class="reveal" aria-labelledby="company-title" style="background: #F3F6FB; color: #0D3769;">
-<div class="rv" style="max-width: 1200px; margin: 0 auto; padding: 128px 40px; display: flex; flex-direction: column; gap: 56px;">
-<div class="st" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px 96px; align-items: center;">
-<h2 id="company-title" style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 48px; line-height: 1.1; color: #0D3769;">Team</h2>
-<div style="display: flex; align-items: center; gap: 28px;">
-<img src="/assets/austin-cole.jpg" alt="Austin Cole" style="flex: 0 0 auto; display: block; width: 132px; height: 132px; border-radius: 50%; object-fit: cover;">
-<div style="display: flex; flex-direction: column; gap: 4px;">
-<p style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 28px; line-height: 1.2; color: #0D3769;">Austin Cole, PhD</p>
-<p style="margin: 0; font-size: 17px; line-height: 1.5; color: #4E5A6B;">Founder-CEO, prior protein design</p>
-<p style="margin: 0; font-size: 17px; line-height: 1.5; color: #4E5A6B;">Algorithms deployed in $100B+ pharma teams</p>
-</div>
-</div>
-</div>
-<div class="st" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 40px 96px; padding-top: 48px; border-top: 1px solid rgba(13, 55, 105, 0.18); align-items: start;">
-<div style="display: flex; flex-direction: column; gap: 12px;">
-<p style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #4E5A6B;">Partners</p>
-<p style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 40px; line-height: 1.15; color: #0D3769;">Five $10B+ partners</p>
-</div>
-<div style="display: flex; flex-direction: column; gap: 12px;">
-<p style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #4E5A6B;">Investors ($9M seed)</p>
-<ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 32px; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 26px; line-height: 1.3; color: #0D3769;">
-<li>KdT Ventures</li>
-<li>OMX Ventures</li>
-<li>Axial</li>
-<li>Civilization Ventures</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-
-<!-- LET'S MEET -->
-<section id="meet" aria-labelledby="meet-title" style="background: #071833;">
-<div class="rv" style="max-width: 1200px; margin: 0 auto; padding: 112px 40px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 80px; align-items: start;">
-<div style="display: flex; flex-direction: column; gap: 20px;">
-
-<h2 class="st" id="meet-title" style="margin: 0; font-family: 'Tenor Sans', Georgia, serif; font-weight: 400; font-size: 44px; line-height: 1.12; color: #F3F6FB;">Deploy AI towards your clinical success</h2>
-
-
-</div>
-<form class="st" name="pilot" method="POST" action="/thanks/" data-netlify="true" netlify-honeypot="bot-field" style="display: flex; flex-direction: column; gap: 28px; padding-top: 8px;">
-<p style="display:none"><label>Do not fill this out: <input name="bot-field"></label></p>
-<label style="display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Work email</span><input type="email" name="email" placeholder="you@company.com" class="line-input"></label>
-<label style="display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Organization</span><input type="text" name="organization" placeholder="Company name" class="line-input"></label>
-<div style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
-<button type="submit" class="btn-ghost" style="background: transparent; font-family: inherit; cursor: pointer;">Let’s meet</button>
-<p style="margin: 0; font-size: 14px; line-height: 1.6; color: #C3CFDF;">We collect only what you enter here, and use it solely to contact you about Regatta. <a href="/privacy/" class="quiet">Privacy policy</a></p>
-</div>
-</form>
-</div>
-</section>
-
-</div>
-<!-- FOOTER -->
-<footer style="background: #071833; color: #F3F6FB;">
-<div style="max-width: 1200px; margin: 0 auto; padding: 40px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px;">
-<a href="/home/" class="totop" aria-label="Back to top" style="color: #F3F6FB; text-decoration: none; font-family: 'Cormorant SC', Georgia, serif; font-weight: 600; font-size: 20px; line-height: 1; letter-spacing: 0.14em; text-transform: uppercase;">Regatta</a>
-<p style="margin: 0; font-size: 14px; color: #8397B3;">© 2026 Regatta · <a href="/privacy/" class="quiet">Privacy</a></p>
-</div>
-</footer>
-
+<div style="position: relative; height: 100vh; min-height: 520px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000000; color: #FFFFFF; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; container-type: inline-size; -webkit-font-smoothing: antialiased;">
+<video muted="" loop="" playsinline="" preload="none" poster="/assets/entry-poster.jpg" data-src="/assets/entry-loop.mp4" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;"></video>
+<div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(120% 95% at 50% 45%, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.52) 60%, rgba(0, 0, 0, 0.76)), linear-gradient(180deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 26%, rgba(0, 0, 0, 0.34) 64%, rgba(0, 0, 0, 0.7));"></div>
+<main style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 30px; padding: 0 16px; text-align: center;">
+<p aria-label="Regatta" style="margin: 0; display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 2.2cqi, 26px);"><svg viewBox="0 0 815 589" aria-hidden="true" focusable="false" style="display: block; width: auto; height: clamp(3.25rem, 7.5cqi, 6rem); filter: drop-shadow(0 2px 18px rgba(0, 0, 0, 0.4));"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z" fill="#CAA229"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z" fill="#F05910"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z" fill="#0D3769"/></svg><span style="padding-left: 0.14em; font-family: 'Cormorant SC', Georgia, serif; font-weight: 600; font-size: clamp(2.5rem, 6.2cqi, 4.75rem); line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; color: #FFFFFF; text-shadow: 0 1px 24px rgba(0, 0, 0, 0.42);">Regatta</span></p>
+<h1 style="margin: 0; max-width: 24em; font-family: 'Tenor Sans', 'Times New Roman', serif; font-weight: 400; font-size: clamp(1.25rem, 2.6cqi, 2rem); line-height: 1.25; letter-spacing: 0.02em; text-wrap: balance; color: #FFFFFF; text-shadow: 0 1px 24px rgba(0, 0, 0, 0.42);">Embedded AIs Inform Clinical Success</h1>
+<a href="/home/" aria-label="Enter Regatta" class="enter" style="display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 44px; border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 999px; background: rgba(255, 255, 255, 0.12); color: #FFFFFF; font-size: 14px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none;">Enter</a>
+</main>
 </div>
 <script>
-(function(){
-  var d=document.documentElement; d.classList.add('js');
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var hdr=document.getElementById('hdr');
-  function hdrH(){ return hdr.offsetHeight; }
-  function setHdr(){ d.style.setProperty('--hdr', hdrH()+'px'); }
-  setHdr(); window.addEventListener('resize', setHdr);
-
-  // headline: words appear left to right
-  var h1=document.querySelector('#top h1');
-  if(h1 && !reduce){ var words=h1.textContent.trim().split(/\s+/); h1.textContent=''; words.forEach(function(w,i){ var sp=document.createElement('span'); sp.className='w'; sp.style.setProperty('--i', i); sp.textContent=w; h1.appendChild(sp); if(i<words.length-1) h1.appendChild(document.createTextNode(' ')); }); h1.classList.add('words'); }
-
-
-  var home=document.getElementById('home');
-  document.querySelectorAll('a.totop').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); if(history.replaceState) history.replaceState(null,'',' '); window.scrollTo({top:0, behavior:'smooth'}); }); });
-  // phone menu
-  var burger=document.getElementById('burger'), panel=document.getElementById('menu-panel');
-  function closeMenu(){ panel.hidden=true; burger.setAttribute('aria-expanded','false'); setHdr(); }
-  burger.addEventListener('click', function(){ var open=panel.hidden; panel.hidden=!open; burger.setAttribute('aria-expanded', open?'true':'false'); setHdr(); });
-  panel.addEventListener('click', function(e){ if(e.target.closest('a')) closeMenu(); });
-  window.addEventListener('resize', function(){ if(window.innerWidth>720 && !panel.hidden) closeMenu(); });
-
-  // reveal: a section whose place in the page is still below the header is held under the header,
-  // behind the one before it, so the current section lifts away and shows the next one already there
-  var cards=[].slice.call(document.querySelectorAll('#home>section.reveal'));
-  cards.forEach(function(c,i){ c.style.setProperty('--z', 9-i); }); // earlier ones above later ones, all below normal sections
-  function docTop(el){ var t=0; while(el){ t+=el.offsetTop; el=el.offsetParent; } return t; }
-  function reveal(){
-    var S=window.scrollY||window.pageYOffset, H=hdrH(), vh=window.innerHeight;
-    for(var i=0;i<cards.length;i++){
-      var c=cards[i], top=docTop(c)-S, ty=top>H ? H-top : 0, p=1, prev=c.previousElementSibling;
-      if(prev){ var pb=docTop(prev)+prev.offsetHeight-S; p=Math.max(0, Math.min(1, (vh-pb)/(vh-H))); }
-      c.style.transform=ty ? 'translate3d(0,'+ty+'px,0)' : '';
-      c.style.setProperty('--dim', reduce ? '0' : (0.3*(1-p)).toFixed(3));
-      if(p>0.2){ var rv=c.querySelector('.rv'); if(rv && !rv.classList.contains('in')) rv.classList.add('in'); }
-    }
-  }
-  reveal();
-  window.addEventListener('resize', reveal); window.addEventListener('load', reveal);
-  if('ResizeObserver' in window){ new ResizeObserver(reveal).observe(home); }
-  window.addEventListener('scroll', function(){ window.requestAnimationFrame(reveal); }, {passive:true});
-  // in-page links go to a section's place in the page, not to where it is being held
-  document.querySelectorAll('a[href^="#"]').forEach(function(a){
-    var id=a.getAttribute('href').slice(1), t=id&&document.getElementById(id);
-    if(!t || !t.closest('#home') || a.id==='chev' || a.classList.contains('totop')) return;
-    a.addEventListener('click', function(e){ e.preventDefault(); window.scrollTo({top: docTop(t)-hdrH(), behavior:'smooth'}); if(history.replaceState) history.replaceState(null,'','#'+id); });
-  });
-
-  // sections: each item settles into place one after another
-  document.querySelectorAll('.rv').forEach(function(rv){
-    rv.querySelectorAll('.st').forEach(function(el,i){ el.style.setProperty('--d', (i*0.18)+'s'); });
-  });
-  var els=[].slice.call(document.querySelectorAll('.rv')).filter(function(el){ return !el.closest('#home>section.reveal'); });
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{rootMargin:'0px 0px -12% 0px',threshold:0.05});
-    els.forEach(function(el){ io.observe(el); });
-  } else { els.forEach(function(el){ el.classList.add('in'); }); }
-
-  // hero: pulled away like a sheet (on scroll, and on the chevron)
-  var hero=document.getElementById('top'), fx=hero.querySelectorAll('.hero-fx'), leaving=false;
-  function parallax(){
-    if(leaving||reduce) return;
-    var y=window.scrollY||window.pageYOffset, h=hero.offsetHeight||1, p=Math.min(1, y/(h*0.75));
-    for(var i=0;i<fx.length;i++){ fx[i].style.transform='translateY('+(-y*0.35)+'px)'; fx[i].style.opacity=String(1-p); }
-  }
-  window.addEventListener('scroll', function(){ window.requestAnimationFrame(parallax); }, {passive:true});
-  parallax();
-  function easeInOut(t){ return t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
-  function scrollToEl(el, ms, done){
-    var start=window.scrollY||window.pageYOffset, target=docTop(el)-hdrH(), dist=target-start, t0=null;
-    d.style.scrollBehavior='auto';
-    function step(ts){ if(t0===null) t0=ts; var k=Math.min(1,(ts-t0)/ms); window.scrollTo(0, start+dist*easeInOut(k)); if(k<1) window.requestAnimationFrame(step); else { d.style.scrollBehavior=''; done&&done(); } }
-    window.requestAnimationFrame(step);
-  }
-  document.getElementById('chev').addEventListener('click', function(e){
-    e.preventDefault();
-    var product=document.getElementById('product');
-    if(reduce){ product.scrollIntoView(); return; }
-    leaving=true; hero.classList.add('leaving');
-    scrollToEl(product, 950, function(){ hero.classList.remove('leaving'); leaving=false; parallax(); if(history.replaceState) history.replaceState(null,'','#product'); });
-  });
-})();
-</script>
-<script>
-(function(){
-  var demo=document.getElementById('rgdemo'), stage=document.getElementById('rgstage');
-  /* scale the 980×560 stage to the container width */
-  function fit(){ var w=demo.clientWidth; stage.style.transform='scale('+(w/980)+')'; }
-  if('ResizeObserver' in window){ new ResizeObserver(fit).observe(demo); } else { window.addEventListener('resize',fit); }
-  fit();
-
-  var Q='Which of our Phase 3 oncology readouts in 2026 have the best approval odds?';
-  var qtext=document.getElementById('qtext'), caret=document.getElementById('caret'), btn=document.getElementById('askbtn');
-  var umsg=document.getElementById('umsg'), st=[document.getElementById('st1'),document.getElementById('st2'),document.getElementById('st3')];
-  var markcell=document.getElementById('markcell'), think=document.getElementById('think');
-  var steps=document.getElementById('steps'), ans=document.getElementById('ans'), card=document.getElementById('card'), chart=document.getElementById('chart');
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var timers=[]; function at(ms,fn){ timers.push(setTimeout(fn,ms)); }
-  function clear(){ timers.forEach(clearTimeout); timers=[]; }
-
-  function reset(){
-    stage.classList.remove('sent','done'); qtext.innerHTML='<span class="ph">Ask about any clinical asset, trial, date, odds…</span>';
-    caret.classList.add('off'); btn.classList.remove('press');
-    [umsg,markcell,steps,ans,card].forEach(function(e){e.classList.remove('in')}); think.classList.remove('still');
-    st.forEach(function(e){e.classList.remove('in','run')}); chart.classList.remove('go');
-    umsg.textContent=Q;
-  }
-  function finalState(){
-    reset(); stage.classList.add('sent','done'); qtext.textContent='';
-    [umsg,markcell,steps,ans,card].forEach(function(e){e.classList.add('in')}); think.classList.add('still'); chart.classList.add('go');
-  }
-
-  function run(){
-    clear(); stage.classList.add('nofade'); stage.classList.remove('fade'); reset();
-    void stage.offsetWidth; stage.classList.remove('nofade');
-    var t=900;
-    at(t,function(){ qtext.textContent=''; caret.classList.remove('off'); });
-    /* typing: slightly uneven cadence */
-    var i=0; var ch=Q.split('');
-    ch.forEach(function(c,k){
-      t+= (c===' '?70:38) + ((k*7)%5)*6;
-      at(t,function(){ qtext.textContent+=c; });
-    });
-    t+=450; at(t,function(){ caret.classList.add('off'); btn.classList.add('press'); });
-    t+=180; at(t,function(){ btn.classList.remove('press'); stage.classList.add('sent'); qtext.textContent=''; });
-    t+=260; at(t,function(){ umsg.classList.add('in'); });
-    t+=380; at(t,function(){ markcell.classList.add('in'); });
-    t+=320; at(t,function(){ steps.classList.add('in'); st[0].classList.add('in','run'); });
-    t+=620; at(t,function(){ st[0].classList.remove('run'); st[1].classList.add('in','run'); });
-    t+=620; at(t,function(){ st[1].classList.remove('run'); st[2].classList.add('in','run'); });
-    t+=700; at(t,function(){ st[2].classList.remove('run'); });
-    t+=350; at(t,function(){ stage.classList.add('done'); think.classList.add('still'); ans.classList.add('in'); });
-    t+=420; at(t,function(){ card.classList.add('in'); });
-    t+=200; at(t,function(){ chart.classList.add('go'); });
-    t+=5200; at(t,function(){ stage.classList.add('fade'); });
-    t+=650; at(t,run);
-  }
-
-  if(reduce){ finalState(); } else { run(); }
-  /* pause when off-screen, to save CPU on the real page */
-  if('IntersectionObserver' in window && !reduce){
-    var paused=false;
-    new IntersectionObserver(function(es){ es.forEach(function(e){
-      if(e.isIntersecting && paused){ paused=false; run(); }
-      else if(!e.isIntersecting && !paused){ paused=true; clear(); }
-    }); },{threshold:.05}).observe(demo);
-  }
-})();
+(function(){var v=document.querySelector('video');if(!v)return;try{
+if(!window.matchMedia)return;
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+if(navigator.connection&&navigator.connection.saveData)return;
+v.src=v.getAttribute('data-src');v.muted=true;v.autoplay=true;
+var p=v.play();if(p&&p.catch)p.catch(function(){});}catch(e){}})();
 </script>
 </body>
 </html>
