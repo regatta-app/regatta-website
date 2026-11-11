@@ -1,10 +1,10 @@
-# regatta.tech on AWS — plan B (written 29 Oct 2026, not in use)
+# regatta.tech on AWS (written 29 Oct 2026; in use since 9 Nov 2026)
 
-> **Status.** On 29 Oct 2026 the Netlify account that hosts regatta.tech was found, so the new site was published there (see the repo README). This guide is the fallback for the day Netlify is no longer wanted. Steps 1–2 (Route 53 hosted zone) were already done that day; the zone `Z0337142YM9ANNYG6YXQ` exists and holds a copy of the current records. Step 2 (changing the name servers at GoDaddy) needs access to whichever GoDaddy account holds the domain, which is still unknown.
+> **Status.** Since 9 Nov 2026 regatta.tech is served from AWS with this template: stack `regatta-website` in us-east-1 (S3 + CloudFront + the `/api/pilot` form receiver), DNS in the Route 53 hosted zone for regatta.tech. Netlify is no longer used. Steps 1–7 below are the record of how it was set up; they are only needed again to rebuild from scratch. For changes to the running stack see [`STACK-UPDATE.md`](STACK-UPDATE.md); to publish site changes see the repo README (`scripts/publish.sh`).
 >
-> If you follow this guide, change the two `<form>` tags in `site/home/index.html` from `action="/thanks/" data-netlify="true" netlify-honeypot="bot-field"` to `action="/api/pilot"` before uploading (the AWS stack has its own form receiver; Netlify Forms only work on Netlify).
+> The one `<form>` in `site/home/index.html` must post to `action="/api/pilot"` with no `data-netlify` / `netlify-honeypot` attributes (Netlify Forms do nothing on AWS: every lead would be lost). `scripts/publish.sh` refuses to publish otherwise.
 
-**Why.** regatta.tech (the public marketing site, not the Regatta app) is on a Netlify account nobody can locate; the company pays for it but no Netlify mail reaches the company inbox. The domain's DNS is at GoDaddy, so the domain itself is under our control. We host the new site in Iditarod's AWS account and point the domain at it. The Netlify site is never touched; it simply stops receiving traffic.
+**Why.** regatta.tech (the public marketing site, not the Regatta app) was on a Netlify account that is hard to manage (no Netlify mail reaches the company inbox). The domain itself is under our control, so the site is hosted in Iditarod's AWS account and the domain points at it. The Netlify site was never touched; it simply stopped receiving traffic.
 
 ```
 browser ── https://regatta.tech ──► CloudFront (ACM certificate) ──► S3 bucket (site files, private)
@@ -13,15 +13,17 @@ browser ── https://regatta.tech ──► CloudFront (ACM certificate) ─�
 DNS: GoDaddy keeps the domain registration; Route 53 serves the records.
 ```
 
-**Files** (repo `regatta-app/regatta-website`, checked out at `Documents/Regatta/regatta-website/`):
+**Files** (repo `regatta-app/regatta-website`):
 
 | File | What it is |
 |---|---|
 | `site/` | The site as served: `index.html`, `home/`, `privacy/`, `thanks/`, `404.html`, `assets/`. |
 | `aws/regatta-website.yaml` | CloudFormation template: bucket, certificate, CloudFront, URL redirects, form receiver. |
 | `aws/website-aws-hosting-2026-10-29.md` | This guide. |
+| `aws/STACK-UPDATE.md` | How to apply template changes to the running stack (change sets). |
+| `scripts/publish.sh` | Uploads `site/` with the right caching and clears the CloudFront cache. |
 
-**The "Request a pilot" form.** The design used Netlify Forms, which only works on Netlify. On AWS the two `<form>` tags in `site/home/index.html` post to `/api/pilot`; CloudFront routes that path to a Lambda that checks the honeypot field, validates the email and publishes the submission to an SNS topic, which emails it to the address(es) given as stack parameters. Each recipient gets one "AWS Notification - Subscription Confirmation" email and must click its link once, or they receive nothing.
+**The "Request a pilot" form.** The one `<form>` in `site/home/index.html` posts to `/api/pilot`; CloudFront routes that path to a Lambda that checks the honeypot field, validates the email and publishes the submission (email and organization only) to an SNS topic, which emails it to the address(es) given as stack parameters. The visitor is redirected to `/thanks/`, or back to `/home/?error=email#meet` (invalid email) or `/home/?error=send#meet` (the email could not be sent; the submission is then in the function's CloudWatch log, see below). Each recipient gets one "AWS Notification - Subscription Confirmation" email and must click its link once, or they receive nothing.
 
 **Cost.** Route 53 hosted zone $0.50/month plus cents per million queries; S3, CloudFront, Lambda and SNS a few cents a month at marketing-site traffic. The ACM certificate is free and renews itself.
 
@@ -29,7 +31,7 @@ DNS: GoDaddy keeps the domain registration; Route 53 serves the records.
 
 ## 0. Before you start (5 min)
 
-- Have the new site's folder on your Mac. Open it: `index.html` must be at its top level. If there is no `404.html`, that's fine (broken links will show a plain CloudFront error page; drop a `404.html` in later if you want a branded one).
+- Have a clone of this repo (or open AWS CloudShell and `git clone https://github.com/regatta-app/regatta-website.git`). The site is the `site/` folder.
 - Log in to GoDaddy and to the AWS console in another tab.
 - In Terminal, write down what the domain has today (you will copy some of it):
 
@@ -74,7 +76,7 @@ dig regatta.tech NS +short
 3. Settings:
    - **Stack name:** `regatta-website`
    - **DomainName:** leave `regatta.tech`
-   - **HostedZoneId:** pick `regatta.tech` from the list (`Z0337142YM9ANNYG6YXQ`).
+   - **HostedZoneId:** paste the ID of the regatta.tech hosted zone (Route 53 → Hosted zones → regatta.tech → *Hosted zone ID*, starts with `Z`). It is a plain text field.
    - **PilotNotifyEmail1 / 2:** who receives the pilot requests (second one optional).
 4. Next. On the options page tick **"I acknowledge that AWS CloudFormation might create IAM resources"** (the form Lambda needs a role). Next, **Submit**.
 5. Watch the **Events** tab. `Certificate` sits in CREATE_IN_PROGRESS while AWS checks DNS — it adds two CNAME records to your hosted zone and waits for them to be visible. If step 2 has not finished propagating, it simply waits; it does not fail. CloudFront takes another 5–10 minutes. Done at **CREATE_COMPLETE**.
@@ -82,9 +84,14 @@ dig regatta.tech NS +short
 
 ## 4. Upload the site (3 min)
 
-1. **S3 → Buckets →** the bucket from **BucketName** (starts with `regatta-website-sitebucket-`).
-2. **Upload**. Open the site folder in Finder, select **everything inside it** (Cmd-A) and drag it onto the upload area. Don't drag the folder itself — that would put the site under `foldername/` and the home page would 404. Any subfolders (css, images, …) come along correctly.
-3. Check that `index.html` is listed at the top level of the bucket, then **Upload**.
+In AWS CloudShell, from the repo clone:
+
+```
+scripts/publish.sh --dry-run BUCKET DISTRIBUTION_ID
+scripts/publish.sh BUCKET DISTRIBUTION_ID
+```
+
+with **BucketName** and **DistributionId** from the Outputs tab. Do not upload through the S3 console: it sets no `Cache-Control`, would upload `_headers`/dotfiles, and makes it easy to drop the folder itself instead of its contents (the home page would then 404).
 
 ## 5. Test before touching DNS
 
@@ -108,17 +115,18 @@ curl -I https://www.regatta.tech
 
 - Check the inbox of each notification address for "AWS Notification - Subscription Confirmation" and click **Confirm subscription**. Then send one test through the form on the live site; the email arrives within seconds.
 - Tell Austin the site has moved and that the Netlify subscription can be cancelled whenever appropriate. Nothing on Netlify is needed any more.
-- Commit `regatta-website/` to its own GitHub repo (`regatta-app/regatta-website`).
+- Set the log retention of the form function once (see `STACK-UPDATE.md`, "Log retention").
+- Disconnect the old Netlify project from the GitHub repo: in the Netlify project's *Build & deploy* settings unlink the repository, or in GitHub (organization `regatta-app` → Settings → GitHub Apps → Netlify) remove this repo from the app's access. Its deploy-preview bot still comments on pull requests, and its previews use Netlify Forms, not `/api/pilot`.
 
 ---
 
 ## Day-to-day
 
-**Publish a new version.** Upload the changed files to the same bucket (S3 → bucket → Upload; same names, they overwrite). Then clear the cache: **CloudFront → Distributions → your distribution → Invalidations → Create invalidation**, object path `/*`, Create. The new version shows within 1–2 minutes. (CloudFront caches pages for up to 24 hours otherwise.)
+**Publish a new version.** `scripts/publish.sh BUCKET DISTRIBUTION_ID` in CloudShell (try `--dry-run` first). It uploads with the right `Cache-Control` and creates the CloudFront invalidation for what changed. Details in the repo README.
 
-**Add a 404 page.** Upload a file named `404.html` to the bucket root. The template already sends missing pages to it.
+**404 page.** `site/404.html`; the template sends missing pages to it.
 
-**Pretty URLs.** `regatta.tech/about/` serves `about/index.html`; `regatta.tech/about` serves `about.html`. If the designer's export uses a different convention, tell Claude and the small function in the template gets adjusted.
+**Pretty URLs.** Every page is a folder with an `index.html`: `regatta.tech/about/` serves `about/index.html`, and `regatta.tech/about` (no slash, no extension) is 301-redirected to `regatta.tech/about/`. There are no `about.html`-style files.
 
 **Add or change who receives pilot requests.** CloudFormation → `regatta-website` → **Update** → **Use existing template** → change PilotNotifyEmail1/2 (tick "Use previous value" for the rest) → Submit. The new address gets a confirmation email to click. (Or add a subscription by hand in SNS → Topics → `regatta-website-pilot-requests`.)
 
@@ -161,7 +169,8 @@ aws s3 sync site/ s3://BUCKET/ --exclude "*" --include "*.html" --include "sitem
 | Stack fails: "CNAMEAlreadyExists" on the Distribution | Another CloudFront distribution in the account already claims `regatta.tech`. Unlikely here; check CloudFront → Distributions. |
 | TestUrl shows "AccessDenied" or a 404 page | `index.html` is not at the bucket root (uploaded inside a folder). Fix in S3 and retry. |
 | Site shows but no styles/images | Paths in the HTML point to files that didn't upload, or are absolute paths from the old host. Check the browser's Network tab for the 404s. |
-| `regatta.tech` still shows the Netlify site after step 6 | Your Mac's DNS cache. `sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder` or test from the phone. |
+| `regatta.tech` still shows the Netlify site after step 6 | Your computer's DNS cache. On a Mac: `sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder`; or test from a phone on mobile data. |
 | Certificate warning in the browser | You opened the site before step 6 finished, or the AAAA record is missing. Make sure all four alias records (A and AAAA for apex and www) point at the distribution. |
 | Form submits but no email arrives | The SNS subscription was never confirmed (check spam for the confirmation mail; or SNS → Topics → the topic → Subscriptions shows "Pending confirmation"). If confirmed, look at CloudWatch → Log groups → /aws/lambda/regatta-website-pilot-form. |
+| Visitor lands on `/home/?error=send#meet` | SNS refused the message. The submission is not lost: search the log group above for `LEAD NOT EMAILED`; the line holds the email and organization. Reply to that person by hand. |
 | Form shows a CloudFront error page | The `/api/*` behaviour or the Lambda URL origin is missing from the distribution; compare with the template. |
