@@ -62,8 +62,9 @@ a:focus-visible{outline:2px solid #F05910;outline-offset:3px}
 .enter.solid:hover{background:rgba(255,255,255,.86);border-color:rgba(255,255,255,.86)}
 .entry{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px}
 @media (max-width:460px){.entry{flex-direction:column;align-items:stretch;gap:12px;width:min(100%,280px)}}
-/* short screens (phones in landscape): the cover is the visible viewport height (svh), so tighten gaps and shrink logo and tagline to keep both buttons on screen */
-@media (max-height:500px){.cover-main{gap:18px !important;padding-block:12px !important}.cover-logo{gap:10px !important}.cover-mark{height:clamp(2.25rem,12svh,3.25rem) !important}.cover-word{font-size:clamp(1.9rem,10svh,2.75rem) !important}.cover-tag{font-size:clamp(1rem,4.4svh,1.3rem) !important}}</style>
+/* short screens (phones in landscape): the whole composition (mark, wordmark, tagline, buttons and the gaps) is the 1440x900 one scaled by a single factor,
+   --u = viewport height / 563 (0.69 at 390px tall: buttons 36px), so every element keeps the desktop proportions; real sizes, not a transform, so text stays crisp */
+@media (max-height:500px){.cover-main{--u:calc(100svh / 563);gap:calc(30 * var(--u)) !important}.cover-logo{gap:calc(26 * var(--u)) !important}.cover-mark{height:calc(96 * var(--u)) !important}.cover-word{font-size:calc(76 * var(--u)) !important}.cover-tag{font-size:calc(32 * var(--u)) !important}.entry{gap:calc(16 * var(--u))}.enter{min-height:calc(52 * var(--u));min-width:calc(190 * var(--u));padding:0 calc(36 * var(--u));font-size:calc(14 * var(--u))}}</style>
 </head>
 <body>
 <div class="cover" style="position: relative; height: 100vh; height: 100svh; min-height: 520px; min-height: min(520px, 100svh); overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000000; color: #FFFFFF; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; container-type: inline-size; -webkit-font-smoothing: antialiased;">
