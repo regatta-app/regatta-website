@@ -67,6 +67,7 @@ a{color:#F3F6FB;transition:opacity .15s ease}a:hover{color:#F3F6FB;opacity:.75}
 .line-input{width:100%;min-width:0;height:48px;box-sizing:border-box;padding:0 4px;border:0;border-bottom:1px solid rgba(243,246,251,.4);border-radius:0;background:transparent;font-family:inherit;font-size:17px;color:#F3F6FB}
 .line-input::placeholder{color:#8397B3;opacity:1}
 .line-input:focus{outline:none;border-bottom-color:#F3F6FB}
+.form-error{margin:0;font-size:14px;font-weight:500;line-height:1.5;color:#F05910}.form-error[hidden]{display:none}
 .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .menu-panel[hidden]{display:none !important}@media (min-width:721px){.menu-panel{display:none !important}}
 .menu-link{display:flex;align-items:center;min-height:52px;color:#F3F6FB;text-decoration:none;font-size:18px;border-bottom:1px solid rgba(243,246,251,.1)}.menu-link:hover{color:#F3F6FB;opacity:.75}
@@ -363,8 +364,9 @@ tr.in .rg-ev .bar i{transform:scaleX(1)}
 </div>
 <form class="st" name="pilot" method="POST" action="/api/pilot" style="display: flex; flex-direction: column; gap: 28px; padding-top: 8px;">
 <p style="display:none"><label>Do not fill this out: <input name="bot-field"></label></p>
-<label style="display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Work email</span><input type="email" name="email" placeholder="you@company.com" class="line-input"></label>
-<label style="display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Organization</span><input type="text" name="organization" placeholder="Company name" class="line-input"></label>
+<p id="form-error" class="form-error" role="alert" hidden>Please enter a valid work email.</p>
+<label style="display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Work email</span><input type="email" name="email" placeholder="you@company.com" class="line-input" required autocomplete="email" autocapitalize="off" spellcheck="false"></label>
+<label style="display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Organization</span><input type="text" name="organization" placeholder="Company name" class="line-input" required autocomplete="organization"></label>
 <div style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
 <button type="submit" class="btn-ghost" style="background: transparent; font-family: inherit; cursor: pointer;">Book a demo</button>
 <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #C3CFDF;">We collect only what you enter here, and use it solely to contact you about Regatta. <a href="/privacy/" class="quiet">Privacy policy</a></p>
@@ -399,6 +401,9 @@ tr.in .rg-ev .bar i{transform:scaleX(1)}
 
   var home=document.getElementById('home');
   document.querySelectorAll('a.totop').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); if(history.replaceState) history.replaceState(null,'',' '); window.scrollTo({top:0, behavior:'smooth'}); }); });
+  // form: the pilot endpoint sends an invalid submission back to /home/?error=email#meet
+  if(/[?&]error=email(&|$)/.test(location.search)){ var fe=document.getElementById('form-error'); if(fe){ fe.hidden=false; var em=document.querySelector('form[name=pilot] input[name=email]'); if(em){ em.setAttribute('aria-invalid','true'); em.setAttribute('aria-describedby','form-error'); } } }
+
   // phone menu
   var burger=document.getElementById('burger'), panel=document.getElementById('menu-panel');
   function closeMenu(){ panel.hidden=true; burger.setAttribute('aria-expanded','false'); setHdr(); }
