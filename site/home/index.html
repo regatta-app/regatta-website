@@ -32,7 +32,9 @@ html{background:#071833;scroll-behavior:smooth;scroll-padding-top:var(--hdr,63px
 /* reveal: a .reveal section fills the viewport, content centred, and waits underneath while the section before it scrolls away */
 #home>section{position:relative;z-index:10;box-shadow:0 24px 64px rgba(7,24,51,.3)}
 #home>section.reveal{z-index:var(--z,1);min-height:calc(100vh - var(--hdr,63px));min-height:calc(100svh - var(--hdr,63px));display:flex;flex-direction:column;justify-content:center;will-change:transform}
-#home>section.reveal>.rv{width:100%;box-sizing:border-box}
+#home>section.reveal>.rv{width:100%}
+/* every section and the footer use the header's box (max-width 1200px including the 40px side padding), so all left/right edges line up with the logo */
+#home>section>.rv,footer>div{box-sizing:border-box}
 #home>section.reveal::after{content:"";position:absolute;inset:0;z-index:5;background:#071833;opacity:var(--dim,0);pointer-events:none}
 .hdr{border-bottom:0}
 .logo{display:inline-flex;align-items:center;gap:12px;color:#0D3769;text-decoration:none}.logo:hover{color:#0D3769;opacity:1}.logo-mark{display:block;width:auto;height:26px;flex:0 0 auto}.logo-word{font-family:'Cormorant SC',Georgia,serif;font-weight:600;font-size:24px;line-height:1;letter-spacing:.14em;text-transform:uppercase;transform:translateY(1px);font-size:22px}
