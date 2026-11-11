@@ -13,7 +13,7 @@ Parameters:
     Default: regatta.tech
     Description: Apex domain of the site (no www).
   HostedZoneId:
-    Type: AWS::Route53::HostedZoneId
+    Type: String
     Description: The Route 53 hosted zone for the domain (used to validate the certificate automatically).
   PilotNotifyEmail1:
     Type: String
@@ -128,11 +128,17 @@ Resources:
                 Action: sns:Publish
                 Resource: !Ref PilotTopic
 
+  # Logs: /aws/lambda/<stack>-pilot-form. The log group is NOT declared here on
+  # purpose: it already exists once the function has run, and declaring it would
+  # make the stack update fail with "already exists". Set its retention once
+  # (CloudShell, us-east-1):
+  #   aws logs put-retention-policy --log-group-name /aws/lambda/regatta-website-pilot-form --retention-in-days 30
+  # Reserved concurrency is also left out on purpose: see aws/STACK-UPDATE.md.
   PilotFunction:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: !Sub "${AWS::StackName}-pilot-form"
-      Runtime: nodejs20.x
+      Runtime: nodejs24.x
       Handler: index.handler
       Timeout: 10
       MemorySize: 128
@@ -143,45 +149,84 @@ Resources:
           SITE_URL: !Sub "https://${DomainName}"
       Code:
         ZipFile: |
+          // Receiver for the "Request a pilot" form on /home/ (POST /api/pilot via CloudFront).
+          // Collects only email and organization (see the privacy policy). Never returns a 5xx
+          // to the visitor: every outcome is a 303 redirect back to the site.
           const { SNSClient, PublishCommand } = require("@aws-sdk/client-sns");
           const sns = new SNSClient({});
           const SITE = process.env.SITE_URL;
+          const MAX_BODY = 4096;   // bytes after base64 decoding; a real submission is < 600
+          const MAX_EMAIL = 254;   // RFC 5321 path limit
+          const MAX_ORG = 200;     // characters
 
           function redirect(path) {
             return { statusCode: 303, headers: { Location: SITE + path, "Cache-Control": "no-store" }, body: "" };
           }
 
-          exports.handler = async (event) => {
-            const method = (event.requestContext && event.requestContext.http && event.requestContext.http.method) || "GET";
-            if (method !== "POST") return redirect("/home/");
+          // Any run of whitespace or control characters (incl. CR/LF, U+2028/2029) -> one space.
+          function oneLine(s) {
+            return String(s).replace(/[\s\u0000-\u001f\u007f-\u009f\u2028\u2029]+/g, " ").trim();
+          }
 
-            let raw = event.body || "";
-            if (event.isBase64Encoded) raw = Buffer.from(raw, "base64").toString("utf8");
-            const fields = Object.fromEntries(new URLSearchParams(raw));
+          // SNS subjects: no line breaks or control characters, fewer than 100 characters.
+          // Reduce to printable ASCII so no visitor input can make Publish fail.
+          function asciiSubject(s) {
+            return oneLine(s)
+              .replace(/[\u2018\u2019\u201a\u201b\u2032]/g, "'")
+              .replace(/[\u201c\u201d\u201e\u201f\u2033]/g, '"')
+              .replace(/[\u2010-\u2015\u2212]/g, "-")
+              .replace(/\u2026/g, "...")
+              .normalize("NFKD").replace(/[\u0300-\u036f]/g, "")
+              .replace(/[^\x20-\x7e]/g, "?")
+              .replace(/ {2,}/g, " ")
+              .slice(0, 99).trim();
+          }
+
+          exports.handler = async (event) => {
+            const http = (event.requestContext && event.requestContext.http) || {};
+            if ((http.method || "GET") !== "POST") return redirect("/home/");
+
+            let fields;
+            try {
+              let raw = event.body || "";
+              if (raw.length > MAX_BODY * 2) return redirect("/home/?error=send#meet");
+              if (event.isBase64Encoded) raw = Buffer.from(raw, "base64").toString("utf8");
+              if (Buffer.byteLength(raw, "utf8") > MAX_BODY) return redirect("/home/?error=send#meet");
+              fields = Object.fromEntries(new URLSearchParams(raw));
+            } catch (err) {
+              console.error("pilot-form: could not parse body", err && err.name, err && err.message);
+              return redirect("/home/?error=send#meet");
+            }
 
             // Honeypot filled in -> a bot. Pretend it worked.
             if (fields["bot-field"]) return redirect("/thanks/");
 
-            const email = (fields.email || "").trim().slice(0, 200);
-            const org = (fields.organization || "").trim().slice(0, 200);
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return redirect("/home/#pilot");
+            // Validate the whole value first; anything too long is invalid, not truncated.
+            const email = (fields.email || "").trim();
+            if (email.length > MAX_EMAIL || !/^[^\s@\u0000-\u001f\u007f]+@[^\s@\u0000-\u001f\u007f]+\.[^\s@\u0000-\u001f\u007f]+$/.test(email)) {
+              return redirect("/home/?error=email#meet");
+            }
+            // Organization is optional here (the form asks for it; a lead is never dropped over it).
+            const org = Array.from(oneLine(fields.organization || "")).slice(0, MAX_ORG).join("");
 
             const when = new Date().toISOString().replace("T", " ").slice(0, 16) + " UTC";
-            const ip = (event.requestContext && event.requestContext.http && event.requestContext.http.sourceIp) || "";
-            const ua = (event.headers && event.headers["user-agent"]) || "";
             const text =
               "New pilot request from regatta.tech\n\n" +
               "Email:        " + email + "\n" +
-              "Organization: " + org + "\n" +
-              "Received:     " + when + "\n" +
-              "IP:           " + ip + "\n" +
-              "Browser:      " + ua + "\n";
+              "Organization: " + (org || "(not given)") + "\n" +
+              "Received:     " + when + "\n";
+            const subject = asciiSubject("Pilot request: " + (org ? org + " " : "") + "(" + email + ")") || "Pilot request";
 
-            await sns.send(new PublishCommand({
-              TopicArn: process.env.TOPIC_ARN,
-              Subject: ("Pilot request: " + org + " (" + email + ")").slice(0, 99),
-              Message: text,
-            }));
+            try {
+              await sns.send(new PublishCommand({ TopicArn: process.env.TOPIC_ARN, Subject: subject, Message: text }));
+            } catch (err) {
+              // The lead is not lost: it is in this log line (CloudWatch, /aws/lambda/<function>).
+              console.error("pilot-form: SNS publish failed; LEAD NOT EMAILED " + JSON.stringify({
+                email: email, organization: org, received: when,
+                error: (err && err.name) || "Error", message: (err && err.message) || String(err),
+              }));
+              return redirect("/home/?error=send#meet");
+            }
             return redirect("/thanks/");
           };
 
@@ -199,6 +244,16 @@ Resources:
       Principal: "*"
       FunctionUrlAuthType: NONE
 
+  # Since Oct 2025 a public (AuthType NONE) function URL also needs
+  # lambda:InvokeFunction, limited to calls that come through the URL.
+  PilotFunctionInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref PilotFunction
+      Action: lambda:InvokeFunction
+      Principal: "*"
+      InvokedViaFunctionUrl: true
+
   # ---------- URL tidy-up: www -> apex, pretty URLs ----------
   UrlFunction:
     Type: AWS::CloudFront::Function
@@ -206,20 +261,20 @@ Resources:
       Name: !Sub "${AWS::StackName}-urls"
       AutoPublish: true
       FunctionConfig:
-        Comment: Redirect www to the apex domain and map folder/pretty URLs to their html file.
+        Comment: Redirect www to the apex domain, add the trailing slash to folder URLs and map them to index.html.
         Runtime: cloudfront-js-2.0
       FunctionCode: |
         function handler(event) {
           var request = event.request;
           var host = request.headers.host ? request.headers.host.value : '';
+          var qs = '';
+          var keys = Object.keys(request.querystring);
+          if (keys.length) {
+            qs = '?' + keys.map(function (k) {
+              return k + '=' + encodeURIComponent(request.querystring[k].value);
+            }).join('&');
+          }
           if (host.indexOf('www.') === 0) {
-            var qs = '';
-            var keys = Object.keys(request.querystring);
-            if (keys.length) {
-              qs = '?' + keys.map(function (k) {
-                return k + '=' + encodeURIComponent(request.querystring[k].value);
-              }).join('&');
-            }
             return {
               statusCode: 301,
               statusDescription: 'Moved Permanently',
@@ -231,10 +286,46 @@ Resources:
           if (uri.endsWith('/')) {
             request.uri = uri + 'index.html';
           } else if (uri.lastIndexOf('.') < uri.lastIndexOf('/')) {
-            request.uri = uri + '.html';
+            // /home -> /home/ (there are no /home.html files; every page is a folder)
+            return {
+              statusCode: 301,
+              statusDescription: 'Moved Permanently',
+              headers: { location: { value: uri + '/' + qs } }
+            };
           }
           return request;
         }
+
+  # ---------- Security headers (added to every response) ----------
+  # CSP derived from site/: everything is same-origin; the pages use inline
+  # <style>, inline <script> and style="" attributes (hence 'unsafe-inline'),
+  # self-hosted fonts and video, JSON-LD, and one form posting to /api/pilot.
+  # Links out to app.regatta.tech are plain links, which CSP does not restrict.
+  # HSTS: one year, no preload, and NOT includeSubdomains, because not every
+  # subdomain of regatta.tech is known to be served over HTTPS.
+  SecurityHeadersPolicy:
+    Type: AWS::CloudFront::ResponseHeadersPolicy
+    Properties:
+      ResponseHeadersPolicyConfig:
+        Name: !Sub "${AWS::StackName}-security-headers"
+        Comment: !Sub "Security headers for ${DomainName}"
+        SecurityHeadersConfig:
+          StrictTransportSecurity:
+            AccessControlMaxAgeSec: 31536000
+            IncludeSubdomains: false
+            Preload: false
+            Override: true
+          ContentTypeOptions:
+            Override: true
+          FrameOptions:
+            FrameOption: DENY
+            Override: true
+          ReferrerPolicy:
+            ReferrerPolicy: strict-origin-when-cross-origin
+            Override: true
+          ContentSecurityPolicy:
+            ContentSecurityPolicy: "default-src 'self'; img-src 'self' data:; media-src 'self'; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+            Override: true
 
   # ---------- CDN ----------
   Distribution:
@@ -267,7 +358,8 @@ Resources:
           AllowedMethods: [GET, HEAD, OPTIONS]
           CachedMethods: [GET, HEAD]
           Compress: true
-          CachePolicyId: 658327ea-f89d-4fbf-a2b2-7b09c93d88dd   # managed: CachingOptimized
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # managed: CachingOptimized
+          ResponseHeadersPolicyId: !Ref SecurityHeadersPolicy
           FunctionAssociations:
             - EventType: viewer-request
               FunctionARN: !GetAtt UrlFunction.FunctionMetadata.FunctionARN
@@ -280,6 +372,7 @@ Resources:
             Compress: false
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad          # managed: CachingDisabled
             OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # managed: AllViewerExceptHostHeader
+            ResponseHeadersPolicyId: !Ref SecurityHeadersPolicy          # HSTS etc. on the 303 too
         CustomErrorResponses:
           - ErrorCode: 403
             ResponseCode: 404
