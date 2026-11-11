@@ -32,7 +32,9 @@ html{background:#071833;scroll-behavior:smooth;scroll-padding-top:var(--hdr,63px
 /* reveal: a .reveal section fills the viewport, content centred, and waits underneath while the section before it scrolls away */
 #home>section{position:relative;z-index:10;box-shadow:0 24px 64px rgba(7,24,51,.3)}
 #home>section.reveal{z-index:var(--z,1);min-height:calc(100vh - var(--hdr,63px));min-height:calc(100svh - var(--hdr,63px));display:flex;flex-direction:column;justify-content:center;will-change:transform}
-#home>section.reveal>.rv{width:100%;box-sizing:border-box}
+#home>section.reveal>.rv{width:100%}
+/* every section and the footer use the header's box (max-width 1200px including the 40px side padding), so all left/right edges line up with the logo */
+#home>section>.rv,footer>div{box-sizing:border-box}
 #home>section.reveal::after{content:"";position:absolute;inset:0;z-index:5;background:#071833;opacity:var(--dim,0);pointer-events:none}
 .hdr{border-bottom:0}
 .logo{display:inline-flex;align-items:center;gap:12px;color:#0D3769;text-decoration:none}.logo:hover{color:#0D3769;opacity:1}.logo-mark{display:block;width:auto;height:26px;flex:0 0 auto}.logo-word{font-family:'Cormorant SC',Georgia,serif;font-weight:600;font-size:24px;line-height:1;letter-spacing:.14em;text-transform:uppercase;transform:translateY(1px);font-size:22px}
@@ -96,20 +98,20 @@ a{color:#F3F6FB;transition:opacity .15s ease}a:hover{color:#F3F6FB;opacity:.75}
 <a href="/home/" class="totop logo" aria-label="Regatta — home"><svg class="logo-mark" viewBox="0 0 815 589" aria-hidden="true" focusable="false"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z" fill="#CAA229"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z" fill="#F05910"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z" fill="#0D3769"/></svg><span class="logo-word">Regatta</span></a>
 <div style="display: flex; align-items: center; gap: 20px;">
 <nav class="nav" aria-label="Main" style="display: flex; align-items: center; gap: 36px; margin-right: 16px;"><a href="/home/#product">Product</a><a href="/home/#company">Company</a></nav>
-<a href="/home/#meet" class="btn-ghost hdr-cta">Let’s meet</a>
+<a href="/home/#meet" class="btn-ghost hdr-cta">Book a demo</a>
 <button type="button" class="burger" aria-label="Menu" aria-expanded="false" aria-controls="menu-panel" id="burger"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M4 7H20M4 12H20M4 17H20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 </div>
 </header>
 <nav aria-label="Menu" class="menu-panel" id="menu-panel" hidden style="display: flex; flex-direction: column; padding: 8px 20px 20px; border-top: 1px solid rgba(13, 55, 105, 0.1);">
 <a href="/home/#product" class="menu-link">Product</a>
 <a href="/home/#company" class="menu-link">Company</a>
-<a href="/home/#meet" class="menu-link">Let’s meet</a>
+<a href="/home/#meet" class="menu-link">Book a demo</a>
 </nav>
 </div>
 <main class="pp rv" style="flex: 1 1 auto; width: 100%; box-sizing: border-box;">
 <article class="paper" aria-labelledby="pp-title">
 <h1 id="pp-title" class="st">Privacy policy</h1>
-<p class="meta st">Effective 31 October 2026</p>
+<p class="meta st">Effective 11 November 2026</p>
 
 <ul class="toc st" aria-label="Sections">
 <li><a href="#who">Who we are</a></li>
@@ -121,6 +123,7 @@ a{color:#F3F6FB;transition:opacity .15s ease}a:hover{color:#F3F6FB;opacity:.75}
 <li><a href="#rights">Your rights</a></li>
 <li><a href="#security">Security</a></li>
 <li><a href="#children">Children</a></li>
+<li><a href="#contact">Contact</a></li>
 <li><a href="#changes">Changes</a></li>
 </ul>
 
@@ -132,9 +135,9 @@ a{color:#F3F6FB;transition:opacity .15s ease}a:hover{color:#F3F6FB;opacity:.75}
 <table>
 <thead><tr><th scope="col">Information</th><th scope="col">When</th><th scope="col">Why</th></tr></thead>
 <tbody>
-<tr><td data-label="Information">Work email address and organization name</td><td data-label="When">When you submit the “Request a pilot” form</td><td data-label="Why">To reply to your request and arrange a pilot</td></tr>
-<tr><td data-label="Information">Technical data: IP address, browser type and version, device type, pages requested, date and time of the request</td><td data-label="When">Automatically, with every page you load, in our hosting provider's server logs</td><td data-label="Why">To serve the site, keep it secure and understand aggregate traffic</td></tr>
-<tr><td data-label="Information">Anything you choose to write to us</td><td data-label="When">When you email us</td><td data-label="Why">To answer you</td></tr>
+<tr><td data-label="Information">Work email address and organization name</td><td data-label="When">When you submit the “Book a demo” form</td><td data-label="Why">To reply to your request and arrange a pilot</td></tr>
+<tr><td data-label="Information">Standard technical request data, such as IP address and browser type</td><td data-label="When">Automatically, when you load a page or submit the form; our hosting provider may process it</td><td data-label="Why">To deliver the site and protect it from abuse</td></tr>
+<tr><td data-label="Information">Anything you choose to write to us</td><td data-label="When">When you <a href="mailto:regatta@iditarod.bio" class="quiet">email us</a></td><td data-label="Why">To answer you</td></tr>
 </tbody>
 </table>
 <p>We do not ask for, and ask you not to send, patient data, trial data or any other sensitive information through this website.</p>
@@ -151,8 +154,8 @@ a{color:#F3F6FB;transition:opacity .15s ease}a:hover{color:#F3F6FB;opacity:.75}
 <h2 id="share">Who we share it with</h2>
 <p>We share personal information only with service providers that act on our instructions:</p>
 <ul>
-<li><strong>Netlify, Inc.</strong> (United States) hosts this website and stores submissions of the “Request a pilot” form.</li>
-<li>Our email provider, which delivers and stores our correspondence with you.</li>
+<li><strong>Amazon Web Services, Inc.</strong> (United States) hosts this website (Amazon S3 and CloudFront) and relays submissions of the “Book a demo” form to our team by email (AWS Lambda and Amazon SNS).</li>
+<li>Our email provider, which delivers and stores our correspondence with you, including the form submissions relayed to us.</li>
 </ul>
 <p>We may also disclose information when the law requires it, to protect our rights or safety, or as part of a merger, acquisition or sale of assets, in which case this policy continues to apply to the information transferred.</p>
 <p><strong>International transfers.</strong> We are based in the United States and our providers may process your information there. Where information is transferred from the European Economic Area, the United Kingdom or Switzerland, we rely on the European Commission's Standard Contractual Clauses or the provider's equivalent safeguards.</p>
@@ -161,7 +164,8 @@ a{color:#F3F6FB;transition:opacity .15s ease}a:hover{color:#F3F6FB;opacity:.75}
 <ul>
 <li>Pilot requests: for as long as we are in contact with you about a pilot, and up to 24 months after our last exchange if no pilot goes ahead.</li>
 <li>Correspondence: for as long as we need it to deal with your query and for our records, normally no more than 3 years.</li>
-<li>Server logs: kept by our hosting provider for a short period (typically 30 days) for security and troubleshooting.</li>
+<li>Technical request data: processed by our hosting provider as part of delivering and protecting the site.</li>
+<li>Logs of the function that relays form submissions to us: kept for up to 30 days for security and troubleshooting, then deleted automatically.</li>
 </ul>
 <p>We keep information longer only where the law requires it or where it is needed to resolve a dispute.</p>
 
@@ -178,15 +182,17 @@ a{color:#F3F6FB;transition:opacity .15s ease}a:hover{color:#F3F6FB;opacity:.75}
 <li>receive the information you gave us in a portable format;</li>
 <li>withdraw consent where we rely on it, without affecting processing that already took place.</li>
 </ul>
-<p>To exercise any of these rights, contact us. We will respond within one month, or sooner where the law requires. We may ask you to confirm your identity first. If you are in the EEA or the UK, you also have the right to complain to your local data-protection authority. We will not treat you differently for exercising your rights.</p>
+<p>To exercise any of these rights, <a href="#contact" class="quiet">contact us</a>. We will respond within one month, or sooner where the law requires. We may ask you to confirm your identity first. If you are in the EEA or the UK, you also have the right to complain to your local data-protection authority. We will not treat you differently for exercising your rights.</p>
 
 <h2 id="security">Security</h2>
 <p>The site is served over HTTPS, and access to form submissions and email is limited to the people who need it to respond to you. No method of transmission or storage is completely secure, but we take reasonable measures appropriate to the kind of information we hold.</p>
 
 <h2 id="children">Children</h2>
-<p>regatta.tech is a business site intended for adults working in clinical development. We do not knowingly collect information from anyone under 16. If you believe a child has sent us information, contact us and we will delete it.</p>
+<p>regatta.tech is a business site intended for adults working in clinical development. We do not knowingly collect information from anyone under 16. If you believe a child has sent us information, <a href="#contact" class="quiet">contact us</a> and we will delete it.</p>
 
-<!-- TODO: add a "Contact" section here (company name, postal address, privacy email) before the policy is final. -->
+<h2 id="contact">Contact</h2>
+<p>regatta.tech is operated by <strong>Iditarod Bio, Inc.</strong> For any question about this policy or the information we hold about you, or to exercise your rights, email us at <a href="mailto:regatta@iditarod.bio" class="quiet">regatta@iditarod.bio</a>.</p>
+
 <h2 id="changes">Changes to this policy</h2>
 <p>We may update this policy from time to time. The date at the top shows when it was last changed. If a change is significant, we will make that clear on this page before it takes effect.</p>
 
@@ -205,8 +211,16 @@ a{color:#F3F6FB;transition:opacity .15s ease}a:hover{color:#F3F6FB;opacity:.75}
 <script>
 (function(){ var d=document.documentElement; d.classList.add('js');
   var hdr=document.getElementById('hdr'); function setHdr(){ d.style.setProperty('--hdr', hdr.offsetHeight+'px'); } setHdr(); window.addEventListener('resize', setHdr);
+  // phone menu: the burger toggles it; a link, Esc or a tap outside closes it; aria-expanded follows;
+  // on Esc / tap outside / burger, focus goes back to the burger if it was in the menu
   var burger=document.getElementById('burger'), panel=document.getElementById('menu-panel');
-  burger.addEventListener('click', function(){ var open=panel.hidden; panel.hidden=!open; burger.setAttribute('aria-expanded', open?'true':'false'); setHdr(); });
+  function openMenu(){ panel.hidden=false; burger.setAttribute('aria-expanded','true'); setHdr(); }
+  function closeMenu(refocus){ if(panel.hidden) return; var a=document.activeElement, inMenu=a===burger||panel.contains(a); panel.hidden=true; burger.setAttribute('aria-expanded','false'); setHdr(); if(refocus&&(inMenu||a===document.body||!a)) burger.focus(); }
+  burger.addEventListener('click', function(){ if(panel.hidden) openMenu(); else closeMenu(true); });
+  panel.addEventListener('click', function(e){ if(e.target.closest('a')) closeMenu(false); });
+  document.addEventListener('keydown', function(e){ if((e.key==='Escape'||e.key==='Esc') && !panel.hidden){ e.preventDefault(); closeMenu(true); } });
+  document.addEventListener('click', function(e){ if(!panel.hidden && !panel.contains(e.target) && !burger.contains(e.target)) closeMenu(true); });
+  window.addEventListener('resize', function(){ if(window.innerWidth>720) closeMenu(false); });
   document.querySelectorAll('.rv').forEach(function(rv){ rv.querySelectorAll('.st').forEach(function(el,i){ el.style.setProperty('--d', (i*0.18)+'s'); }); rv.classList.add('in'); });
 })();
 </script>

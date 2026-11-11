@@ -12,14 +12,42 @@
 <meta name="robots" content="noindex">
 <link rel="preload" href="/assets/fonts/tenor-sans-latin-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<style>html{background:#071833}body{margin:0}</style>
+<style>
+/* all URLs are root-absolute so the page works from any path; no script */
+html{background:#071833}body{margin:0}
+.page{position:relative;font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:#F3F6FB;background:#071833}
+/* same block, sizes and vertical centring as the original page; the top/bottom padding equals the footer height so the footer never covers the content */
+main{min-height:100vh;box-sizing:border-box;padding:var(--foot) 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;text-align:center}
+h1{margin:0;font-family:'Tenor Sans','Times New Roman',serif;font-weight:400;font-size:clamp(2.25rem,6vw,3.5rem);line-height:1.1}
+main p{margin:0;max-width:30em;font-size:1.125rem;line-height:1.6;color:#C3CFDF}
+.actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0 8px;margin:0;padding:0;list-style:none}
+.act{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 14px;color:#F3F6FB;font-size:14px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:opacity .15s ease}.act:hover{opacity:.75}
+/* footer (wordmark + privacy line, as on /privacy/); to drop it, delete the footer element and this block */
+.page{--foot:103px}
+footer{position:absolute;left:0;right:0;bottom:0;line-height:1.6;-webkit-font-smoothing:antialiased}
+footer>div{box-sizing:border-box;max-width:1200px;margin:0 auto;padding:40px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px}
+.wm{color:#F3F6FB;text-decoration:none;font-family:'Cormorant SC',Georgia,serif;font-weight:600;font-size:20px;line-height:1;letter-spacing:.14em;text-transform:uppercase}
+footer p{margin:0;font-size:14px;color:#8397B3}
+.quiet{color:#F3F6FB;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(243,246,251,.4)}.quiet:hover{text-decoration-color:rgba(243,246,251,.9)}
+@media (max-width:720px){.page{--foot:79px}footer>div{padding:28px 20px}}
+</style>
 </head>
 <body>
-<main style="min-height: 100vh; box-sizing: border-box; padding: 24px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; text-align: center; background: #071833; color: #F3F6FB; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;">
-<h1 style="margin: 0; font-family: 'Tenor Sans', 'Times New Roman', serif; font-weight: 400; font-size: clamp(2.25rem, 6vw, 3.5rem); line-height: 1.1;">Page not found</h1>
-<div aria-hidden="true" style="width: 46px; height: 2px; border-radius: 2px; background: #FF5A1F;"></div>
-<p style="margin: 0; max-width: 30em; font-size: 1.125rem; line-height: 1.6; color: #C3CFDF;">That page does not exist.</p>
-<a href="/home/" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 28px; border: 1px solid rgba(243, 246, 251, 0.5); border-radius: 999px; color: #F3F6FB; font-size: 14px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;">Back to Regatta</a>
+<div class="page">
+<main>
+<h1>Page not found</h1>
+<p>That page does not exist.</p>
+<nav aria-label="Go to"><ul class="actions">
+<li><a href="/home/" class="act">Back to Regatta</a></li>
+<li><a href="https://app.regatta.tech/" class="act">Login</a></li>
+</ul></nav>
 </main>
+<footer>
+<div>
+<a href="/home/" class="wm" aria-label="Regatta — home">Regatta</a>
+<p>© 2026 Regatta · <a href="/privacy/" class="quiet">Privacy</a></p>
+</div>
+</footer>
+</div>
 </body>
 </html>
