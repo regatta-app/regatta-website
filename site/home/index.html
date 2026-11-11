@@ -405,8 +405,9 @@ tr.in .rg-ev .bar i{transform:scaleX(1)}
 
   var home=document.getElementById('home');
   document.querySelectorAll('a.totop').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); if(history.replaceState) history.replaceState(null,'',' '); window.scrollTo({top:0, behavior:'smooth'}); }); });
-  // form: the pilot endpoint sends an invalid submission back to /home/?error=email#meet
-  if(/[?&]error=email(&|$)/.test(location.search)){ var fe=document.getElementById('form-error'); if(fe){ fe.hidden=false; var em=document.querySelector('form[name=pilot] input[name=email]'); if(em){ em.setAttribute('aria-invalid','true'); em.setAttribute('aria-describedby','form-error'); } } }
+  // form: the pilot endpoint sends a failed submission back to /home/?error=email#meet (bad email) or ?error=send#meet (could not deliver)
+  var fq=/[?&]error=(email|send)(&|$)/.exec(location.search);
+  if(fq){ var fe=document.getElementById('form-error'); if(fe){ if(fq[1]==='send'){ fe.innerHTML='We could not send your request. Please try again, or email us at <a href="mailto:regatta@iditarod.bio" style="color:inherit">regatta@iditarod.bio</a>.'; } fe.hidden=false; if(fq[1]==='email'){ var em=document.querySelector('form[name=pilot] input[name=email]'); if(em){ em.setAttribute('aria-invalid','true'); em.setAttribute('aria-describedby','form-error'); } } } }
 
   // phone menu: the burger toggles it; a link, Esc or a tap outside closes it; aria-expanded follows;
   // on Esc / tap outside / burger, focus goes back to the burger if it was in the menu
