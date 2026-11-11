@@ -8,18 +8,53 @@
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/icons/favicon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
-<meta name="theme-color" content="#071833">
+<meta name="theme-color" content="#F3F6FB">
 <meta name="robots" content="noindex">
 <link rel="preload" href="/assets/fonts/tenor-sans-latin-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fonts/fonts.css">
-<style>html{background:#071833}body{margin:0}</style>
+<style>
+/* same light header and footer as /privacy/ (option 4); all URLs are root-absolute so the page works from any path */
+html{background:#071833}body{margin:0}
+.wrap{min-height:100vh;display:flex;flex-direction:column;font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:#F3F6FB;background:#071833;line-height:1.6;-webkit-font-smoothing:antialiased}
+.hdr{background:#F3F6FB}
+.hdr header{width:100%;box-sizing:border-box;max-width:1200px;margin:0 auto;padding:12px 40px;display:flex;align-items:center;min-height:64px}
+.logo{display:inline-flex;align-items:center;gap:12px;color:#0D3769;text-decoration:none}.logo-mark{display:block;width:auto;height:26px;flex:0 0 auto}
+.logo-word{font-family:'Cormorant SC',Georgia,serif;font-weight:600;font-size:22px;line-height:1;letter-spacing:.14em;text-transform:uppercase;transform:translateY(1px)}
+main{flex:1 1 auto;box-sizing:border-box;padding:96px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;text-align:center}
+h1{margin:0;font-family:'Tenor Sans',Georgia,serif;font-weight:400;font-size:clamp(2.25rem,6vw,3.5rem);line-height:1.1;color:#F3F6FB}
+.rule{width:46px;height:2px;border-radius:2px;background:#F05910}
+main p{margin:0;max-width:30em;font-size:1.125rem;line-height:1.6;color:#C3CFDF}
+.actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 16px;margin:0;padding:0;list-style:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 28px;border:1px solid rgba(243,246,251,.5);border-radius:999px;color:#F3F6FB;font-size:14px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:border-color .15s ease,background-color .15s ease}
+.btn:hover{border-color:#F3F6FB;background:rgba(243,246,251,.06)}
+footer>div{box-sizing:border-box;max-width:1200px;margin:0 auto;padding:40px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px}
+.wm{color:#F3F6FB;text-decoration:none;font-family:'Cormorant SC',Georgia,serif;font-weight:600;font-size:20px;line-height:1;letter-spacing:.14em;text-transform:uppercase}
+footer p{margin:0;font-size:14px;color:#8397B3}
+.quiet{color:#F3F6FB;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(243,246,251,.4)}.quiet:hover{text-decoration-color:rgba(243,246,251,.9)}
+@media (max-width:720px){.hdr header{padding:9px 20px;min-height:62px}.logo-mark{height:22px}.logo-word{font-size:19px}main{padding:72px 20px}footer>div{padding:28px 20px}}
+</style>
 </head>
 <body>
-<main style="min-height: 100vh; box-sizing: border-box; padding: 24px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; text-align: center; background: #071833; color: #F3F6FB; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;">
-<h1 style="margin: 0; font-family: 'Tenor Sans', 'Times New Roman', serif; font-weight: 400; font-size: clamp(2.25rem, 6vw, 3.5rem); line-height: 1.1;">Page not found</h1>
-<div aria-hidden="true" style="width: 46px; height: 2px; border-radius: 2px; background: #FF5A1F;"></div>
-<p style="margin: 0; max-width: 30em; font-size: 1.125rem; line-height: 1.6; color: #C3CFDF;">That page does not exist.</p>
-<a href="/home/" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 28px; border: 1px solid rgba(243, 246, 251, 0.5); border-radius: 999px; color: #F3F6FB; font-size: 14px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;">Back to Regatta</a>
+<div class="wrap">
+<div class="hdr">
+<header><a href="/home/" class="logo" aria-label="Regatta — home"><svg class="logo-mark" viewBox="0 0 815 589" aria-hidden="true" focusable="false"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z" fill="#CAA229"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z" fill="#F05910"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z" fill="#0D3769"/></svg><span class="logo-word">Regatta</span></a></header>
+</div>
+<main>
+<h1>Page not found</h1>
+<div class="rule" aria-hidden="true"></div>
+<p>That page does not exist.</p>
+<nav aria-label="Go to"><ul class="actions">
+<li><a href="/home/" class="btn">Product</a></li>
+<li><a href="/privacy/" class="btn">Privacy</a></li>
+<li><a href="https://app.regatta.tech/" class="btn">Login</a></li>
+</ul></nav>
 </main>
+<footer>
+<div>
+<a href="/home/" class="wm" aria-label="Regatta — home">Regatta</a>
+<p>© 2026 Regatta · <a href="/privacy/" class="quiet">Privacy</a></p>
+</div>
+</footer>
+</div>
 </body>
 </html>
