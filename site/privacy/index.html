@@ -211,8 +211,16 @@ a{color:#F3F6FB;transition:opacity .15s ease}a:hover{color:#F3F6FB;opacity:.75}
 <script>
 (function(){ var d=document.documentElement; d.classList.add('js');
   var hdr=document.getElementById('hdr'); function setHdr(){ d.style.setProperty('--hdr', hdr.offsetHeight+'px'); } setHdr(); window.addEventListener('resize', setHdr);
+  // phone menu: the burger toggles it; a link, Esc or a tap outside closes it; aria-expanded follows;
+  // on Esc / tap outside / burger, focus goes back to the burger if it was in the menu
   var burger=document.getElementById('burger'), panel=document.getElementById('menu-panel');
-  burger.addEventListener('click', function(){ var open=panel.hidden; panel.hidden=!open; burger.setAttribute('aria-expanded', open?'true':'false'); setHdr(); });
+  function openMenu(){ panel.hidden=false; burger.setAttribute('aria-expanded','true'); setHdr(); }
+  function closeMenu(refocus){ if(panel.hidden) return; var a=document.activeElement, inMenu=a===burger||panel.contains(a); panel.hidden=true; burger.setAttribute('aria-expanded','false'); setHdr(); if(refocus&&(inMenu||a===document.body||!a)) burger.focus(); }
+  burger.addEventListener('click', function(){ if(panel.hidden) openMenu(); else closeMenu(true); });
+  panel.addEventListener('click', function(e){ if(e.target.closest('a')) closeMenu(false); });
+  document.addEventListener('keydown', function(e){ if((e.key==='Escape'||e.key==='Esc') && !panel.hidden){ e.preventDefault(); closeMenu(true); } });
+  document.addEventListener('click', function(e){ if(!panel.hidden && !panel.contains(e.target) && !burger.contains(e.target)) closeMenu(true); });
+  window.addEventListener('resize', function(){ if(window.innerWidth>720) closeMenu(false); });
   document.querySelectorAll('.rv').forEach(function(rv){ rv.querySelectorAll('.st').forEach(function(el,i){ el.style.setProperty('--d', (i*0.18)+'s'); }); rv.classList.add('in'); });
 })();
 </script>

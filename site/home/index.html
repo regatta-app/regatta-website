@@ -406,12 +406,16 @@ tr.in .rg-ev .bar i{transform:scaleX(1)}
   // form: the pilot endpoint sends an invalid submission back to /home/?error=email#meet
   if(/[?&]error=email(&|$)/.test(location.search)){ var fe=document.getElementById('form-error'); if(fe){ fe.hidden=false; var em=document.querySelector('form[name=pilot] input[name=email]'); if(em){ em.setAttribute('aria-invalid','true'); em.setAttribute('aria-describedby','form-error'); } } }
 
-  // phone menu
+  // phone menu: the burger toggles it; a link, Esc or a tap outside closes it; aria-expanded follows;
+  // on Esc / tap outside / burger, focus goes back to the burger if it was in the menu
   var burger=document.getElementById('burger'), panel=document.getElementById('menu-panel');
-  function closeMenu(){ panel.hidden=true; burger.setAttribute('aria-expanded','false'); setHdr(); }
-  burger.addEventListener('click', function(){ var open=panel.hidden; panel.hidden=!open; burger.setAttribute('aria-expanded', open?'true':'false'); setHdr(); });
-  panel.addEventListener('click', function(e){ if(e.target.closest('a')) closeMenu(); });
-  window.addEventListener('resize', function(){ if(window.innerWidth>720 && !panel.hidden) closeMenu(); });
+  function openMenu(){ panel.hidden=false; burger.setAttribute('aria-expanded','true'); setHdr(); }
+  function closeMenu(refocus){ if(panel.hidden) return; var a=document.activeElement, inMenu=a===burger||panel.contains(a); panel.hidden=true; burger.setAttribute('aria-expanded','false'); setHdr(); if(refocus&&(inMenu||a===document.body||!a)) burger.focus(); }
+  burger.addEventListener('click', function(){ if(panel.hidden) openMenu(); else closeMenu(true); });
+  panel.addEventListener('click', function(e){ if(e.target.closest('a')) closeMenu(false); });
+  document.addEventListener('keydown', function(e){ if((e.key==='Escape'||e.key==='Esc') && !panel.hidden){ e.preventDefault(); closeMenu(true); } });
+  document.addEventListener('click', function(e){ if(!panel.hidden && !panel.contains(e.target) && !burger.contains(e.target)) closeMenu(true); });
+  window.addEventListener('resize', function(){ if(window.innerWidth>720) closeMenu(false); });
 
   // reveal: a section whose place in the page is still below the header is held under the header,
   // behind the one before it, so the current section lifts away and shows the next one already there
