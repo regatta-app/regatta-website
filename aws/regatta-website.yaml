@@ -296,6 +296,37 @@ Resources:
           return request;
         }
 
+  # ---------- Security headers (added to every response) ----------
+  # CSP derived from site/: everything is same-origin; the pages use inline
+  # <style>, inline <script> and style="" attributes (hence 'unsafe-inline'),
+  # self-hosted fonts and video, JSON-LD, and one form posting to /api/pilot.
+  # Links out to app.regatta.tech are plain links, which CSP does not restrict.
+  # HSTS: one year, no preload, and NOT includeSubdomains, because not every
+  # subdomain of regatta.tech is known to be served over HTTPS.
+  SecurityHeadersPolicy:
+    Type: AWS::CloudFront::ResponseHeadersPolicy
+    Properties:
+      ResponseHeadersPolicyConfig:
+        Name: !Sub "${AWS::StackName}-security-headers"
+        Comment: !Sub "Security headers for ${DomainName}"
+        SecurityHeadersConfig:
+          StrictTransportSecurity:
+            AccessControlMaxAgeSec: 31536000
+            IncludeSubdomains: false
+            Preload: false
+            Override: true
+          ContentTypeOptions:
+            Override: true
+          FrameOptions:
+            FrameOption: DENY
+            Override: true
+          ReferrerPolicy:
+            ReferrerPolicy: strict-origin-when-cross-origin
+            Override: true
+          ContentSecurityPolicy:
+            ContentSecurityPolicy: "default-src 'self'; img-src 'self' data:; media-src 'self'; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+            Override: true
+
   # ---------- CDN ----------
   Distribution:
     Type: AWS::CloudFront::Distribution
@@ -328,6 +359,7 @@ Resources:
           CachedMethods: [GET, HEAD]
           Compress: true
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # managed: CachingOptimized
+          ResponseHeadersPolicyId: !Ref SecurityHeadersPolicy
           FunctionAssociations:
             - EventType: viewer-request
               FunctionARN: !GetAtt UrlFunction.FunctionMetadata.FunctionARN
@@ -340,6 +372,7 @@ Resources:
             Compress: false
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad          # managed: CachingDisabled
             OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # managed: AllViewerExceptHostHeader
+            ResponseHeadersPolicyId: !Ref SecurityHeadersPolicy          # HSTS etc. on the 303 too
         CustomErrorResponses:
           - ErrorCode: 403
             ResponseCode: 404

@@ -124,6 +124,35 @@ curl -I https://www.regatta.tech
 
 **Switch it off.** CloudFormation → `regatta-website` → Delete. The bucket is kept on purpose (Retain) so the files aren't lost; empty and delete it in S3 if you really want it gone. The hosted zone is separate and stays.
 
+## Caching and response headers
+
+**Where `Cache-Control` comes from.** Nothing in the template sets `Cache-Control`: the default behaviour uses the managed **CachingOptimized** cache policy (edge TTL: min 1 s, default 24 h, max 1 year, and it obeys the object's own `Cache-Control`), and the security headers policy adds no caching header. The `public, max-age=300, must-revalidate` seen on `/` and `/home/` in production is therefore **S3 object metadata set when those files were uploaded** (`--cache-control` on `aws s3 cp`/`sync`). Files uploaded without it are sent with no `Cache-Control` at all (the edge then keeps them 24 h and browsers guess).
+
+So the upload decides caching. `scripts/publish.sh` sets it per type:
+
+| Files | `Cache-Control` | Why |
+|---|---|---|
+| `*.html` (and `sitemap.xml`, `robots.txt`) | `public, max-age=300, must-revalidate` | Same as production today; a change reaches everyone within 5 minutes even without an invalidation. |
+| `assets/fonts/*` | `public, max-age=31536000, immutable` | Font files never change under the same name. |
+| other `assets/*` (images, video, `fonts.css`), `favicon.ico` | `public, max-age=86400` | One day. |
+
+The same thing by hand (AWS CloudShell, from the repo root):
+
+```
+aws s3 sync site/ s3://BUCKET/ --exclude "*" --include "assets/fonts/*" --exclude "assets/fonts/*.css" --cache-control "public, max-age=31536000, immutable"
+aws s3 sync site/ s3://BUCKET/ --exclude "*" --include "assets/*" --include "favicon.ico" --exclude "assets/fonts/*.woff2" --cache-control "public, max-age=86400"
+aws s3 sync site/ s3://BUCKET/ --exclude "*" --include "*.html" --include "sitemap.xml" --include "robots.txt" --cache-control "public, max-age=300, must-revalidate"
+```
+
+**Cache-busting.** An image or video that changes must get a **new file name** (as the team photo did: `manish-sharma.jpg` became `manish-sharma-2.jpg` in production) and the HTML updated to point at it; browsers that already have the old name keep it for up to a day. Fonts must always be renamed if they change (they are cached for a year, `immutable`). HTML is short-lived, but after a publish create a CloudFront invalidation for the changed pages (`/`, `/home/`, `/home/index.html`, …) or `/*` so the edge serves the new version at once. The first 1,000 invalidation paths a month are free; `/*` counts as one path.
+
+**Security headers.** The template attaches a response headers policy (`<stack>-security-headers`) to every response, including `/api/*`:
+
+- `Strict-Transport-Security: max-age=31536000` — one year, **without** `includeSubDomains` and without `preload`. `app.regatta.tech` is HTTPS, but other subdomains of regatta.tech are not known, and `includeSubDomains` would make browsers refuse plain HTTP on all of them for a year. Add it only once every subdomain is confirmed HTTPS.
+- `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`.
+- `Content-Security-Policy: default-src 'self'; img-src 'self' data:; media-src 'self'; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'`. Everything on the site is same-origin; `'unsafe-inline'` is needed because the pages use inline `<style>`, `<script>` and `style=""` attributes. If a page ever loads something from another domain (analytics, a font CDN, an embedded video), the CSP must be extended or that resource is blocked — check the browser console for "Refused to load".
+- `form-action 'self'` also applies to the form's redirect: the form only works on `https://regatta.tech` itself, not when testing through the `dxxxx.cloudfront.net` test address (the receiver redirects to `https://regatta.tech/thanks/`, a different origin there).
+
 ## If something fails
 
 | What you see | What it means / what to do |
