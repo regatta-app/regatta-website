@@ -20,7 +20,7 @@ index.html  accidental duplicate of site/index.html (see Notes); not served
 
 Caching is set per file when uploading (HTML 5 minutes, fonts one year, other assets one day); see "Caching and response headers" in [`aws/website-aws-hosting-2026-10-29.md`](aws/website-aws-hosting-2026-10-29.md).
 
-**Netlify is no longer used.** The old Netlify project should be disconnected from this repo (its deploy-preview bot still comments on pull requests, and those previews use Netlify Forms, which never reach us): unlink the repository in the Netlify project's *Build & deploy* settings, or remove this repo from the Netlify GitHub App's access in the `regatta-app` organization settings. The Netlify subscription can then be cancelled.
+**Netlify is no longer used.** The old Netlify project was removed in November 2026 and no longer reacts to this repo.
 
 ## Publishing a change
 
