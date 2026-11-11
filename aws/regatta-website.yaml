@@ -13,7 +13,7 @@ Parameters:
     Default: regatta.tech
     Description: Apex domain of the site (no www).
   HostedZoneId:
-    Type: AWS::Route53::HostedZoneId
+    Type: String
     Description: The Route 53 hosted zone for the domain (used to validate the certificate automatically).
   PilotNotifyEmail1:
     Type: String
@@ -199,6 +199,16 @@ Resources:
       Principal: "*"
       FunctionUrlAuthType: NONE
 
+  # Since Oct 2025 a public (AuthType NONE) function URL also needs
+  # lambda:InvokeFunction, limited to calls that come through the URL.
+  PilotFunctionInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref PilotFunction
+      Action: lambda:InvokeFunction
+      Principal: "*"
+      InvokedViaFunctionUrl: true
+
   # ---------- URL tidy-up: www -> apex, pretty URLs ----------
   UrlFunction:
     Type: AWS::CloudFront::Function
@@ -206,20 +216,20 @@ Resources:
       Name: !Sub "${AWS::StackName}-urls"
       AutoPublish: true
       FunctionConfig:
-        Comment: Redirect www to the apex domain and map folder/pretty URLs to their html file.
+        Comment: Redirect www to the apex domain, add the trailing slash to folder URLs and map them to index.html.
         Runtime: cloudfront-js-2.0
       FunctionCode: |
         function handler(event) {
           var request = event.request;
           var host = request.headers.host ? request.headers.host.value : '';
+          var qs = '';
+          var keys = Object.keys(request.querystring);
+          if (keys.length) {
+            qs = '?' + keys.map(function (k) {
+              return k + '=' + encodeURIComponent(request.querystring[k].value);
+            }).join('&');
+          }
           if (host.indexOf('www.') === 0) {
-            var qs = '';
-            var keys = Object.keys(request.querystring);
-            if (keys.length) {
-              qs = '?' + keys.map(function (k) {
-                return k + '=' + encodeURIComponent(request.querystring[k].value);
-              }).join('&');
-            }
             return {
               statusCode: 301,
               statusDescription: 'Moved Permanently',
@@ -231,7 +241,12 @@ Resources:
           if (uri.endsWith('/')) {
             request.uri = uri + 'index.html';
           } else if (uri.lastIndexOf('.') < uri.lastIndexOf('/')) {
-            request.uri = uri + '.html';
+            // /home -> /home/ (there are no /home.html files; every page is a folder)
+            return {
+              statusCode: 301,
+              statusDescription: 'Moved Permanently',
+              headers: { location: { value: uri + '/' + qs } }
+            };
           }
           return request;
         }
@@ -267,7 +282,7 @@ Resources:
           AllowedMethods: [GET, HEAD, OPTIONS]
           CachedMethods: [GET, HEAD]
           Compress: true
-          CachePolicyId: 658327ea-f89d-4fbf-a2b2-7b09c93d88dd   # managed: CachingOptimized
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # managed: CachingOptimized
           FunctionAssociations:
             - EventType: viewer-request
               FunctionARN: !GetAtt UrlFunction.FunctionMetadata.FunctionARN
