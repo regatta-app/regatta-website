@@ -77,7 +77,7 @@ dig regatta.tech NS +short
    - **Stack name:** `regatta-website`
    - **DomainName:** leave `regatta.tech`
    - **HostedZoneId:** paste the ID of the regatta.tech hosted zone (Route 53 → Hosted zones → regatta.tech → *Hosted zone ID*, starts with `Z`). It is a plain text field.
-   - **PilotNotifyEmail1 / 2:** who receives the pilot requests (second one optional).
+   - **PilotNotifyEmail1 / 2 / 3:** who receives the pilot requests (second and third optional).
 4. Next. On the options page tick **"I acknowledge that AWS CloudFormation might create IAM resources"** (the form Lambda needs a role). Next, **Submit**.
 5. Watch the **Events** tab. `Certificate` sits in CREATE_IN_PROGRESS while AWS checks DNS — it adds two CNAME records to your hosted zone and waits for them to be visible. If step 2 has not finished propagating, it simply waits; it does not fail. CloudFront takes another 5–10 minutes. Done at **CREATE_COMPLETE**.
 6. **Outputs** tab: note **BucketName**, **DistributionId**, **DistributionDomainName** (a `dxxxx.cloudfront.net` name) and **TestUrl**.

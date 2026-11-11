@@ -22,9 +22,14 @@ Parameters:
     Type: String
     Default: ""
     Description: Optional second recipient. Leave empty for none.
+  PilotNotifyEmail3:
+    Type: String
+    Default: ""
+    Description: Optional third recipient. Leave empty for none.
 
 Conditions:
   HasSecondEmail: !Not [!Equals [!Ref PilotNotifyEmail2, ""]]
+  HasThirdEmail: !Not [!Equals [!Ref PilotNotifyEmail3, ""]]
 
 Resources:
 
@@ -107,6 +112,14 @@ Resources:
       TopicArn: !Ref PilotTopic
       Protocol: email
       Endpoint: !Ref PilotNotifyEmail2
+
+  PilotSubscription3:
+    Type: AWS::SNS::Subscription
+    Condition: HasThirdEmail
+    Properties:
+      TopicArn: !Ref PilotTopic
+      Protocol: email
+      Endpoint: !Ref PilotNotifyEmail3
 
   PilotFunctionRole:
     Type: AWS::IAM::Role

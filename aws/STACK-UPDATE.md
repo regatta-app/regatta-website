@@ -16,7 +16,7 @@ On 9 Nov 2026 four fixes were made to the live stack before they were in the rep
 1. AWS console, region **US East (N. Virginia) us-east-1**. **CloudFormation → Stacks →** `regatta-website`.
 2. **Stack actions → Create change set for current stack**.
 3. **Replace existing template → Upload a template file →** choose `aws/regatta-website.yaml` from the repo (download it from GitHub with the *Raw* → Save as… button, or use your clone). **Next**.
-4. **Parameters:** leave every value as it is (DomainName, HostedZoneId, PilotNotifyEmail1, PilotNotifyEmail2 keep their current values). **Next**.
+4. **Parameters:** leave every value as it is (DomainName, HostedZoneId, PilotNotifyEmail1, PilotNotifyEmail2, PilotNotifyEmail3 keep their current values). **Next**.
 5. **Options:** change nothing. At the bottom tick **"I acknowledge that AWS CloudFormation might create IAM resources"** (the form function has a role; it is not changed). **Next**.
 6. Change set name: e.g. `security-headers-and-form-2026-11`. **Create change set**. Wait until its status is **CREATE_COMPLETE** (refresh; under a minute).
 
