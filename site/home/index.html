@@ -367,6 +367,7 @@ tr.in .rg-ev .bar i{transform:scaleX(1)}
 </div>
 <form class="st" name="pilot" method="POST" action="/api/pilot" style="display: flex; flex-direction: column; gap: 28px; padding-top: 8px;">
 <p style="display:none"><label>Do not fill this out: <input name="bot-field"></label></p>
+<input type="hidden" name="elapsed" value="">
 <p id="form-error" class="form-error" role="alert" hidden>Please enter a valid work email.</p>
 <label style="display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Work email</span><input type="email" name="email" placeholder="you@company.com" class="line-input" required autocomplete="email" autocapitalize="off" spellcheck="false"></label>
 <label style="display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #C3CFDF;">Organization</span><input type="text" name="organization" placeholder="Company name" class="line-input" required autocomplete="organization"></label>
@@ -404,6 +405,9 @@ tr.in .rg-ev .bar i{transform:scaleX(1)}
 
   var home=document.getElementById('home');
   document.querySelectorAll('a.totop').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); if(history.replaceState) history.replaceState(null,'',' '); window.scrollTo({top:0, behavior:'smooth'}); }); });
+  // form: send how long the page was open before submitting (bots post within a second or two)
+  var pf=document.querySelector('form[name=pilot]'), t0=Date.now();
+  if(pf){ pf.addEventListener('submit', function(){ var el=pf.querySelector('input[name=elapsed]'); if(el) el.value=String(Date.now()-t0); }); }
   // form: the pilot endpoint sends a failed submission back to /home/?error=email#meet (bad email) or ?error=send#meet (could not deliver)
   var fq=/[?&]error=(email|send)(&|$)/.exec(location.search);
   if(fq){ var fe=document.getElementById('form-error'); if(fe){ if(fq[1]==='send'){ fe.innerHTML='We could not send your request. Please try again, or email us at <a href="mailto:regatta@iditarod.bio" style="color:inherit">regatta@iditarod.bio</a>.'; } fe.hidden=false; if(fq[1]==='email'){ var em=document.querySelector('form[name=pilot] input[name=email]'); if(em){ em.setAttribute('aria-invalid','true'); em.setAttribute('aria-describedby','form-error'); } } } }
