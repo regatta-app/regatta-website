@@ -24,6 +24,8 @@ Caching is set per file when uploading (HTML 5 minutes, fonts one year, other as
 
 ## Publishing a change
 
+Who may merge and publish: Daniela owns this repository; the rules are in `.claude/CLAUDE.md`.
+
 1. Edit the files in `site/`, open a pull request, merge to `main`.
 2. Open **AWS CloudShell** (AWS console, region US East (N. Virginia), the `>_` icon), then:
 
