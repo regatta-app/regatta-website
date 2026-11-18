@@ -17,6 +17,8 @@ The "Request a pilot" form uses Netlify Forms (`data-netlify="true"` on the `<fo
 
 ## Publishing a change
 
+Who may merge and publish: Daniela owns this repository; the rules are in `.claude/CLAUDE.md`.
+
 1. Edit the files in `site/`, commit and push to `main`.
 2. Netlify → project `regatta-website` → **Deploys** → scroll to "Need to update your project?" → drag the **`site`** folder (the folder itself, not its contents) onto the box. Live in a few seconds.
 
