@@ -597,7 +597,7 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
   window.addEventListener('resize',layout);
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(layout);
   if(reduce){ show('marker'); }
-  else if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ timer=setTimeout(function(){ if(!touched) show('marker'); },1400); io.disconnect(); } }); },{threshold:.5}); io.observe(field); }
+  else if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ timer=setTimeout(function(){ if(!touched) show('marker'); },3400); io.disconnect(); } }); },{threshold:.5}); io.observe(field); }
 })();
 </script>
 <script>
