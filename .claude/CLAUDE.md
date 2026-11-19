@@ -16,7 +16,8 @@ no keys, passwords or private notes in it.
 1. **Branch from `main`, one PR per change.** No direct commits to `main`. Every PR has `main` as its
    base and can merge alone; a PR is never stacked on another PR's branch.
 2. **Checks before the PR opens.** Every internal link and every file under `assets/` that a page uses
-   resolves; the pilot form in `site/home/index.html` posts to `action="/api/pilot"` and carries no
+   resolves; the pilot form in `site/index.html` (the home; `/home/` only redirects to `/`) has the name `pilot`,
+   posts (POST) to `action="/api/pilot"` and carries no
    Netlify attribute (`data-netlify`, `netlify-honeypot`: on AWS a Netlify form silently loses every
    lead); each changed page is opened at 390 px and 1440 px wide. Put the results in the PR body.
 3. **Daniela sees it first.** Every visual change (anything a visitor sees or reads) goes to Daniela
