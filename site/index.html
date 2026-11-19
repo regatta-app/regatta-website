@@ -8,7 +8,7 @@
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/icons/favicon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
-<meta name="theme-color" content="#071833">
+<meta name="theme-color" content="#F5EEE3">
 <meta name="description" content="A wholly owned AI analyst installed in your trial, safety and document systems: forecast approval odds, detect toxicity, identify responsive patients.">
 <link rel="canonical" href="https://regatta.tech/">
 <meta property="og:type" content="website">
@@ -39,7 +39,7 @@
       "description": "Regatta installs and continuously upgrades a wholly owned AI analyst inside pharma and biotech organizations to inform clinical decisions.",
       "founder": { "@type": "Person", "name": "Austin Cole", "jobTitle": "Founder-CEO" },
       "parentOrganization": { "@type": "Organization", "name": "Iditarod Bio, Inc." },
-      "contactPoint": { "@type": "ContactPoint", "contactType": "sales", "url": "https://regatta.tech/home/#meet" }
+      "contactPoint": { "@type": "ContactPoint", "contactType": "sales", "url": "https://regatta.tech/#s6" }
     },
     {
       "@type": "WebSite",
@@ -53,36 +53,639 @@
 }
 </script>
 <link rel="preload" href="/assets/fonts/tenor-sans-latin-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/fonts/fonts.css">
-<style>html{background:#000000}body{margin:0}
-a:focus-visible{outline:2px solid #F05910;outline-offset:3px}
-.enter{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-height:52px;min-width:190px;padding:0 36px;border:1px solid rgba(255,255,255,.6);border-radius:999px;background:rgba(255,255,255,.12);color:#FFFFFF;font-size:14px;font-weight:600;letter-spacing:.22em;text-indent:.22em;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:background-color .15s ease,border-color .15s ease,color .15s ease}
-.enter:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.9)}
-.enter.solid{background:#FFFFFF;border-color:#FFFFFF;color:#071833}
-.enter.solid:hover{background:rgba(255,255,255,.86);border-color:rgba(255,255,255,.86)}
-.entry{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px}
-@media (max-width:460px){.entry{flex-direction:column;align-items:stretch;gap:12px;width:min(100%,280px)}}</style>
+<link rel="stylesheet" href="/assets/site.css">
+<script>
+/* section animations: the hidden start state is set here, before first paint, only when motion is allowed */
+(function(){var d=document.documentElement;d.classList.add('js');try{
+ if((window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)||!('IntersectionObserver' in window)) return;
+ d.classList.add('js-anim','js-hero');
+ setTimeout(function(){ if(!window.__rvok) d.classList.remove('js-anim','js-hero'); },2500); /* safety: never leave content hidden if the page script fails */
+}catch(e){}})();
+</script>
+<style>
+/* home page only; shared tokens, bar, footer and buttons are in /assets/site.css */
+html{scroll-padding-top:var(--barh)}
+.sub,.big2,.cl .tx,.inv li{text-wrap:balance}
+.dk :focus-visible,.hero :focus-visible{--ring:var(--light)}
+.sec{position:relative;padding-block:var(--sec-pad)}
+.lt{background:var(--tone)}
+.dk{background:var(--deep);color:var(--light)}
+h2.t{font-size:var(--fs-title);line-height:var(--lh-head);color:var(--navy);max-width:12em}
+.dk h2.t{color:var(--light)}
+.two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--col-gap);align-items:center}
+.sub{margin-top:var(--title-gap);font-family:var(--ff-head);font-size:var(--fs-lead);line-height:var(--lh-head);max-width:32em}
+.chev{display:flex;align-items:center;justify-content:center;width:48px;height:48px;color:var(--light);opacity:.75;text-decoration:none;border:0;background:none;padding:0;cursor:pointer;filter:drop-shadow(0 1px 6px var(--deep-55))}
+.chev:hover{opacity:1}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.chev svg{animation:bob 2.4s ease-in-out infinite}
+/* first screen: the bar, then the film filling the rest of the screen */
+.first{height:100vh;height:100svh;display:flex;flex-direction:column;padding-top:var(--barh);background:var(--tone)}
+.hero{position:relative;flex:1 1 0;min-height:0;overflow:hidden;background:var(--deep) url(/assets/entry-poster.jpg) 50% 40%/cover no-repeat;color:var(--light)}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.scrim{position:absolute;inset:0;background:linear-gradient(90deg,var(--deep-82) 0,var(--deep-55) 50%,var(--deep-12) 100%),linear-gradient(0deg,var(--deep-40),var(--deep-0) 35%)}
+.hbody{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-top:var(--s24);padding-bottom:96px}
+.hero h1{max-width:13em;font-size:var(--fs-hero);line-height:var(--lh-display);letter-spacing:-.01em;color:var(--light);text-shadow:0 1px 18px var(--deep-45)}
+/* hero button: outline */
+.hero .btn-light{margin-top:var(--s32);background:transparent;color:var(--light);border:1px solid var(--light-45);font-weight:var(--fw-bold);transition:none}
+.hero .btn-light:hover{background:transparent;color:var(--light);border-color:var(--light);opacity:1}
+.down{position:absolute;left:50%;bottom:var(--s16);transform:translateX(-50%)}
+/* phones: a soft, feathered shade of deep blue only behind the hero title (contrast over the brightest film frames) */
+@media (max-width:720px){
+ .hero .scrim::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 95% 36% at 34% 41%,rgba(7,24,51,.24) 0,rgba(7,24,51,.2) 30%,rgba(7,24,51,.1) 62%,rgba(7,24,51,.03) 85%,rgba(7,24,51,0) 100%)}
+}
+/* section 2, dot chart: stable frame. JS sets the pitch, the field height and every dot position (transform only). */
+.s2 .two{grid-template-columns:minmax(0,1fr);gap:var(--title-gap)}
+.s2 h2.t{max-width:none}
+.demo-c{min-width:0}
+.togrow{display:flex;justify-content:flex-start;max-width:100%}
+html:not(.js) .togrow{display:none} /* the switch needs the script; without it, it would only overflow narrow phones */
+.tog{display:inline-flex;gap:var(--s2);padding:var(--s2);border:1px solid var(--line);border-radius:var(--r-pill);max-width:100%}
+.tog button{position:relative;min-height:26px;padding:0 var(--s12);border:0;border-radius:var(--r-pill);background:transparent;font:var(--fw-regular) var(--fs-note)/var(--lh-text) var(--ff-body);color:var(--navy);white-space:nowrap;cursor:pointer;transition:background-color .2s ease,color .2s ease,opacity .15s ease}
+.tog button::before{content:"";position:absolute;left:0;right:0;top:calc((26px - 44px) / 2);bottom:calc((26px - 44px) / 2)}
+.tog button[aria-selected="false"]:hover{opacity:.65}
+.tog button[aria-selected="true"]{background:var(--navy);color:var(--cream);font-weight:var(--fw-bold)}
+/* very narrow phones: JS measures the switch (both labels bold) and first trims the padding, then stacks the two options */
+.tog.meas button{font-weight:var(--fw-bold)}
+.tog.tight button{padding:0 var(--s8)}
+.tog.stack{flex-direction:column;gap:var(--s4);padding:var(--s4) var(--s16);border-radius:var(--r-pill)}
+.tog.stack{border-color:transparent;background:transparent}
+.tog.stack button{min-height:40px;border:1px solid var(--line);border-radius:var(--r-pill)}
+.tog.stack button[aria-selected="true"]{border-color:transparent}
+.tog.stack button::before{top:-2px;bottom:-2px}
+.eg+.togrow{margin-top:var(--s16);justify-content:center}
+.field{position:relative;margin-top:0;height:400px}
+.dot{position:absolute;left:0;top:0;width:24px;height:24px;border-radius:var(--r-circle);background:var(--muted);transition:transform var(--chart-dur) var(--chart-ease)}
+.dot.resp{background:var(--orange)}
+.gl{position:absolute;left:0;top:0;white-space:nowrap;opacity:0;transition:opacity .3s ease;font-size:var(--fs-small);line-height:var(--lh-text);color:var(--grey)}
+.gl b{display:block;font:var(--fw-regular) var(--fs-title)/var(--lh-display) var(--ff-head);color:var(--navy)}
+.gl.hot b{color:var(--orange)}
+.demo-c[data-view="all"] .gl-all,.demo-c[data-view="marker"] .gl-marker{opacity:1;transition-delay:.2s}
+.eg{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:var(--s16);margin-top:var(--s24);font-size:var(--fs-note);line-height:var(--lh-text);color:var(--grey)}
+.eg>span:last-child{grid-column:3;justify-self:end;text-align:right}
+.key{display:inline-flex;align-items:center;gap:var(--s8);justify-self:start}
+.key i{width:12px;height:12px;border-radius:var(--r-circle);background:var(--orange)}
+@media (prefers-reduced-motion:reduce){.dot,.gl{transition:none!important}}
+/* section 3, capabilities list and the app demo below it */
+.caps ul{list-style:none;padding:0;margin-top:var(--title-gap)}
+.cl li{display:flex;gap:var(--s24);align-items:baseline;padding:var(--s16) 0;border-top:1px solid var(--line);color:var(--navy)}
+.cl li:last-child{border-bottom:1px solid var(--line)}
+.cl .tx{font-size:var(--fs-lead);line-height:var(--lh-text)}
+.s3 .g{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--col-gap)}
+.s3 .demo-w{width:100%}
+/* demo: picture of the app on a 980 x 560 stage, scaled to fit */
+.rg-demo{--rg-bg:var(--cream);--rg-ink:var(--navy);--rg-ink2:var(--grey);--rg-ink3:var(--muted);--rg-rule:var(--line);--rg-hair:var(--line);--rg-raise:var(--light);--rg-track:var(--line);--app-orange:#F05910;--app-green:#2E8B57;--app-orange-tint:rgba(240,89,16,.06);/* app colours: approved exception, demo block only */
+  --rg-sig:var(--app-orange);--rg-gold:var(--gold);--rg-ok:var(--app-green);
+  --rg-fh:var(--ff-head);--rg-fb:var(--ff-body);--rg-fm:var(--ff-mark);
+  position:relative;width:100%;max-width:980px;aspect-ratio:980/560;border-radius:var(--r-card);overflow:hidden;background:var(--rg-bg)}
+.rg-stage{position:absolute;left:0;top:0;width:980px;height:560px;transform-origin:0 0;font-family:var(--rg-fb);color:var(--rg-ink);background:var(--rg-bg);display:flex;-webkit-font-smoothing:antialiased}
+.rg-rail{width:70px;flex:0 0 70px;border-right:1px solid var(--rg-hair);display:flex;flex-direction:column;align-items:center;padding-top:var(--s24);gap:var(--s32)}
+.rg-rail .mark{width:34px;height:auto;margin-bottom:var(--s6)}
+.rg-rail svg.ic{width:24px;height:24px;stroke:var(--rg-ink2);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.rg-rail svg.ic.on{stroke:var(--rg-ink)}
+.rg-main{flex:1 1 0%;display:flex;flex-direction:column;min-width:0;padding:0 var(--s32) var(--s24)}
+.rg-head{display:flex;align-items:center;justify-content:center;gap:var(--s16);height:118px;flex:0 0 118px;transition:height .55s cubic-bezier(.4,0,.2,1),flex-basis .55s cubic-bezier(.4,0,.2,1),opacity .35s,transform .55s}
+.rg-head .mark{width:60px;height:auto}
+.rg-head .wm{font-family:var(--rg-fm);font-weight:var(--fw-regular);font-size:var(--fs-title);letter-spacing:.12em;line-height:var(--lh-display);color:var(--rg-ink);margin-top:var(--s4)}
+.sent .rg-head{height:34px;flex-basis:34px;opacity:0;transform:translateY(-10px)}
+.rg-thread{flex:1 1 0%;min-height:0;display:flex;flex-direction:column;gap:var(--s16);padding:var(--s6) 0 0;overflow:hidden;scrollbar-width:none}
+.rg-thread>*{flex:0 0 auto}
+.rg-msg{opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
+.rg-msg.in{opacity:1;transform:none}
+.rg-user{align-self:flex-end;max-width:70%;background:var(--rg-raise);border:1px solid var(--rg-hair);border-radius:var(--r-card);padding:var(--s8) var(--s16);font-size:var(--fs-body);line-height:var(--lh-text);color:var(--rg-ink)}
+.rg-asst{display:grid;grid-template-columns:50px 1fr;gap:var(--s16);align-items:start}
+.rg-col{display:flex;flex-direction:column;gap:var(--s12);min-width:0}
+.rg-markcell{opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;margin-top:calc(-1 * var(--s8))}
+.rg-markcell.in{opacity:1;transform:none}
+.rg-think{width:50px;display:inline-grid;place-items:center}
+.rg-think svg{width:100%;height:auto;overflow:visible;display:block}
+.rg-think path{animation:rg-wave 1.3s ease-in-out infinite}
+.rg-think path:nth-child(1){fill:var(--rg-gold)}
+.rg-think path:nth-child(2){fill:var(--rg-sig);animation-delay:.15s}
+.rg-think path:nth-child(3){fill:var(--rg-ink);animation-delay:.3s}
+.rg-think.still path{animation:none}
+@keyframes rg-wave{0%,100%{transform:translateY(0)}50%{transform:translateY(-16%)}}
+.rg-steps{list-style:none;margin:0;padding:0;font-size:var(--fs-note);line-height:var(--lh-text);color:var(--rg-ink2);display:flex;flex-direction:column;gap:var(--s4);max-height:80px;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .3s}
+.done .rg-steps{max-height:0;opacity:0}
+.rg-steps li{display:flex;gap:var(--s8);align-items:baseline;opacity:0;transform:translateX(-4px);transition:opacity .3s,transform .3s}
+.rg-steps li.in{opacity:1;transform:none}
+.rg-steps .sm{width:14px;flex:0 0 14px;text-align:center;font-weight:var(--fw-bold);color:var(--rg-ok)}
+.rg-steps li.run .sm{color:var(--rg-ink2);animation:rgdots 1.1s steps(2) infinite}
+@keyframes rgdots{50%{opacity:.3}}
+.rg-ans{font-size:var(--fs-body);line-height:var(--lh-text);color:var(--rg-ink);max-width:760px;margin:0}
+.rg-ans b{font-weight:var(--fw-bold)}
+.rg-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--s8);max-width:760px}
+.rg-list li{display:grid;grid-template-columns:24px 1fr;font-size:var(--fs-body);line-height:var(--lh-text)}
+.rg-list li .n{font-family:var(--rg-fb);font-weight:var(--fw-bold);font-size:var(--fs-body);color:var(--rg-sig);line-height:var(--lh-text)}
+.rg-list b{font-weight:var(--fw-bold)}
+.rg-demo sup.c{font-size:var(--fs-note);font-weight:var(--fw-bold);color:var(--rg-sig);margin-left:1px;line-height:1}
+.rg-src{border-top:1px solid var(--rg-hair);padding-top:var(--s8);display:flex;flex-wrap:wrap;gap:var(--s4) var(--s16);font-size:var(--fs-note);line-height:var(--lh-text);color:var(--rg-ink2);max-width:760px}
+.rg-src span b{font-weight:var(--fw-bold);color:var(--rg-sig)}
+.rg-w{opacity:0;transition:opacity .22s}
+.rg-w.on{opacity:1}
+.rg-card{padding:var(--s4) 0 0;width:100%}
+.rg-card .ct{font-family:var(--rg-fh);font-size:var(--fs-lead);line-height:var(--lh-head);color:var(--rg-ink);margin:0 0 var(--s4)}
+.rg-card .cs{font-size:var(--fs-note);line-height:var(--lh-text);color:var(--rg-ink2);margin:0 0 var(--s8);letter-spacing:.02em}
+.rg-tbl{width:100%;border-collapse:collapse;font-size:var(--fs-small);line-height:var(--lh-text)}
+.rg-tbl th{font-size:var(--fs-small);font-weight:var(--fw-bold);letter-spacing:.06em;text-transform:uppercase;color:var(--rg-ink2);text-align:left;padding:0 var(--s8) var(--s6) 0;border-bottom:2px solid var(--rg-gold)}
+.rg-tbl td{padding:var(--s6) var(--s8) var(--s6) 0;border-bottom:1px solid var(--rg-hair);vertical-align:top;color:var(--rg-ink)}
+.rg-tbl tbody tr{opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.rg-tbl tbody tr.in{opacity:1;transform:none}
+.rg-tbl tbody tr.top td{background:var(--app-orange-tint)}
+.rg-tbl tbody tr.top td:first-child{box-shadow:inset 3px 0 0 var(--rg-sig);padding-left:var(--s8)}
+.rg-tbl td.k{font-weight:var(--fw-bold);font-size:var(--fs-small);white-space:nowrap}
+.rg-tbl td.k .n{display:inline-block;width:18px;font-family:var(--rg-fb);font-size:var(--fs-small);color:var(--rg-sig)}
+.rg-tbl td.cut{font-variant-numeric:tabular-nums;color:var(--rg-ink2);white-space:nowrap}
+.rg-tbl .smp{font-size:var(--fs-small);color:var(--rg-ink2);white-space:nowrap}
+.rg-ev{display:flex;flex-direction:column;gap:var(--s4);width:92px}
+.rg-ev .bar{height:8px;border-radius:var(--r-pill);background:var(--rg-track);position:relative;overflow:hidden}
+.rg-ev .bar i{position:absolute;inset:0 auto 0 0;border-radius:var(--r-pill);background:var(--rg-ink);transform:scaleX(0);transform-origin:0 50%;transition:transform .9s cubic-bezier(.2,.8,.2,1) .15s}
+tr.top .rg-ev .bar i{background:var(--rg-sig)}
+tr.in .rg-ev .bar i{transform:scaleX(1)}
+.rg-ev span{font-size:var(--fs-note);line-height:var(--lh-text);color:var(--rg-ink2)}
+.rg-ask{position:relative;flex:0 0 auto;margin-top:var(--s16);border:2px solid var(--rg-ink);border-radius:var(--r-card);background:var(--rg-bg);height:330px;padding:var(--s32) var(--s32) var(--s24);display:flex;flex-direction:column;justify-content:space-between;transition:height .55s cubic-bezier(.4,0,.2,1),padding .55s cubic-bezier(.4,0,.2,1),border-width .3s}
+.sent .rg-ask{height:62px;padding:0 var(--s16) 0 var(--s24);flex-direction:row;align-items:center;border-width:1px}
+.rg-q{font-family:var(--rg-fh);font-size:var(--fs-sub);line-height:var(--lh-head);color:var(--rg-ink);min-height:1.3em;flex:1 1 0%;display:flex;align-items:flex-start;transition:font-size .55s cubic-bezier(.4,0,.2,1)}
+.sent .rg-q{font-size:var(--fs-body);align-items:center}
+.rg-q .ph{color:var(--rg-ink3)}
+.rg-q .caret{display:inline-block;width:2px;height:1.05em;background:var(--rg-ink);margin-left:2px;vertical-align:-.12em;animation:rgblink 1s steps(1) infinite}
+@keyframes rgblink{50%{opacity:0}}
+.rg-ask .row{display:flex;align-items:center;justify-content:space-between;transition:opacity .3s}
+.sent .rg-ask .row{width:auto;margin-left:var(--s16)}
+.rg-ask .clip{width:22px;height:22px;stroke:var(--rg-ink2);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;transition:opacity .25s,width .3s}
+.sent .rg-ask .clip{width:0;opacity:0}
+.rg-btn{font-family:var(--rg-fb);font-weight:var(--fw-bold);font-size:var(--fs-small);line-height:var(--lh-text);letter-spacing:.14em;color:var(--rg-ink);background:transparent;border:1px solid var(--rg-rule);border-radius:var(--r-inner);padding:var(--s16) var(--s32);transition:transform .12s,background .12s,padding .55s cubic-bezier(.4,0,.2,1)}
+.rg-btn.press{transform:scale(.96);background:var(--rg-raise);border-color:var(--rg-ink)}
+.sent .rg-btn{padding:var(--s4) var(--s16)}
+.rg-stage.fade .rg-main{transition:opacity .5s;opacity:0}
+.rg-stage.nofade .rg-main{transition:none}
+@media (prefers-reduced-motion:reduce){.rg-stage *{transition:none!important;animation:none!important}}
+.s3 .rg-demo{box-shadow:0 0 0 1px var(--navy-12),0 24px 60px -24px var(--navy-35)}
+/* section 4, comparison */
+.cmp{width:100%;border-collapse:separate;border-spacing:0;margin-top:0} /* separate borders: each row (with its line) fades in as one */
+.cmp th,.cmp td{padding:var(--s16) var(--s8);border-bottom:1px solid var(--line-dk);text-align:left;font-weight:var(--fw-regular)}
+.cmp thead th{font-size:var(--fs-small);font-weight:var(--fw-bold);line-height:var(--lh-text);color:var(--muted);text-align:center;vertical-align:bottom;width:104px}
+.cmp thead th.us{color:var(--light)}
+.cmp tbody th{font-size:var(--fs-small);color:var(--light);line-height:var(--lh-text)}
+.cmp th:first-child,.cmp td:first-child{padding-left:0}
+.cmp td{text-align:center;width:104px}
+.cmp .us{background:var(--navy)}
+.cmp svg{width:24px;height:24px;display:inline-block;vertical-align:middle}
+.cmp .them svg{color:var(--muted)}.cmp td.us svg{color:var(--gold)}
+/* section 5, team */
+.people{display:flex;flex-direction:column;gap:var(--s32)}
+.person{display:flex;align-items:center;gap:var(--s24)}
+.person img{flex:none;width:132px;height:132px;border-radius:var(--r-circle);object-fit:cover;display:block}
+.person h3{margin:0 0 var(--s4);font:var(--fw-regular) var(--fs-sub)/var(--lh-head) var(--ff-head);color:var(--navy)}
+.person p{font-size:var(--fs-body);line-height:var(--lh-text);color:var(--grey)}
+.lab{font-size:var(--fs-small);font-weight:var(--fw-bold);line-height:var(--lh-text);letter-spacing:.1em;text-transform:uppercase;color:var(--grey)}
+.big2{font:var(--fw-regular) var(--fs-sub)/var(--lh-head) var(--ff-head);color:var(--navy);margin-top:var(--s8)}
+.inv{list-style:none;padding:0;margin-top:var(--s8);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s8) var(--s24);font:var(--fw-regular) var(--fs-lead)/var(--lh-head) var(--ff-head);color:var(--navy)}
+.facts{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s32) var(--col-gap);margin-top:var(--s32);padding-top:var(--s32);border-top:1px solid var(--line)}
+@media (min-width:721px) and (max-width:1023px){.facts .big2{margin-right:calc(var(--s16) - var(--col-gap))}} /* lets "Five $10B+ partners" use the column gap so it keeps one line */
+/* section 6, the access form */
+.form{display:flex;flex-direction:column;gap:var(--s24);max-width:520px}
+.fl{display:flex;flex-direction:column;gap:var(--s6)}
+.fl span{font-size:var(--fs-small);font-weight:var(--fw-bold);line-height:var(--lh-text);letter-spacing:.1em;text-transform:uppercase;color:var(--line)}
+.line-input{width:100%;min-width:0;height:48px;padding:0;border:0;border-bottom:1px solid var(--light-40);border-radius:0;background:transparent;font-family:inherit;font-size:var(--fs-body);line-height:var(--lh-text);color:var(--light)}
+.line-input::placeholder{color:var(--muted);opacity:1}
+.line-input:focus{outline:none;border-bottom-color:var(--light)}
+.line-input:focus-visible{outline:2px solid var(--light);outline-offset:4px;border-radius:var(--s2)}
+.fa{display:flex;flex-direction:column;gap:var(--s12);align-items:flex-start}
+.pv{margin:0;font-size:var(--fs-note);line-height:var(--lh-text);color:var(--line)}
+/* form status line under the button: empty (one line tall) unless the receiver sent the visitor back with an error */
+.fnote{margin:0;font-size:var(--fs-note);line-height:var(--lh-text);color:var(--light);min-height:1.6em}
+.fnote a{color:inherit}
+@media (max-width:720px){
+ .two,.facts{grid-template-columns:minmax(0,1fr)}
+ .two,.s3 .g{gap:var(--s32)}
+ .person{align-items:flex-start;gap:var(--s16)}.person img{width:96px;height:96px}
+ .cmp thead th,.cmp td{width:72px}.cmp th,.cmp td{padding:var(--s12) var(--s6)}
+}
+@media (prefers-reduced-motion:reduce){.dot{transition:none}}
+/* Section animations. Only transform, opacity, filter and clip-path move: layout never changes.
+   Each section unfolds like a card (clip-path), then its texts dissolve in, staggered. */
+:root{--rv-card:720ms;--rv-text:600ms}
+@keyframes rv-card{from{clip-path:inset(var(--s32) var(--s24) round var(--r-card))}to{clip-path:inset(0 0 round 0)}}
+@keyframes rv-text{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes rv-head{from{opacity:0;transform:translateY(8px);filter:blur(4px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes rv-fade{from{opacity:0}to{opacity:1}}
+html.js-anim main>.rv-z:not(.rv-in){clip-path:inset(var(--s32) var(--s24) round var(--r-card))}
+html.js-anim main>.rv-z.rv-in{animation:rv-card var(--rv-card) var(--rv-ease)}
+html.js-anim .rv-z:not(.rv-in) :is(h2.t,.sub,.cmp tr,.person,.facts>div,.form>*),
+html.js-anim .rv-z:not(.rv-in) .cl>li{opacity:0}
+html.js-anim .rv-z.rv-in :is(h2.t,.sub,.cmp tr,.person,.facts>div,.form>*),
+html.js-anim .rv-z.rv-in .cl>li{animation:rv-text var(--rv-text) var(--rv-ease) var(--rv-d,0ms) backwards}
+html.js-anim .rv-z.rv-in :is(h2.t,.sub){animation-name:rv-head}
+/* hero: held until the poster/fonts are on screen, then the title dissolves up and the button follows */
+@keyframes rv-hero{from{opacity:0;transform:translateY(16px);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}
+html.js-hero:not(.hero-go) .hero :is(h1,.btn-light){opacity:0}
+html.js-hero.hero-go .hero h1{animation:rv-hero 900ms var(--rv-ease) backwards}
+html.js-hero.hero-go .hero .btn-light{animation:rv-hero 700ms var(--rv-ease) 200ms backwards}
+/* sub-units with their own trigger: the chart (section 2) and the demo card (section 3) */
+@keyframes rv-dot{from{opacity:0;scale:.4}to{opacity:1;scale:1}}
+@keyframes rv-sub{from{opacity:0;transform:translateY(16px);clip-path:inset(var(--s32) var(--s24) round var(--r-card))}to{opacity:1;transform:none;clip-path:inset(-120px round var(--r-card))}}
+@keyframes rv-left{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+@keyframes rv-line{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+html.js-anim #demo:not(.rv-in) :is(.dot,#togrow,.eg){opacity:0}
+html.js-anim #demo:not(.rv-in) .gl{visibility:hidden}
+html.js-anim #demo.rv-in:not(.intro-done) .dot{animation:rv-dot 380ms var(--rv-ease) var(--dd,0ms) backwards}
+html.js-anim #demo.rv-in:not(.intro-done) :is(#togrow,.eg){animation:rv-text 500ms var(--rv-ease) 900ms backwards}
+html.js-anim #demo.rv-in:not(.intro-done) .eg{animation-delay:820ms}
+html.js-anim .demo-w.rv-sub:not(.rv-in){opacity:0}
+html.js-anim .demo-w.rv-sub.rv-in{animation:rv-sub 800ms var(--rv-ease) 200ms backwards}
+/* capabilities list: items slide in from the left; each divider draws left to right */
+html.js-anim .cl li{position:relative;border-top-color:transparent}
+html.js-anim .cl li:last-child{border-bottom-color:transparent}
+html.js-anim .cl li::before,html.js-anim .cl li:last-child::after{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--line);transform-origin:0 50%}
+html.js-anim .cl li:last-child::after{top:auto;bottom:-1px}
+html.js-anim .rv-z.rv-in .cl>li{animation-name:rv-left}
+html.js-anim .rv-z.rv-in .cl>li::before,html.js-anim .rv-z.rv-in .cl>li:last-child::after{animation:rv-line 300ms var(--rv-ease) calc(var(--rv-d,0ms) + 120ms) backwards}
+/* revealed at once (start-up, jumps): no animation */
+html.js-anim main>.rv-z.rv-now,html.js-anim .rv-z.rv-now :is(h2.t,.sub,.cmp tr,.person,.facts>div,.form>*),html.js-anim .rv-z.rv-now .cl>li{animation:none}
+html.js-anim :is(#demo,.demo-w).rv-in.rv-now,html.js-anim #demo.rv-in.rv-now :is(.dot,#togrow,.eg){animation:none}
+html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,html.js-anim .rv-z.rv-now .cl>li:last-child::after{animation:none}
+@media (prefers-reduced-motion:reduce){html.js-anim main>.rv-z{clip-path:none!important;animation:none!important}html.js-anim .rv-z :is(h2.t,.sub,.cmp tr,.person,.facts>div,.form>*),html.js-anim .rv-z .cl>li{opacity:1!important;animation:none!important}html.js-hero .hero :is(h1,.btn-light),html.js-anim .rv-z .cl>li::before,html.js-anim .rv-z .cl>li::after,html.js-anim #demo .dot,html.js-anim .demo-w{opacity:1!important;animation:none!important;visibility:visible!important}html.js-anim #demo .gl{visibility:visible!important}}
+</style>
 </head>
 <body>
-<div style="position: relative; height: 100vh; min-height: 520px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000000; color: #FFFFFF; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; container-type: inline-size; -webkit-font-smoothing: antialiased;">
-<video muted="" loop="" playsinline="" preload="none" poster="/assets/entry-poster.jpg" data-src="/assets/entry-loop.mp4" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;"></video>
-<div aria-hidden="true" style="position: absolute; inset: 0; background: radial-gradient(120% 95% at 50% 45%, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.52) 60%, rgba(0, 0, 0, 0.76)), linear-gradient(180deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1) 26%, rgba(0, 0, 0, 0.34) 64%, rgba(0, 0, 0, 0.7));"></div>
-<main style="position: relative; display: flex; flex-direction: column; align-items: center; gap: 30px; padding: 0 16px; text-align: center;">
-<p aria-label="Regatta" style="margin: 0; display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 2.2cqi, 26px);"><svg viewBox="0 0 815 589" aria-hidden="true" focusable="false" style="display: block; width: auto; height: clamp(3.25rem, 7.5cqi, 6rem); filter: drop-shadow(0 2px 18px rgba(0, 0, 0, 0.4));"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z" fill="#CAA229"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z" fill="#F05910"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z" fill="#0D3769"/></svg><span style="padding-left: 0.14em; font-family: 'Cormorant SC', Georgia, serif; font-weight: 600; font-size: clamp(2.5rem, 6.2cqi, 4.75rem); line-height: 1; letter-spacing: 0.14em; text-transform: uppercase; color: #FFFFFF; text-shadow: 0 1px 24px rgba(0, 0, 0, 0.42);">Regatta</span></p>
-<h1 style="margin: 0; max-width: 24em; font-family: 'Tenor Sans', 'Times New Roman', serif; font-weight: 400; font-size: clamp(1.25rem, 2.6cqi, 2rem); line-height: 1.25; letter-spacing: 0.02em; text-wrap: balance; color: #FFFFFF; text-shadow: 0 1px 24px rgba(0, 0, 0, 0.42);">Embedded AIs Inform Clinical Success</h1>
-<nav class="entry" aria-label="Enter Regatta">
-<a href="https://app.regatta.tech/" class="enter solid">Login</a>
-<a href="/home/" class="enter">Product</a>
-</nav>
-</main>
+<div class="first" id="first">
+ <header class="bar"><div class="wrap">
+  <a class="brand" href="/" aria-label="Regatta home" data-top>
+   <svg viewBox="30 0 790 560" aria-hidden="true"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z" fill="#CAA229"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z" fill="#F05910"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z" fill="#0D3769"/></svg>
+   <span>REGATTA</span></a>
+  <nav class="nav" aria-label="Main"><a class="si-icon" href="https://app.regatta.tech/" target="_blank" rel="noopener" aria-label="Sign in" title="Sign in"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 20.5c.9-3.9 3.9-6 7.5-6s6.6 2.1 7.5 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a></nav>
+ </div></header>
+ <section class="hero" id="s1" aria-label="Regatta">
+  <video id="film" autoplay muted loop playsinline preload="auto" poster="/assets/entry-poster.jpg" aria-hidden="true" tabindex="-1"><source src="/assets/entry-loop.mp4" type="video/mp4"></video>
+  <div class="scrim"></div>
+  <div class="wrap hbody">
+   <h1>Regatta machines decipher your data to inform clinical decisions</h1>
+   <a class="btn-light" href="#s6" data-go="s6">Request access</a>
+  </div>
+  <button class="down chev" type="button" data-go="s2" aria-label="Go to the next section"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+ </section>
 </div>
+
+<main>
+<section class="sec lt s2 rv-z" id="s2" aria-labelledby="t2">
+ <div class="wrap two">
+  <div class="ttl" id="ttl2"><h2 class="t" id="t2">Drugs that can work still fail in the clinic</h2></div>
+  <div class="demo-c rv-sub" id="demo" data-view="all">
+   <div class="field" id="field" role="img" aria-label="120 example patients drawn as dots. Counted together, 31 percent respond. Split by one biomarker, 71 percent respond in one group and 12 percent in the other.">
+    <div class="gl gl-all"><b>31%</b>respond</div>
+    <div class="gl gl-marker hot"><b>71%</b>respond with it</div>
+    <div class="gl gl-marker cold"><b>12%</b>respond without it</div>
+   </div>
+   <p class="eg"><span class="key"><i></i>Responded</span><span>Example data</span></p>
+   <div class="togrow" id="togrow"><div class="tog" role="tablist" aria-label="How the example patients are counted">
+    <button type="button" role="tab" id="tab-all" data-v="all" aria-selected="true" aria-controls="field" tabindex="0">Counted together</button>
+    <button type="button" role="tab" id="tab-marker" data-v="marker" aria-selected="false" aria-controls="field" tabindex="-1">Split by one biomarker</button>
+   </div></div>
+  </div>
+ </div>
+</section>
+
+<section class="sec lt s3 rv-z" id="s3" aria-labelledby="t3">
+ <div class="wrap">
+  <div class="g">
+   <div class="caps">
+    <h2 class="t" id="t3">Capabilities</h2>
+    <ul class="cl">
+     <li><span class="tx">Identify responsive patients</span></li>
+     <li><span class="tx">Forecast in-licensed drug performance</span></li>
+     <li><span class="tx">Detect early toxicity</span></li>
+     <li><span class="tx">Calculate effective doses</span></li>
+    </ul>
+   </div>
+   <div class="demo-w rv-sub">
+<div class="rg-demo" id="rgdemo" aria-label="Demo of the Regatta app: it answers which non-genomic biomarkers identify responsive NSCLC patients, then builds a biomarker table for a Phase 2 ADC" role="img">
+<div class="rg-stage" id="rgstage">
+<aside class="rg-rail" aria-hidden="true">
+<svg class="mark" viewBox="0 0 815 589"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z" fill="#CAA229"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z" fill="#F05910"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z" fill="#0D3769"/></svg>
+<svg class="ic on" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>
+<svg class="ic" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+<svg class="ic" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+</aside>
+<div class="rg-main">
+<div class="rg-head" aria-hidden="true">
+<svg class="mark" viewBox="0 0 815 589"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z" fill="#CAA229"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z" fill="#F05910"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z" fill="#0D3769"/></svg>
+<span class="wm">REGATTA</span>
+</div>
+<div class="rg-thread" id="rgthread"></div>
+<div class="rg-ask" aria-hidden="true">
+<div class="rg-q" id="rgq"><span class="ph">Ask about any clinical asset, trial, date, odds…</span></div>
+<div class="row">
+<svg class="clip" viewBox="0 0 24 24"><path d="M21 11.5l-8.8 8.8a5.5 5.5 0 0 1-7.8-7.8l9.2-9.2a3.5 3.5 0 0 1 5 5l-9.2 9.2a1.5 1.5 0 0 1-2.1-2.1L15.5 7"/></svg>
+<button class="rg-btn" id="rgbtn" type="button" tabindex="-1">ASK</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="sec dk rv-z" id="s4" aria-labelledby="t4">
+ <div class="wrap two">
+  <div>
+   <h2 class="t" id="t4">Regatta embeds AIs you control and own</h2>
+   <p class="sub">Your raw data never leaves your company's environment.</p>
+  </div>
+  <div style="overflow-x:auto">
+  <table class="cmp">
+   <thead><tr><td></td><th scope="col" class="them">Closed providers</th><th scope="col" class="us">Regatta</th></tr></thead>
+   <tbody>
+<tr><th scope="row">Fixed build fee + ongoing maintenance</th><td class="them"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" role="img" aria-label="No"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></td><td class="us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Yes"><path d="M4.5 12.5l5 5L19.5 7"/></svg></td></tr>
+<tr><th scope="row">Reproducible and auditable on known hardware</th><td class="them"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" role="img" aria-label="No"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></td><td class="us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Yes"><path d="M4.5 12.5l5 5L19.5 7"/></svg></td></tr>
+<tr><th scope="row">Server hosting to support team</th><td class="them"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" role="img" aria-label="No"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></td><td class="us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Yes"><path d="M4.5 12.5l5 5L19.5 7"/></svg></td></tr>
+<tr><th scope="row">You retain all data</th><td class="them"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" role="img" aria-label="No"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></td><td class="us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Yes"><path d="M4.5 12.5l5 5L19.5 7"/></svg></td></tr>
+<tr><th scope="row">You directly manage the model</th><td class="them"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" role="img" aria-label="No"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></td><td class="us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Yes"><path d="M4.5 12.5l5 5L19.5 7"/></svg></td></tr>
+   </tbody>
+  </table>
+  </div>
+ </div>
+</section>
+
+<section class="sec lt s5 rv-z" id="s5" aria-labelledby="t5">
+ <div class="wrap">
+  <div class="two" style="align-items:start">
+   <h2 class="t" id="t5">Team</h2>
+   <div class="people">
+    <div class="person"><img src="/assets/austin-cole.jpg" alt="Austin Cole" width="132" height="132"><div><h3>Austin Cole, PhD</h3><p>Founder-CEO, prior protein design</p><p>Algorithms deployed in $100B+ pharma teams</p></div></div>
+    <div class="person"><img src="/assets/manish-sharma.jpg" alt="Manish Sharma" width="132" height="132"><div><h3>Manish Sharma, PhD</h3><p>Co-Founder &amp; CTO, architect of enterprise-scale therapeutic enzyme design platform</p><p>10+ years of experience</p></div></div>
+   </div>
+  </div>
+  <div class="facts">
+   <div><p class="lab">Partners</p><p class="big2">Five $10B+ partners</p></div>
+   <div><p class="lab">Investors ($9M seed)</p>
+    <ul class="inv"><li>KdT Ventures</li><li>OMX Ventures</li><li>Axial</li><li>Civilization Ventures</li></ul></div>
+  </div>
+ </div>
+</section>
+
+<section class="sec dk rv-z" id="s6" aria-labelledby="t6">
+ <div class="wrap two">
+  <div>
+   <h2 class="t" id="t6">Try Regatta on the web</h2>
+   <p class="sub">Then we install it in your environment.</p>
+  </div>
+  <form class="form" id="form" name="pilot" method="POST" action="/api/pilot">
+   <p style="display:none"><label>Do not fill this out: <input name="bot-field"></label></p>
+   <label class="fl"><span>Work email</span><input class="line-input" id="f-email" type="email" name="email" placeholder="you@company.com" required autocomplete="email" autocapitalize="off" spellcheck="false"></label>
+   <label class="fl"><span>Organization</span><input class="line-input" id="f-org" type="text" name="organization" placeholder="Company name" required autocomplete="organization"></label>
+   <div class="fa">
+    <button class="btn-ghost" type="submit">Request access</button>
+    <p class="fnote" id="form-error" role="alert"></p>
+    <p class="pv">We collect only what you enter here, and use it solely to contact you about Regatta. <a class="quiet" href="/privacy/">Privacy policy</a></p>
+   </div>
+  </form>
+ </div>
+</section>
+</main>
+
+<footer class="foot">
+ <div class="wrap foot-in">
+  <span class="wm">REGATTA</span>
+  <nav aria-label="Footer"><a class="quiet" href="https://app.regatta.tech/" target="_blank" rel="noopener">Sign in</a><a class="quiet" href="/privacy/">Privacy</a><span>&copy; 2026 Regatta</span></nav>
+ </div>
+</footer>
+
+<template id="rga1">
+<p class="rg-ans">PD-L1 protein is the non-genomic marker that picks out responders in randomized NSCLC trials, and CD8-positive tumor-infiltrating lymphocytes (TILs) are the strongest add-on.</p>
+<ol class="rg-list">
+<li><span class="n">1</span><span>PD-L1 tumor proportion score <b>≥50%</b>: response rate <b>45.2%</b>; at five years, <b>31.9%</b> alive on pembrolizumab vs <b>16.3%</b> on chemotherapy.<sup class="c">1,2</sup></span></li>
+<li><span class="n">2</span><span>PD-L1 and CD8 TILs read together: progression-free survival HR <b>0.39</b>, overall survival HR <b>0.42</b>, across <b>13</b> studies and <b>2,490</b> patients.<sup class="c">3</sup></span></li>
+<li><span class="n">3</span><span>Tertiary lymphoid structures and blood T-cell subsets: the next tier, ready to use as trial stratifiers.<sup class="c">4</sup></span></li>
+</ol>
+<div class="rg-src"><span><b>1</b> NEJM, 2015</span><span><b>2</b> J Clin Oncol, 2021</span><span><b>3</b> Systematic review, Nature, 2025</span><span><b>4</b> Frontiers, 2025</span></div>
+</template>
+<template id="rga2">
+<p class="rg-ans">I would run the Phase 2 on datopotamab deruxtecan (Dato-DXd), the TROP2-directed ADC, and sort patients along its mechanism: uptake, payload sensitivity, DNA repair, immune response. The base is <b>100</b> patients in ICARUS-LUNG01 and <b>604</b> in TROPION-Lung01.<sup class="c">1,2</sup></p>
+<div class="rg-card">
+<p class="ct">Mechanistic biomarker panel · Phase 2 Dato-DXd, NSCLC</p>
+<p class="cs">Ranked by priority · paired baseline and cycle 1 biopsies</p>
+<table class="rg-tbl">
+<thead><tr><th>Marker</th><th>Mechanistic step</th><th>Sorts patients into</th><th>Evidence</th><th>Priority</th></tr></thead>
+<tbody>
+<tr class="top"><td class="k"><span class="n">1</span>TROP2 membrane ratio</td><td class="smp">Uptake into the cell</td><td>Internalizing vs membrane-locked</td><td>Positive patients responded at nearly 2× the rate<sup class="c">3</sup></td><td><div class="rg-ev"><div class="bar"><i style="width:100%"></i></div><span>Anchor</span></div></td></tr>
+<tr><td class="k"><span class="n">2</span>TROP2 heterogeneity</td><td class="smp">Bystander killing</td><td>Patchy vs uniform antigen</td><td>Bystander effect proven for DXd payloads<sup class="c">4</sup></td><td><div class="rg-ev"><div class="bar"><i style="width:84%"></i></div><span>High</span></div></td></tr>
+<tr><td class="k"><span class="n">3</span>RAD51 foci</td><td class="smp">Break repair</td><td>Repair-competent vs impaired</td><td>Early repair activation tracked resistance in patients<sup class="c">1</sup></td><td><div class="rg-ev"><div class="bar"><i style="width:80%"></i></div><span>High</span></div></td></tr>
+<tr><td class="k"><span class="n">4</span>TOP1 : TOP2A ratio</td><td class="smp">Payload target</td><td>Payload-rich vs payload-poor</td><td>TOP2A rose in resistant models<sup class="c">5</sup></td><td><div class="rg-ev"><div class="bar"><i style="width:76%"></i></div><span>High</span></div></td></tr>
+<tr><td class="k"><span class="n">5</span>Immune contexture</td><td class="smp">Immune amplification</td><td>Immune-hot vs immune-cold</td><td>Immune activation tracked response<sup class="c">1</sup></td><td><div class="rg-ev"><div class="bar"><i style="width:64%"></i></div><span>Medium-high</span></div></td></tr>
+<tr><td class="k"><span class="n">6</span>ABCC1 / ABCG2 efflux</td><td class="smp">Payload retention</td><td>Efflux-high vs efflux-low</td><td>ABCC1 up <b>7</b>-fold in resistant models<sup class="c">5</sup></td><td><div class="rg-ev"><div class="bar"><i style="width:50%"></i></div><span>Medium</span></div></td></tr>
+<tr><td class="k"><span class="n">7</span>γH2AX at cycle 1</td><td class="smp">Payload delivery</td><td>Delivered vs not delivered</td><td>On-treatment biopsies feasible<sup class="c">1</sup></td><td><div class="rg-ev"><div class="bar"><i style="width:46%"></i></div><span>Medium</span></div></td></tr>
+</tbody>
+</table>
+</div>
+<p class="rg-ans">Stratify on histology (PFS HR <b>0.63</b> nonsquamous vs <b>1.41</b> squamous) and read out one ADC sensitivity score: cytoplasmic TROP2, repair-impaired, efflux-low.<sup class="c">2</sup></p>
+<div class="rg-src"><span><b>1</b> ICARUS-LUNG01, PubMed</span><span><b>2</b> TROPION-Lung01, PubMed</span><span><b>3</b> OncLive</span><span><b>4</b> Crit Rev Oncol Hematol, 2024</span><span><b>5</b> Mol Cancer Ther, 2025</span></div>
+</template>
+
+<script src="/assets/site.js"></script>
 <script>
-(function(){var v=document.querySelector('video');if(!v)return;try{
-if(!window.matchMedia)return;
-if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-if(navigator.connection&&navigator.connection.saveData)return;
-v.src=v.getAttribute('data-src');v.muted=true;v.autoplay=true;
-var p=v.play();if(p&&p.catch)p.catch(function(){});}catch(e){}})();
+(function(){
+ var root=document.documentElement;
+ var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ /* section reveals (shared engine in /assets/site.js): items settle in one after another */
+ var T='h2.t,.sub,.cl>li,.cmp tr,.person,.facts>div,.form>*';
+ function order(sec){ var i=0, j=0; [].forEach.call(sec.querySelectorAll(T),function(el){ if(!el.getClientRects().length) return; var li=el.matches('.cl>li'); el.style.setProperty('--rv-d',(li?Math.min(160+(j++)*110,600):Math.min(120+i*70,500))+'ms'); if(!li) i++; }); }
+ window.Regatta.reveals(order);
+ /* hero: start when the page has loaded and fonts are ready (whichever is later), 1.2 s at most, then 250 ms so the poster is on screen */
+ (function(){ var done=false, need=2;
+  function go(){ if(done) return; done=true; setTimeout(function(){ requestAnimationFrame(function(){ root.classList.add('hero-go'); setTimeout(function(){ root.classList.remove('js-hero','hero-go'); },1300); }); },250); }
+  function one(){ if(--need<=0) go(); }
+  if(document.readyState==='complete') one(); else window.addEventListener('load',one,{once:true});
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(one,one); else one();
+  setTimeout(go,1200);
+ })();
+
+ /* scrolling: the logo goes to the top, the hero button to the form, the arrow to section 2 */
+ var lastPointer=''; document.addEventListener('pointerdown',function(e){ lastPointer=e.pointerType; },true); document.addEventListener('keydown',function(){ lastPointer='key'; },true);
+ function go(id){ var el=document.getElementById(id); if(el) el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); }
+ document.addEventListener('click',function(e){
+  var a=e.target.closest&&e.target.closest('[data-go],[data-top]'); if(!a) return;
+  e.preventDefault(); if(a.hasAttribute('data-top')){ window.scrollTo({top:0,behavior:reduce?'auto':'smooth'}); return; }
+  var id=a.getAttribute('data-go'); go(id);
+  if(id==='s6'){
+   try{ if(location.hash!=='#s6') history.pushState(null,'','#s6'); }catch(err){}   /* Back returns to the top */
+   var f=document.getElementById('f-email'); if(f&&lastPointer!=='touch'){ try{ f.focus({preventScroll:true}); }catch(err){ f.focus(); } }   /* not on touch: no surprise keyboard */
+  }
+ });
+
+ /* film: keep it playing; paused only when the visitor prefers reduced motion */
+ var film=document.getElementById('film');
+ if(film){ film.muted=true; if(reduce){ film.removeAttribute('autoplay'); film.pause(); } else { var p=film.play(); if(p&&p.catch) p.catch(function(){}); } }
+
+ /* form: the receiver (/api/pilot) sends a failed submission back to ?error=email#s6 (bad email) or ?error=send#s6 (could not deliver) */
+ var fq=/[?&]error=(email|send)(&|$)/.exec(location.search);
+ if(fq){ var fe=document.getElementById('form-error'); if(fe){ if(fq[1]==='send'){ fe.innerHTML='We could not send your request. Please try again, or email us at <a href="mailto:regatta@iditarod.bio">regatta@iditarod.bio</a>.'; } else { fe.textContent='Please enter a valid work email.'; var em=document.querySelector('form[name=pilot] input[name=email]'); if(em){ em.setAttribute('aria-invalid','true'); em.setAttribute('aria-describedby','form-error'); } } } }
+})();
+</script>
+<script>
+/* dot chart: 120 example patients, 38 carry the biomarker; 27 of them respond, 10 of the other 82 do */
+(function(){
+  var demo=document.getElementById('demo'), field=document.getElementById('field'), eg=demo.querySelector('.eg');
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var phoneQ=window.matchMedia('(max-width:720px)');
+  var N=120, NA=38;
+  var P=[]; for(var i=0;i<N;i++){ var pos=i<NA; P.push({pos:pos,resp:pos?i<27:i-NA<10}); }
+  /* layout: groups side by side, figures above them (desktop and phone pitch) */
+  var CFG={desk:{mode:'row',cA:8,gap:2,cB:14,pmax:48},phone:{mode:'row',cA:6,gap:2,cB:10,pmax:36}};
+  var seed=11; function rnd(){ seed=(seed*1664525+1013904223)%4294967296; return seed/4294967296; }
+  var order=P.map(function(_,i){return i;}); for(var a=N-1;a>0;a--){ var b=Math.floor(rnd()*(a+1)); var t=order[a]; order[a]=order[b]; order[b]=t; }
+  var rank=[]; order.forEach(function(pi,k){ rank[pi]=k; });
+  var dots=P.map(function(p,i){ var el=document.createElement('span'); el.className='dot'+(p.resp?' resp':''); el.style.transitionDelay=reduce?'0ms':((i%24)*4)+'ms'; field.appendChild(el); return el; });
+  var gAll=field.querySelector('.gl-all'), gHot=field.querySelector('.gl.hot'), gCold=field.querySelector('.gl.cold');
+  var view='all', L=null;
+  function layout(){
+    var c=CFG[phoneQ.matches?'phone':'desk'];
+    var W=field.clientWidth; if(!W) return;
+    var out={all:[],marker:[]}, p, d, h, wDots, figs={}, ox=0, phone=phoneQ.matches;
+    var figH=Math.max(gAll.offsetHeight,gHot.offsetHeight,gCold.offsetHeight);
+    var cols=c.cA+c.gap+c.cB; p=Math.min(c.pmax,Math.floor(W/cols)); d=Math.round(p*0.68);
+    var y0=figH+16, rows=Math.max(Math.ceil(N/cols),Math.ceil(NA/c.cA),Math.ceil((N-NA)/c.cB));
+    for(var i=0;i<N;i++){ var k=rank[i]; out.all[i]=[(k%cols)*p, y0+Math.floor(k/cols)*p]; }
+    for(var k2=0;k2<NA;k2++) out.marker[k2]=[(k2%c.cA)*p, y0+Math.floor(k2/c.cA)*p];
+    for(var m=0;m<N-NA;m++) out.marker[NA+m]=[(c.cA+c.gap+m%c.cB)*p, y0+Math.floor(m/c.cB)*p];
+    h=y0+(rows-1)*p+d; wDots=(cols-1)*p+d;
+    if(phone){ ox=Math.max(0,Math.floor((W-wDots)/2)); for(var q1=0;q1<N;q1++){ out.all[q1][0]+=ox; out.marker[q1][0]+=ox; } }
+    figs={all:[ox,0],hot:[ox,0],cold:[ox+(c.cA+c.gap)*p,0],maxw:''};
+    field.style.height=h+'px'; eg.style.width=wDots+'px'; eg.style.maxWidth='100%'; eg.style.marginLeft=ox?ox+'px':''; placeSwitch(wDots,W,phone); fitTog();
+    [[gAll,figs.all],[gHot,figs.hot],[gCold,figs.cold]].forEach(function(q){ q[0].style.transform='translate('+q[1][0]+'px,'+q[1][1]+'px)'; q[0].style.maxWidth=figs.maxw; });
+    var mx=1; out.all.forEach(function(q){ mx=Math.max(mx,q[0]+q[1]); });
+    dots.forEach(function(el,i){ el.style.width=d+'px'; el.style.height=d+'px'; el.style.setProperty('--dd',Math.round((out.all[i][0]+out.all[i][1])/mx*620)+'ms'); });
+    L=out; place(true);
+  }
+  var togrow=document.getElementById('togrow');
+  var tog=togrow.querySelector('.tog');
+  function placeSwitch(wDots,W,full){
+    /* the switch sits under the legend, centred; on phones it spans the field */
+    togrow.style.marginLeft='';
+    if(togrow.previousElementSibling!==eg) demo.insertBefore(togrow,eg.nextSibling);
+    togrow.style.width=(full?W:wDots)+'px';
+  }
+  /* keep the switch inside its row: measure with both labels bold (so the result is the same in both views), trim padding, then stack */
+  function fitTog(){
+    tog.classList.remove('tight','stack'); tog.style.width='';
+    var avail=togrow.clientWidth; if(!avail) return;
+    tog.classList.add('meas');
+    var need=function(){ return tog.scrollWidth+2; };
+    if(need()>avail){ tog.classList.add('tight'); if(need()>avail){ tog.classList.add('stack'); tog.style.width=Math.ceil(tog.getBoundingClientRect().width)+'px'; } }
+    tog.classList.remove('meas');
+  }
+  function place(instant){
+    if(!L) return;
+    if(instant) dots.forEach(function(el){ el.style.transition='none'; });
+    dots.forEach(function(el,i){ var q=L[view][i]; el.style.transform='translate('+q[0]+'px,'+q[1]+'px)'; });
+    if(instant){ void field.offsetWidth; dots.forEach(function(el){ el.style.transition=''; }); }
+  }
+  var btns=[].slice.call(demo.querySelectorAll('.tog [role="tab"]'));
+  function show(v,focus){
+    view=v; demo.setAttribute('data-view',v); place(false);
+    btns.forEach(function(b){ var on=b.getAttribute('data-v')===v; b.setAttribute('aria-selected',on?'true':'false'); b.tabIndex=on?0:-1; if(on&&focus) b.focus(); });
+    field.setAttribute('aria-labelledby',v==='all'?'tab-all':'tab-marker');
+  }
+  var touched=false, timer;
+  /* first reveal: dots build in (radial from the top-left, ~1 s), figures count up from 0 (900 ms), legend and switch follow */
+  var figsB=[].slice.call(field.querySelectorAll('.gl b')), FIN=figsB.map(function(b){ return b.textContent; }), counting=0;
+  function endIntro(){ counting++; figsB.forEach(function(b,i){ b.textContent=FIN[i]; }); demo.classList.add('intro-done'); }
+  demo.addEventListener('rv:in',function(e){
+    if(e.detail&&e.detail.now){ demo.classList.add('intro-done'); return; }
+    var id=++counting, t0=null;
+    function step(t){ if(id!==counting) return; if(t0===null) t0=t; var k=Math.min(1,(t-t0)/900), ez=1-Math.pow(1-k,3);
+      figsB.forEach(function(b,i){ var n=parseInt(FIN[i],10); b.textContent=Math.round(n*ez)+'%'; });
+      if(k<1) requestAnimationFrame(step); else figsB.forEach(function(b,i){ b.textContent=FIN[i]; }); }
+    figsB.forEach(function(b){ b.textContent='0%'; }); requestAnimationFrame(step);
+    setTimeout(function(){ if(id===counting) demo.classList.add('intro-done'); },1500);
+  });
+  if(demo.classList.contains('rv-in')) demo.classList.add('intro-done'); /* already shown at start-up (reload mid-page) */
+  btns.forEach(function(b,ix){
+    b.addEventListener('click',function(){ touched=true; clearTimeout(timer); if(!demo.classList.contains('intro-done')) endIntro(); show(b.getAttribute('data-v')); });
+    b.addEventListener('keydown',function(e){
+      var j=null; if(e.key==='ArrowRight'||e.key==='ArrowDown') j=(ix+1)%btns.length; else if(e.key==='ArrowLeft'||e.key==='ArrowUp') j=(ix-1+btns.length)%btns.length; else if(e.key==='Home') j=0; else if(e.key==='End') j=btns.length-1;
+      if(j!==null){ e.preventDefault(); touched=true; clearTimeout(timer); if(!demo.classList.contains('intro-done')) endIntro(); show(btns[j].getAttribute('data-v'),true); }
+    });
+  });
+  field.removeAttribute('aria-labelledby');
+  layout(); show('all');
+  if('ResizeObserver' in window) new ResizeObserver(function(){ layout(); }).observe(field);
+  window.addEventListener('resize',layout);
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(layout);
+  if(reduce){ show('marker'); }
+  else if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ timer=setTimeout(function(){ if(!touched) show('marker'); },1400); io.disconnect(); } }); },{threshold:.5}); io.observe(field); }
+})();
+</script>
+<script>
+(function(){
+var Q1="What non-genomic biomarkers successfully identified responsive patients in lung (NSCLC) cancer?";
+var Q2="Draft a table with new biomarkers to segregate patients in a Ph2 NSCLC ADC of your choosing";
+var S1=["Searching trial literature","Checking figures against sources","Ranking markers"];
+var S2=["Choosing an ADC","Mapping the drug's mechanism","Building the table"];
+var MARK='<svg viewBox="0 0 815 589"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z"/></svg>';
+function $(id){return document.getElementById(id)}
+var demo=$('rgdemo'),stage=$('rgstage'),thread=$('rgthread'),q=$('rgq'),btn=$('rgbtn');
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var run=0;
+function fit(){stage.style.transform='scale('+(demo.clientWidth/980)+')'}
+if('ResizeObserver' in window){new ResizeObserver(fit).observe(demo)}else{window.addEventListener('resize',fit)}
+fit();
+function sleep(ms,id){return new Promise(function(res,rej){setTimeout(function(){id===run?res():rej(0)},ms)})}
+function down(){thread.scrollTo({top:thread.scrollHeight,behavior:reduce?'auto':'smooth'})}
+var ph='<span class="ph">Ask about any clinical asset, trial, date, odds…</span>',ph2='<span class="ph">Ask a follow-up…</span>';
+async function type(s,id){for(var i=1;i<=s.length;i++){q.innerHTML='<span>'+s.slice(0,i)+'<span class="caret"></span></span>';await sleep(55+Math.random()*35,id)}}
+async function press(id){btn.classList.add('press');await sleep(160,id);btn.classList.remove('press')}
+function words(root){var tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),ns=[];
+while(tw.nextNode()){if(tw.currentNode.nodeValue.trim()&&!tw.currentNode.parentElement.closest('table,.rg-card'))ns.push(tw.currentNode)}
+ns.forEach(function(n){var f=document.createDocumentFragment();n.nodeValue.split(/(\s+)/).forEach(function(p){if(!p)return;if(/^\s+$/.test(p)){f.appendChild(document.createTextNode(p));return}var s=document.createElement('span');s.className='rg-w';s.textContent=p;f.appendChild(s)});n.parentNode.replaceChild(f,n)});
+return [].slice.call(root.querySelectorAll('.rg-w'))}
+function user(t){var d=document.createElement('div');d.className='rg-msg rg-user';d.textContent=t;thread.appendChild(d);requestAnimationFrame(function(){d.classList.add('in')});down()}
+async function assistant(tpl,steps,id){
+var a=document.createElement('div');a.className='rg-asst';
+a.innerHTML='<div class="rg-markcell"><span class="rg-think">'+MARK+'</span></div><div class="rg-col"><div class="rg-stepsw"><ul class="rg-steps"></ul></div></div>';
+thread.appendChild(a);down();await sleep(30,id);a.querySelector('.rg-markcell').classList.add('in');
+var ul=a.querySelector('.rg-steps');
+for(var i=0;i<steps.length;i++){var li=document.createElement('li');li.className='run';li.innerHTML='<span class="sm">•</span><span>'+steps[i]+'</span>';ul.appendChild(li);await sleep(20,id);li.classList.add('in');await sleep(1580,id);li.className='in';li.firstChild.textContent='✓'}
+await sleep(200,id);
+a.querySelector('.rg-stepsw').classList.add('done');a.querySelector('.rg-think').classList.add('still');
+var box=document.createElement('div');box.style.cssText='display:flex;flex-direction:column;gap:12px';
+box.appendChild($(tpl).content.cloneNode(true));a.querySelector('.rg-col').appendChild(box);
+var ws=words(box),rows=[].slice.call(box.querySelectorAll('tbody tr')),card=box.querySelector('.rg-card');
+if(card)card.classList.add('rg-msg');
+var k=0,cardDone=!card;
+for(var j=0;j<ws.length;j++){var w=ws[j];
+if(!cardDone&&(card.compareDocumentPosition(w)&Node.DOCUMENT_POSITION_FOLLOWING)){cardDone=true;card.classList.add('in');down();await sleep(250,id);
+for(var r=0;r<rows.length;r++){rows[r].classList.add('in');down();await sleep(320,id)}await sleep(400,id)}
+w.classList.add('on');if(++k%5===0)down();await sleep(w.closest('.rg-src')?14:30,id)}
+down()}
+function reset(){stage.classList.add('nofade');stage.classList.remove('fade','sent');thread.innerHTML='';q.innerHTML=ph;thread.scrollTop=0;void stage.offsetWidth;stage.classList.remove('nofade')}
+async function play(){var id=++run;reset();
+try{
+await sleep(900,id);await type(Q1,id);await sleep(450,id);await press(id);
+stage.classList.add('sent');q.innerHTML=ph2;await sleep(350,id);
+user(Q1);await sleep(350,id);
+await assistant('rga1',S1,id);
+await sleep(2600,id);
+await type(Q2,id);await sleep(400,id);await press(id);q.innerHTML=ph2;
+user(Q2);await sleep(350,id);
+await assistant('rga2',S2,id);
+await sleep(1200,id);
+var cs=thread.querySelectorAll('.rg-card'),c=cs[cs.length-1];
+if(c)thread.scrollTo({top:c.getBoundingClientRect().top-thread.getBoundingClientRect().top+thread.scrollTop-6,behavior:'smooth'});
+await sleep(9000,id);
+stage.classList.add('fade');await sleep(600,id);
+play();
+}catch(e){}}
+function still(){reset();stage.classList.add('sent');q.innerHTML=ph2;
+[[Q1,'rga1'],[Q2,'rga2']].forEach(function(p){var u=document.createElement('div');u.className='rg-msg rg-user in';u.textContent=p[0];thread.appendChild(u);
+var a=document.createElement('div');a.className='rg-asst';a.innerHTML='<div class="rg-markcell in"><span class="rg-think still">'+MARK+'</span></div><div class="rg-col"></div>';
+a.querySelector('.rg-col').appendChild($(p[1]).content.cloneNode(true));[].slice.call(a.querySelectorAll('tr,.rg-card')).forEach(function(r){r.classList.add('in')});thread.appendChild(a)});
+thread.scrollTop=thread.scrollHeight}
+if(reduce){still()}else{
+var on=false;
+if('IntersectionObserver' in window){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&!on){on=true;play()}else if(!e.isIntersecting&&on){on=false;run++}})},{threshold:.05}).observe(demo)}else{play()}}
+})();
 </script>
 </body>
 </html>
