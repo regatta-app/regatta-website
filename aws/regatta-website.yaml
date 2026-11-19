@@ -195,6 +195,42 @@ Resources:
               .slice(0, 99).trim();
           }
 
+          // ---- Spam checks (16 Nov 2026, PR #16; ported 19 Nov) ----
+          // 1) Too fast: the page sends "elapsed" (ms from page load to submit). A number under 3 s
+          //    -> a bot: pretend it worked and send nothing (logged below, so nothing is lost).
+          // 2) Looks like spam: the email still goes out, tagged "[Possible spam]". Never dropped.
+          //    A missing, empty or unreadable "elapsed" (no JavaScript, an old cached page) is only tagged.
+          const MIN_ELAPSED_MS = 3000;
+          const RARE = /[qxzjv]/g;
+
+          function tooFast(elapsedRaw) {
+            if (elapsedRaw === undefined || String(elapsedRaw).trim() === "") return false;
+            const ms = Number(elapsedRaw);
+            return Number.isFinite(ms) && ms >= 0 && ms < MIN_ELAPSED_MS;
+          }
+
+          function spamReasons(email, org, elapsedRaw) {
+            const reasons = [];
+            if (elapsedRaw === undefined || String(elapsedRaw).trim() === "") reasons.push("sent without the page's script");
+            else if (!Number.isFinite(Number(elapsedRaw)) || Number(elapsedRaw) < 0) reasons.push("page timer unreadable");
+            const at = email.lastIndexOf("@");
+            const local = email.slice(0, at).toLowerCase();
+            const domain = email.slice(at + 1).toLowerCase();
+            if ((domain === "gmail.com" || domain === "googlemail.com") && (local.match(/\./g) || []).length >= 3) {
+              reasons.push("Gmail address with many dots");
+            }
+            const suffix = /\b(llc|inc|ltd|corp|co|gmbh|sa|sl|plc|bv|ag|pty|limited|company|group)\.?$/i;
+            const name = org.replace(suffix, "").trim();
+            if (/^[a-z]+$/i.test(name) && name.length >= 6) {
+              const w = name.toLowerCase();
+              const rare = (w.match(RARE) || []).length;
+              if ((rare >= 3 && rare * 3 >= w.length) || /[bcdfghjklmnpqrstvwxz]{5,}/.test(w)) {
+                reasons.push("organization looks like random letters");
+              }
+            }
+            return reasons;
+          }
+
           exports.handler = async (event) => {
             const http = (event.requestContext && event.requestContext.http) || {};
             if ((http.method || "GET") !== "POST") return redirect("/home/");
@@ -223,12 +259,23 @@ Resources:
             const org = Array.from(oneLine(fields.organization || "")).slice(0, MAX_ORG).join("");
 
             const when = new Date().toISOString().replace("T", " ").slice(0, 16) + " UTC";
+
+            // Spam check 1: submitted too fast -> drop, but keep a log line (CloudWatch).
+            if (tooFast(fields.elapsed)) {
+              console.log("pilot-form: DROPPED as too fast " + JSON.stringify({ email: email, organization: org, elapsedMs: Number(fields.elapsed), received: when }));
+              return redirect("/thanks/");
+            }
+            // Spam check 2: tag, never drop.
+            const reasons = spamReasons(email, org, fields.elapsed);
+            const tag = reasons.length ? "[Possible spam] " : "";
+
             const text =
               "New pilot request from regatta.tech\n\n" +
               "Email:        " + email + "\n" +
               "Organization: " + (org || "(not given)") + "\n" +
-              "Received:     " + when + "\n";
-            const subject = asciiSubject("Pilot request: " + (org ? org + " " : "") + "(" + email + ")") || "Pilot request";
+              "Received:     " + when + "\n" +
+              (reasons.length ? "\nPossible spam: " + reasons.join("; ") + "\n" : "");
+            const subject = asciiSubject(tag + "Pilot request: " + (org ? org + " " : "") + "(" + email + ")") || "Pilot request";
 
             try {
               await sns.send(new PublishCommand({ TopicArn: process.env.TOPIC_ARN, Subject: subject, Message: text }));
