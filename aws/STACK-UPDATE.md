@@ -76,6 +76,27 @@ Then in a browser:
 
 If the form lands on `/home/?error=send#meet`: CloudWatch → Log groups → `/aws/lambda/regatta-website-pilot-form` → search `LEAD NOT EMAILED` for the submission and the error.
 
+## 4b. Update for the form spam filter (PR #16, redone 19 Nov 2026)
+
+Changes only the form function's code. Follow steps 1–3; change set name e.g. `form-spam-filter-2026-11`.
+
+- **Expected in the change set:** one row, `PilotFunction`, Action **Modify**, Replacement **False**. Anything else: STOP, as in step 2.
+- **Order:** publish the site first (`scripts/publish.sh`, so the form sends `elapsed`), then update the stack. The other order also works: submits without `elapsed` are only tagged, never dropped.
+- **Before:** run `node aws/test-pilot-form.js` in your clone; all cases must pass.
+
+Tests afterwards (CloudShell or Terminal):
+
+```
+curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' -X POST -d 'email=bot@example.com&organization=Test&elapsed=500' https://regatta.tech/api/pilot
+#   303 https://regatta.tech/thanks/   and NO email arrives (too fast)
+```
+
+Then CloudWatch → Log groups → `/aws/lambda/regatta-website-pilot-form`: the newest stream has a line `pilot-form: DROPPED as too fast`.
+
+Then **one real submission** on https://regatta.tech/#s6 with your own email: wait at least 3 s before pressing the button. The email arrives **without** `[Possible spam]`. (A `curl` post with no `elapsed`, or one sent from a page with JavaScript off, arrives tagged `[Possible spam] … sent without the page's script`. That is expected.)
+
+**Rollback:** repeat steps 1–3 with the previous `aws/regatta-website.yaml` (GitHub → History). Only `PilotFunction` changes back.
+
 ## 5. Rolling back
 
 - **The update failed:** CloudFormation rolls back by itself to the previous state (status `UPDATE_ROLLBACK_COMPLETE`). Nothing to do except read the first red event in **Events** for the reason.
