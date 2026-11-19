@@ -282,15 +282,12 @@ html.js-hero:not(.hero-go) .hero :is(h1,.btn-light){opacity:0}
 html.js-hero.hero-go .hero h1{animation:rv-hero 900ms var(--rv-ease) backwards}
 html.js-hero.hero-go .hero .btn-light{animation:rv-hero 700ms var(--rv-ease) 200ms backwards}
 /* sub-units with their own trigger: the chart (section 2) and the demo card (section 3) */
-@keyframes rv-dot{from{opacity:0;scale:.4}to{opacity:1;scale:1}}
 @keyframes rv-sub{from{opacity:0;transform:translateY(16px);clip-path:inset(var(--s32) var(--s24) round var(--r-card))}to{opacity:1;transform:none;clip-path:inset(-120px round var(--r-card))}}
 @keyframes rv-left{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
 @keyframes rv-line{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-html.js-anim #demo:not(.rv-in) :is(.dot,#togrow,.eg){opacity:0}
-html.js-anim #demo:not(.rv-in) .gl{visibility:hidden}
-html.js-anim #demo.rv-in:not(.intro-done) .dot{animation:rv-dot 380ms var(--rv-ease) var(--dd,0ms) backwards}
-html.js-anim #demo.rv-in:not(.intro-done) :is(#togrow,.eg){animation:rv-text 500ms var(--rv-ease) 900ms backwards}
-html.js-anim #demo.rv-in:not(.intro-done) .eg{animation-delay:820ms}
+/* chart: the whole block (figures, dots, legend, switch) dissolves in once, opacity only */
+html.js-anim #demo:not(.rv-in){opacity:0}
+html.js-anim #demo.rv-in{animation:rv-fade 650ms cubic-bezier(0,0,.2,1)}
 html.js-anim .demo-w.rv-sub:not(.rv-in){opacity:0}
 html.js-anim .demo-w.rv-sub.rv-in{animation:rv-sub 800ms var(--rv-ease) 200ms backwards}
 /* capabilities list: items slide in from the left; each divider draws left to right */
@@ -302,9 +299,9 @@ html.js-anim .rv-z.rv-in .cl>li{animation-name:rv-left}
 html.js-anim .rv-z.rv-in .cl>li::before,html.js-anim .rv-z.rv-in .cl>li:last-child::after{animation:rv-line 300ms var(--rv-ease) calc(var(--rv-d,0ms) + 120ms) backwards}
 /* revealed at once (start-up, jumps): no animation */
 html.js-anim main>.rv-z.rv-now,html.js-anim .rv-z.rv-now :is(h2.t,.sub,.cmp tr,.person,.facts>div,.form>*),html.js-anim .rv-z.rv-now .cl>li{animation:none}
-html.js-anim :is(#demo,.demo-w).rv-in.rv-now,html.js-anim #demo.rv-in.rv-now :is(.dot,#togrow,.eg){animation:none}
+html.js-anim :is(#demo,.demo-w).rv-in.rv-now{animation:none}
 html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,html.js-anim .rv-z.rv-now .cl>li:last-child::after{animation:none}
-@media (prefers-reduced-motion:reduce){html.js-anim main>.rv-z{clip-path:none!important;animation:none!important}html.js-anim .rv-z :is(h2.t,.sub,.cmp tr,.person,.facts>div,.form>*),html.js-anim .rv-z .cl>li{opacity:1!important;animation:none!important}html.js-hero .hero :is(h1,.btn-light),html.js-anim .rv-z .cl>li::before,html.js-anim .rv-z .cl>li::after,html.js-anim #demo .dot,html.js-anim .demo-w{opacity:1!important;animation:none!important;visibility:visible!important}html.js-anim #demo .gl{visibility:visible!important}}
+@media (prefers-reduced-motion:reduce){html.js-anim main>.rv-z{clip-path:none!important;animation:none!important}html.js-anim .rv-z :is(h2.t,.sub,.cmp tr,.person,.facts>div,.form>*),html.js-anim .rv-z .cl>li{opacity:1!important;animation:none!important}html.js-hero .hero :is(h1,.btn-light),html.js-anim .rv-z .cl>li::before,html.js-anim .rv-z .cl>li::after,html.js-anim #demo,html.js-anim .demo-w{opacity:1!important;animation:none!important;visibility:visible!important}}
 </style>
 </head>
 <body>
@@ -554,8 +551,7 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
     figs={all:[ox,0],hot:[ox,0],cold:[ox+(c.cA+c.gap)*p,0],maxw:''};
     field.style.height=h+'px'; eg.style.width=wDots+'px'; eg.style.maxWidth='100%'; eg.style.marginLeft=ox?ox+'px':''; placeSwitch(wDots,W,phone); fitTog();
     [[gAll,figs.all],[gHot,figs.hot],[gCold,figs.cold]].forEach(function(q){ q[0].style.transform='translate('+q[1][0]+'px,'+q[1][1]+'px)'; q[0].style.maxWidth=figs.maxw; });
-    var mx=1; out.all.forEach(function(q){ mx=Math.max(mx,q[0]+q[1]); });
-    dots.forEach(function(el,i){ el.style.width=d+'px'; el.style.height=d+'px'; el.style.setProperty('--dd',Math.round((out.all[i][0]+out.all[i][1])/mx*620)+'ms'); });
+    dots.forEach(function(el){ el.style.width=d+'px'; el.style.height=d+'px'; });
     L=out; place(true);
   }
   var togrow=document.getElementById('togrow');
@@ -588,24 +584,11 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
     field.setAttribute('aria-labelledby',v==='all'?'tab-all':'tab-marker');
   }
   var touched=false, timer;
-  /* first reveal: dots build in (radial from the top-left, ~1 s), figures count up from 0 (900 ms), legend and switch follow */
-  var figsB=[].slice.call(field.querySelectorAll('.gl b')), FIN=figsB.map(function(b){ return b.textContent; }), counting=0;
-  function endIntro(){ counting++; figsB.forEach(function(b,i){ b.textContent=FIN[i]; }); demo.classList.add('intro-done'); }
-  demo.addEventListener('rv:in',function(e){
-    if(e.detail&&e.detail.now){ demo.classList.add('intro-done'); return; }
-    var id=++counting, t0=null;
-    function step(t){ if(id!==counting) return; if(t0===null) t0=t; var k=Math.min(1,(t-t0)/900), ez=1-Math.pow(1-k,3);
-      figsB.forEach(function(b,i){ var n=parseInt(FIN[i],10); b.textContent=Math.round(n*ez)+'%'; });
-      if(k<1) requestAnimationFrame(step); else figsB.forEach(function(b,i){ b.textContent=FIN[i]; }); }
-    figsB.forEach(function(b){ b.textContent='0%'; }); requestAnimationFrame(step);
-    setTimeout(function(){ if(id===counting) demo.classList.add('intro-done'); },1500);
-  });
-  if(demo.classList.contains('rv-in')) demo.classList.add('intro-done'); /* already shown at start-up (reload mid-page) */
   btns.forEach(function(b,ix){
-    b.addEventListener('click',function(){ touched=true; clearTimeout(timer); if(!demo.classList.contains('intro-done')) endIntro(); show(b.getAttribute('data-v')); });
+    b.addEventListener('click',function(){ touched=true; clearTimeout(timer); show(b.getAttribute('data-v')); });
     b.addEventListener('keydown',function(e){
       var j=null; if(e.key==='ArrowRight'||e.key==='ArrowDown') j=(ix+1)%btns.length; else if(e.key==='ArrowLeft'||e.key==='ArrowUp') j=(ix-1+btns.length)%btns.length; else if(e.key==='Home') j=0; else if(e.key==='End') j=btns.length-1;
-      if(j!==null){ e.preventDefault(); touched=true; clearTimeout(timer); if(!demo.classList.contains('intro-done')) endIntro(); show(btns[j].getAttribute('data-v'),true); }
+      if(j!==null){ e.preventDefault(); touched=true; clearTimeout(timer); show(btns[j].getAttribute('data-v'),true); }
     });
   });
   field.removeAttribute('aria-labelledby');
