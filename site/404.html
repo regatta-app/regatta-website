@@ -8,18 +8,39 @@
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/icons/favicon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
-<meta name="theme-color" content="#071833">
+<meta name="theme-color" content="#F5EEE3">
 <meta name="robots" content="noindex">
 <link rel="preload" href="/assets/fonts/tenor-sans-latin-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/fonts/fonts.css">
-<style>html{background:#071833}body{margin:0}</style>
+<link rel="stylesheet" href="/assets/site.css">
+<script>
+/* one fade-in on load, only when motion is allowed; all URLs are root-absolute so the page works from any path */
+(function(){var d=document.documentElement;try{
+ if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+ d.classList.add('js-hero');
+ setTimeout(function(){ d.classList.remove('js-hero'); },1000);
+}catch(e){}})();
+</script>
+<style>
+/* minimal page in the new line: cream, official mark, Tenor title, Inter text, one borderless link */
+.mn{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s24);padding:var(--s32) var(--pad-x);text-align:center}
+.mn .mk{display:block;width:72px;height:auto}
+.mn h1{font-size:var(--fs-hero);line-height:var(--lh-display);color:var(--navy)}
+.mn p{max-width:30em;font-size:var(--fs-lead);line-height:var(--lh-text);color:var(--grey)}
+.mn .back{display:inline-flex;align-items:center;min-height:44px;color:var(--navy);font-size:var(--fs-small);font-weight:var(--fw-bold);line-height:var(--lh-text);text-decoration:underline;text-decoration-color:var(--line);text-decoration-thickness:1px;text-underline-offset:6px;transition:text-decoration-color .15s ease}
+.mn .back:hover{text-decoration-color:var(--navy)}
+@media (max-width:720px){.mn .mk{width:56px}}
+/* one fade-in on load */
+@keyframes rv-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+html.js-hero .mn{animation:rv-fade 520ms var(--rv-ease) backwards}
+@media (prefers-reduced-motion:reduce){html.js-hero .mn{animation:none}}
+</style>
 </head>
 <body>
-<main style="min-height: 100vh; box-sizing: border-box; padding: 24px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; text-align: center; background: #071833; color: #F3F6FB; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;">
-<h1 style="margin: 0; font-family: 'Tenor Sans', 'Times New Roman', serif; font-weight: 400; font-size: clamp(2.25rem, 6vw, 3.5rem); line-height: 1.1;">Page not found</h1>
-<div aria-hidden="true" style="width: 46px; height: 2px; border-radius: 2px; background: #FF5A1F;"></div>
-<p style="margin: 0; max-width: 30em; font-size: 1.125rem; line-height: 1.6; color: #C3CFDF;">That page does not exist.</p>
-<a href="/home/" style="display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 28px; border: 1px solid rgba(243, 246, 251, 0.5); border-radius: 999px; color: #F3F6FB; font-size: 14px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;">Back to Regatta</a>
+<main class="mn">
+<svg class="mk" viewBox="30 0 790 560" aria-hidden="true"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z" fill="#CAA229"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z" fill="#F05910"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z" fill="#0D3769"/></svg>
+<h1>Page not found</h1>
+<p>That page does not exist.</p>
+<a class="back" href="/">Back to Regatta</a>
 </main>
 </body>
 </html>

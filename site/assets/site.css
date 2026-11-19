@@ -1,0 +1,79 @@
+/* regatta.tech shared styles: fonts, brand tokens (Regatta brand guide v1.0, web), base type,
+   fixed cream bar, footer, buttons. Every page links this file; page-specific CSS stays in the page.
+   Changing this file? Give it a new name (browsers keep assets for a day) or accept a one-day delay. */
+@font-face{font-family:"Tenor Sans";font-weight:400;font-display:swap;src:url(/assets/fonts/tenor-sans-latin-400.woff2) format("woff2")}
+@font-face{font-family:"Playfair Display SC";font-weight:400;font-display:swap;src:url(/assets/fonts/playfair-display-sc-400.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:400;font-display:swap;src:url(/assets/fonts/inter-latin-400.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:600;font-display:swap;src:url(/assets/fonts/inter-latin-600.woff2) format("woff2")}
+:root{
+ /* colours: brand palette only */
+ --navy:#0D3769;--cream:#F5EEE3;--gold:#CAA229;--orange:#F05910;--deep:#071833;
+ --light:#F3F6FB;--grey:#4E5A6B;--line:#C3CFDF;--muted:#8397B3;--white:#FFFFFF;
+ --tone:var(--cream);
+ --line-dk:var(--grey);                 /* divider on deep blue */
+ --ring:var(--navy);
+ /* alpha of palette colours, only for overlays, shadows and hover borders */
+ --deep-82:rgba(7,24,51,.82);--deep-55:rgba(7,24,51,.55);--deep-45:rgba(7,24,51,.45);--deep-40:rgba(7,24,51,.4);--deep-12:rgba(7,24,51,.12);--deep-0:rgba(7,24,51,0);
+ --light-45:rgba(243,246,251,.45);--light-40:rgba(243,246,251,.4);--light-90:rgba(243,246,251,.9);
+ --navy-12:rgba(13,55,105,.12);--navy-35:rgba(13,55,105,.35);
+ /* typefaces */
+ --ff-head:"Tenor Sans",serif;--ff-body:"Inter",sans-serif;--ff-mark:"Playfair Display SC",serif;
+ /* type scale (web, 7 sizes) */
+ --fs-hero:64px;--fs-title:44px;--fs-sub:28px;--fs-lead:20px;--fs-body:17px;--fs-small:15px;--fs-note:13px;
+ --fw-regular:400;--fw-bold:600;
+ --lh-display:1.1;--lh-head:1.3;--lh-text:1.6;
+ /* shape */
+ --r-card:10px;--r-inner:7px;--r-pill:999px;--r-circle:50%;
+ /* spacing */
+ --s2:2px;--s4:4px;--s6:6px;--s8:8px;--s12:12px;--s16:16px;--s24:24px;--s32:32px;
+ --sec-pad:96px;--col-gap:64px;--title-gap:32px;--pad-x:32px;--wrap:1200px;
+ /* compact bar */
+ --barh:48px;--bmark:30px;--fs-brand:var(--fs-body);
+ /* motion */
+ --chart-dur:520ms;--chart-ease:cubic-bezier(.4,0,.2,1);--rv-ease:cubic-bezier(.2,.7,.2,1);
+ color-scheme:light}
+@media (max-width:720px){:root{--fs-hero:40px;--fs-title:32px;--fs-sub:24px;--sec-pad:64px;--pad-x:24px;--barh:44px;--bmark:26px;--fs-brand:var(--fs-small)}}
+
+*{box-sizing:border-box}
+html{background:var(--deep);scroll-behavior:smooth}
+body{margin:0;font-family:var(--ff-body);font-size:var(--fs-body);font-weight:var(--fw-regular);line-height:var(--lh-text);color:var(--navy);background:var(--tone);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,p,ul,table{margin:0}
+b,strong{font-weight:var(--fw-bold)}
+h1,h2,h3{font-family:var(--ff-head);font-weight:var(--fw-regular);text-wrap:balance}
+/* no lone last words: balance short display lines, pretty for running text */
+p,li{text-wrap:pretty}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ring);outline-offset:3px;border-radius:var(--r-inner)}
+.foot :focus-visible{--ring:var(--light)}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--pad-x)}
+
+/* fixed cream bar: logo left, Sign in (icon) right */
+header.bar{position:fixed;top:0;left:0;right:0;z-index:40;height:var(--barh);background:var(--tone)}
+header.bar .wrap{height:100%;display:flex;align-items:center;justify-content:space-between}
+.brand{display:inline-flex;align-items:center;gap:var(--s12);text-decoration:none;color:var(--navy)}
+.brand svg{display:block;flex:none;width:var(--bmark);height:auto}
+.brand span{font:var(--fw-regular) var(--fs-brand)/var(--lh-display) var(--ff-mark);letter-spacing:.14em}
+.nav{display:flex;align-items:center}
+.nav a{color:var(--navy);text-decoration:none;font-size:var(--fs-small);font-weight:var(--fw-regular);transition:opacity .15s ease;padding:0;min-height:44px;display:inline-flex;align-items:center}
+.nav a:hover{color:var(--navy);opacity:.65}
+.nav .si-icon{padding:0;min-width:44px;justify-content:center;margin-right:calc((24px - 44px) / 2)}
+.nav .si-icon svg{display:block;width:24px;height:24px}
+.nav .si-icon:focus-visible{outline-offset:-3px} /* ring drawn inside the 44px link, so the top of the window never clips it */
+
+/* buttons and quiet links */
+.btn-light{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 var(--s24);border-radius:var(--r-pill);background:var(--cream);color:var(--navy);font-family:inherit;font-size:var(--fs-small);font-weight:var(--fw-bold);line-height:var(--lh-text);text-decoration:none;border:0;cursor:pointer;transition:opacity .15s ease}
+.btn-light:hover{background:var(--cream);color:var(--navy);opacity:.88}
+.btn-ghost{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 var(--s24);border:1px solid var(--light-45);border-radius:var(--r-pill);background:transparent;color:var(--light);font-family:inherit;font-size:var(--fs-small);font-weight:var(--fw-bold);line-height:var(--lh-text);text-decoration:none;cursor:pointer}
+.btn-ghost:hover{border-color:var(--light);color:var(--light)}
+.quiet{color:var(--light);text-decoration:none;transition:opacity .15s ease}
+.quiet:hover{color:var(--light);opacity:.65}
+
+/* compact footer */
+.foot{position:relative;background:var(--deep);color:var(--muted);font-size:var(--fs-note);line-height:var(--lh-text);border-top:1px solid var(--line-dk)}
+.foot-in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s12) var(--s16);padding-block:var(--s32)}
+.foot nav{display:flex;flex-wrap:wrap;gap:var(--s4) var(--s24);align-items:center}
+.foot a{position:relative;padding:0;display:inline-block}
+.foot a::before{content:"";position:absolute;left:0;right:0;top:calc((1lh - 44px) / 2);bottom:calc((1lh - 44px) / 2)}
+.foot .wm{font:var(--fw-regular) var(--fs-lead)/var(--lh-display) var(--ff-mark);letter-spacing:.14em;color:var(--white)}
+@media (max-width:720px){.foot-in{padding-block:var(--s24)}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
