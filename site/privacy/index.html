@@ -51,6 +51,8 @@ html{scroll-padding-top:calc(var(--barh) + var(--s24))}
 .pp p{margin:0 0 var(--s16)}
 .pp p:last-child,.pp ul:last-child{margin-bottom:0}
 .pp strong{color:var(--navy)}
+.pp .tl{color:var(--navy);text-decoration:underline;text-decoration-color:var(--line);text-decoration-thickness:1px;text-underline-offset:3px;transition:text-decoration-color .15s ease}
+.pp .tl:hover{text-decoration-color:var(--navy)}
 .pp ul:not(.toc){margin:0 0 var(--s16);padding-left:var(--s24)}
 .pp ul:not(.toc) li{margin:0 0 var(--s8)}
 .pp ul:not(.toc) li::marker{color:var(--muted)}
@@ -87,7 +89,7 @@ html.js-anim .rv-z.rv-now>*{animation:none}
 <article aria-labelledby="pp-title">
 <div class="pp-intro">
 <h1 id="pp-title">Privacy policy</h1>
-<p class="meta">Effective 31 October 2026</p>
+<p class="meta">Effective 11 November 2026</p>
 
 <ul class="toc" aria-label="Sections">
 <li><a href="#who">Who we are</a></li>
@@ -99,6 +101,7 @@ html.js-anim .rv-z.rv-now>*{animation:none}
 <li><a href="#rights">Your rights</a></li>
 <li><a href="#security">Security</a></li>
 <li><a href="#children">Children</a></li>
+<li><a href="#contact">Contact</a></li>
 <li><a href="#changes">Changes</a></li>
 </ul>
 </div>
@@ -113,8 +116,8 @@ html.js-anim .rv-z.rv-now>*{animation:none}
 <thead><tr><th scope="col">Information</th><th scope="col">When</th><th scope="col">Why</th></tr></thead>
 <tbody>
 <tr><td data-label="Information">Work email address and organization name</td><td data-label="When">When you submit the “Request access” form</td><td data-label="Why">To reply to your request and arrange a pilot</td></tr>
-<tr><td data-label="Information">Technical data: IP address, browser type and version, device type, pages requested, date and time of the request</td><td data-label="When">Automatically, with every page you load, in our hosting provider's server logs</td><td data-label="Why">To serve the site, keep it secure and understand aggregate traffic</td></tr>
-<tr><td data-label="Information">Anything you choose to write to us</td><td data-label="When">When you email us</td><td data-label="Why">To answer you</td></tr>
+<tr><td data-label="Information">Standard technical request data, such as IP address and browser type</td><td data-label="When">Automatically, when you load a page or submit the form; our hosting provider may process it</td><td data-label="Why">To deliver the site and protect it from abuse</td></tr>
+<tr><td data-label="Information">Anything you choose to write to us</td><td data-label="When">When you <a href="mailto:regatta@iditarod.bio" class="tl">email us</a></td><td data-label="Why">To answer you</td></tr>
 </tbody>
 </table>
 <p>We do not ask for, and ask you not to send, patient data, trial data or any other sensitive information through this website.</p>
@@ -133,8 +136,8 @@ html.js-anim .rv-z.rv-now>*{animation:none}
 <h2 id="share">Who we share it with</h2>
 <p>We share personal information only with service providers that act on our instructions:</p>
 <ul>
-<li><strong>Amazon Web Services, Inc.</strong> (United States) hosts this website and processes submissions of the “Request access” form.</li>
-<li>Our email provider, which delivers and stores our correspondence with you.</li>
+<li><strong>Amazon Web Services, Inc.</strong> (United States) hosts this website (Amazon S3 and CloudFront) and relays submissions of the “Request access” form to our team by email (AWS Lambda and Amazon SNS).</li>
+<li>Our email provider, which delivers and stores our correspondence with you, including the form submissions relayed to us.</li>
 </ul>
 <p>We may also disclose information when the law requires it, to protect our rights or safety, or as part of a merger, acquisition or sale of assets, in which case this policy continues to apply to the information transferred.</p>
 <p><strong>International transfers.</strong> We are based in the United States and our providers may process your information there. Where information is transferred from the European Economic Area, the United Kingdom or Switzerland, we rely on the European Commission's Standard Contractual Clauses or the provider's equivalent safeguards.</p>
@@ -144,7 +147,8 @@ html.js-anim .rv-z.rv-now>*{animation:none}
 <ul>
 <li>Pilot requests: for as long as we are in contact with you about a pilot, and up to 24 months after our last exchange if no pilot goes ahead.</li>
 <li>Correspondence: for as long as we need it to deal with your query and for our records, normally no more than 3 years.</li>
-<li>Server logs: kept by our hosting provider for a short period (typically 30 days) for security and troubleshooting.</li>
+<li>Technical request data: processed by our hosting provider as part of delivering and protecting the site.</li>
+<li>Logs of the function that relays form submissions to us: kept for up to 30 days for security and troubleshooting, then deleted automatically.</li>
 </ul>
 <p>We keep information longer only where the law requires it or where it is needed to resolve a dispute.</p>
 </section>
@@ -163,7 +167,7 @@ html.js-anim .rv-z.rv-now>*{animation:none}
 <li>receive the information you gave us in a portable format;</li>
 <li>withdraw consent where we rely on it, without affecting processing that already took place.</li>
 </ul>
-<p>To exercise any of these rights, contact us. We will respond within one month, or sooner where the law requires. We may ask you to confirm your identity first. If you are in the EEA or the UK, you also have the right to complain to your local data-protection authority. We will not treat you differently for exercising your rights.</p>
+<p>To exercise any of these rights, <a href="#contact" class="tl">contact us</a>. We will respond within one month, or sooner where the law requires. We may ask you to confirm your identity first. If you are in the EEA or the UK, you also have the right to complain to your local data-protection authority. We will not treat you differently for exercising your rights.</p>
 </section>
 <section class="pp-sec rv-z">
 <h2 id="security">Security</h2>
@@ -171,7 +175,11 @@ html.js-anim .rv-z.rv-now>*{animation:none}
 </section>
 <section class="pp-sec rv-z">
 <h2 id="children">Children</h2>
-<p>regatta.tech is a business site intended for adults working in clinical development. We do not knowingly collect information from anyone under 16. If you believe a child has sent us information, contact us and we will delete it.</p>
+<p>regatta.tech is a business site intended for adults working in clinical development. We do not knowingly collect information from anyone under 16. If you believe a child has sent us information, <a href="#contact" class="tl">contact us</a> and we will delete it.</p>
+</section>
+<section class="pp-sec rv-z">
+<h2 id="contact">Contact</h2>
+<p>regatta.tech is operated by <strong>Iditarod Bio, Inc.</strong> For any question about this policy or the information we hold about you, or to exercise your rights, email us at <a href="mailto:regatta@iditarod.bio" class="tl">regatta@iditarod.bio</a>.</p>
 </section>
 <section class="pp-sec rv-z">
 <h2 id="changes">Changes to this policy</h2>
