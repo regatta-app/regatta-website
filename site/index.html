@@ -136,7 +136,7 @@ html:not(.js) .togrow{display:none} /* the switch needs the script; without it, 
 .rg-demo{--rg-bg:var(--cream);--rg-ink:var(--navy);--rg-ink2:var(--grey);--rg-ink3:var(--muted);--rg-rule:var(--line);--rg-hair:var(--line);--rg-raise:var(--light);--rg-track:var(--line);--app-orange:#F05910;--app-green:#2E8B57;--app-orange-tint:rgba(240,89,16,.06);/* app colours: approved exception, demo block only */
   --rg-sig:var(--app-orange);--rg-gold:var(--gold);--rg-ok:var(--app-green);
   --rg-fh:var(--ff-head);--rg-fb:var(--ff-body);--rg-fm:var(--ff-mark);
-  position:relative;width:100%;max-width:980px;aspect-ratio:980/560;border-radius:var(--r-card);overflow:hidden;background:var(--rg-bg)}
+  position:relative;width:100%;max-width:980px;margin-inline:auto;aspect-ratio:980/560;border-radius:var(--r-card);overflow:hidden;background:var(--rg-bg)}
 .rg-stage{position:absolute;left:0;top:0;width:980px;height:560px;transform-origin:0 0;font-family:var(--rg-fb);color:var(--rg-ink);background:var(--rg-bg);display:flex;-webkit-font-smoothing:antialiased}
 .rg-rail{width:70px;flex:0 0 70px;border-right:1px solid var(--rg-hair);display:flex;flex-direction:column;align-items:center;padding-top:var(--s24);gap:var(--s32)}
 .rg-rail .mark{width:34px;height:auto;margin-bottom:var(--s6)}
@@ -279,8 +279,8 @@ html.js-anim .rv-z.rv-in :is(h2.t,.sub){animation-name:rv-head}
 /* hero: held until the poster/fonts are on screen, then the title dissolves up and the button follows */
 @keyframes rv-hero{from{opacity:0;transform:translateY(16px);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}
 html.js-hero:not(.hero-go) .hero :is(h1,.btn-light){opacity:0}
-html.js-hero.hero-go .hero h1{animation:rv-hero 900ms var(--rv-ease) backwards}
-html.js-hero.hero-go .hero .btn-light{animation:rv-hero 700ms var(--rv-ease) 200ms backwards}
+html.js-hero.hero-go .hero h1{animation:rv-hero 600ms var(--rv-ease) backwards}
+html.js-hero.hero-go .hero .btn-light{animation:rv-hero 500ms var(--rv-ease) 120ms backwards}
 /* sub-units with their own trigger: the chart (section 2) and the demo card (section 3) */
 @keyframes rv-sub{from{opacity:0;transform:translateY(16px);clip-path:inset(var(--s32) var(--s24) round var(--r-card))}to{opacity:1;transform:none;clip-path:inset(-120px round var(--r-card))}}
 @keyframes rv-left{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
@@ -490,13 +490,14 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
  var T='h2.t,.sub,.cl>li,.cmp tr,.person,.facts>div,.form>*';
  function order(sec){ var i=0, j=0; [].forEach.call(sec.querySelectorAll(T),function(el){ if(!el.getClientRects().length) return; var li=el.matches('.cl>li'); el.style.setProperty('--rv-d',(li?Math.min(160+(j++)*110,600):Math.min(120+i*70,500))+'ms'); if(!li) i++; }); }
  window.Regatta.reveals(order);
- /* hero: start when the page has loaded and fonts are ready (whichever is later), 1.2 s at most, then 250 ms so the poster is on screen */
- (function(){ var done=false, need=2;
-  function go(){ if(done) return; done=true; setTimeout(function(){ requestAnimationFrame(function(){ root.classList.add('hero-go'); setTimeout(function(){ root.classList.remove('js-hero','hero-go'); },1300); }); },250); }
+ /* hero: start as soon as the fonts or the film/poster are ready (whichever comes first), 400 ms at most */
+ (function(){ var done=false, need=1;
+  function go(){ if(done) return; done=true; requestAnimationFrame(function(){ root.classList.add('hero-go'); setTimeout(function(){ root.classList.remove('js-hero','hero-go'); },1000); }); }
   function one(){ if(--need<=0) go(); }
+  var v=document.querySelector('.hero video'); if(v){ if(v.readyState>=2) one(); else v.addEventListener('loadeddata',one,{once:true}); }
   if(document.readyState==='complete') one(); else window.addEventListener('load',one,{once:true});
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(one,one); else one();
-  setTimeout(go,1200);
+  setTimeout(go,400);
  })();
 
  /* scrolling: the logo goes to the top, the hero button to the form, the arrow to section 2 */
