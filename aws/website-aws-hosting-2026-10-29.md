@@ -140,19 +140,21 @@ So the upload decides caching. `scripts/publish.sh` sets it per type:
 
 | Files | `Cache-Control` | Why |
 |---|---|---|
-| `*.html` (and `sitemap.xml`, `robots.txt`) | `public, max-age=300, must-revalidate` | Same as production today; a change reaches everyone within 5 minutes even without an invalidation. |
-| `assets/fonts/*` | `public, max-age=31536000, immutable` | Font files never change under the same name. |
-| other `assets/*` (images, video, `fonts.css`), `favicon.ico` | `public, max-age=86400` | One day. |
+| `*.html` (and `sitemap.xml`, `robots.txt`) | `public, max-age=300, must-revalidate` | Same as production today; a change reaches everyone within 5 minutes even without an invalidation. Uploaded last. |
+| `*.css`, `*.js` (`site.css`, `site.js`) | `public, max-age=300, must-revalidate` | They keep their names when they change; a forgotten `?v=` then costs 5 minutes, not a day (20 Nov 2026). Uploaded just before the pages. |
+| `assets/fonts/*.woff2` | `public, max-age=31536000, immutable` | Font files never change under the same name. |
+| other `assets/*` (images, video, icons, font licences), `favicon.ico` | `public, max-age=86400` | One day. |
 
 The same thing by hand (AWS CloudShell, from the repo root):
 
 ```
-aws s3 sync site/ s3://BUCKET/ --exclude "*" --include "assets/fonts/*" --exclude "assets/fonts/*.css" --cache-control "public, max-age=31536000, immutable"
-aws s3 sync site/ s3://BUCKET/ --exclude "*" --include "assets/*" --include "favicon.ico" --exclude "assets/fonts/*.woff2" --cache-control "public, max-age=86400"
+aws s3 sync site/ s3://BUCKET/ --exclude "*" --include "assets/fonts/*.woff2" --cache-control "public, max-age=31536000, immutable"
+aws s3 sync site/ s3://BUCKET/ --exclude "*" --include "assets/*" --include "favicon.ico" --exclude "assets/fonts/*.woff2" --exclude "*.css" --exclude "*.js" --cache-control "public, max-age=86400"
+aws s3 sync site/ s3://BUCKET/ --exclude "*" --include "*.css" --include "*.js" --cache-control "public, max-age=300, must-revalidate"
 aws s3 sync site/ s3://BUCKET/ --exclude "*" --include "*.html" --include "sitemap.xml" --include "robots.txt" --cache-control "public, max-age=300, must-revalidate"
 ```
 
-**Cache-busting.** An image or video that changes must get a **new file name** (as the team photo did: `manish-sharma.jpg` became `manish-sharma-2.jpg` in production) and the HTML updated to point at it; browsers that already have the old name keep it for up to a day. Fonts must always be renamed if they change (they are cached for a year, `immutable`). HTML is short-lived, but after a publish create a CloudFront invalidation for the changed pages (`/`, `/home/`, `/home/index.html`, …) or `/*` so the edge serves the new version at once. The first 1,000 invalidation paths a month are free; `/*` counts as one path.
+**Cache-busting.** An image or video that changes must get a **new file name** (as the team photo did: `manish-sharma.jpg` became `manish-sharma-2.jpg` in production) and the HTML updated to point at it; browsers that already have the old name keep it for up to a day. Fonts must always be renamed if they change (they are cached for a year, `immutable`). CSS and JS also keep their names but are cached only 5 minutes (still change the `?v=` in the pages when they change). HTML is short-lived, but after a publish create a CloudFront invalidation for the changed pages (`/`, `/home/`, `/home/index.html`, …) or `/*` so the edge serves the new version at once. The first 1,000 invalidation paths a month are free; `/*` counts as one path.
 
 **Security headers.** The template attaches a response headers policy (`<stack>-security-headers`) to every response, including `/api/*`:
 
