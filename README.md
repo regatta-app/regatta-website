@@ -50,6 +50,8 @@ What `scripts/publish.sh` does:
 - **Invalidates** in CloudFront the paths it uploaded (a page's `index.html` and its `/folder/` URL), or `/*` when more than 15 changed. Within a minute or two everyone gets the new version.
 - `--dry-run` shows all of this without changing anything.
 
+**Changed `site.css` or `site.js`?** Change the `?v=` after its name in every page that links it (`/assets/site.css?v=2026-11-20` in `site/index.html`, `site/privacy/index.html`, `site/thanks/index.html` and `site/404.html`; use the day of the change). Browsers keep these files for a day, so without a new `?v=` a returning visitor gets the new page with the old styles (20 Nov 2026: the "Open Regatta" button showed as plain text).
+
 **Changed an image, the video or a font?** Give it a new file name (e.g. `manish-sharma-2.jpg`) and update the HTML. Browsers keep assets for a day (fonts for a year) and do not ask again, so an overwritten file with the same name is not seen by returning visitors.
 
 ## Changing the infrastructure
