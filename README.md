@@ -6,6 +6,7 @@ The public site at https://regatta.tech. This is **not** the Regatta app (that l
 site/       the files that are served (index.html at the top; home/, privacy/, thanks/, 404.html, assets/)
 aws/        CloudFormation template for the hosting, the setup guide, and STACK-UPDATE.md
 scripts/    publish.sh: upload site/ to S3 and refresh CloudFront
+.github/    workflows/publish.yml: the "Publish" button (runs publish.sh from GitHub)
 index.html  accidental duplicate of site/index.html (see Notes); not served
 ```
 
@@ -31,7 +32,22 @@ Caching is set per file when uploading (HTML, CSS and JS 5 minutes, fonts one ye
 Who may merge and publish: Daniela owns this repository; the rules are in `.claude/CLAUDE.md`.
 
 1. Edit the files in `site/`, open a pull request, merge to `main`.
-2. Open **AWS CloudShell** (AWS console, region US East (N. Virginia), the `>_` icon), then:
+2. Publish `main`, **only on Daniela's word**, in one of two ways.
+
+### A. With the "Publish" button on GitHub (no computer or AWS console needed)
+
+Set up once: [`aws/STACK-UPDATE.md`](aws/STACK-UPDATE.md), section 6 (a stack update and four repository variables).
+
+1. GitHub → **Actions** → **Publish** → **Run workflow**. Leave *Use workflow from* on **Branch: main**.
+2. **confirm_sha**: the full 40-character sha of `main` that Daniela approved (GitHub → *Code* → the commit list → copy the full sha). If `main` has moved on since, the run stops before touching AWS.
+3. Leave **dry_run** ticked and press **Run workflow**. Open the run: its summary shows the sha, "dry run" and what would be uploaded and invalidated. Read it.
+4. If it looks right, run it again with the same sha and **dry_run** unticked. The summary then says "real publish".
+
+Who can press the button: anyone with write access to this repository (GitHub only shows *Run workflow* to them), and a Claude session with that access. It runs only on `main`, only by hand (never on a push or a pull request), one run at a time, and signs in to AWS without any stored key: AWS accepts only this repository's `main` (the `PublishRole` in the stack). The role can upload to the site bucket and clear the CloudFront cache, nothing else; it cannot delete files, so the button never passes `--delete` (use CloudShell for that). Every run uploads every file, because a fresh checkout gives every file a new date (see "What `scripts/publish.sh` does"); that is harmless and also refreshes every `Cache-Control`. Run logs of this public repository are public: the bucket, distribution and role are hidden (`***`) in them.
+
+### B. From AWS CloudShell (still valid)
+
+Open **AWS CloudShell** (AWS console, region US East (N. Virginia), the `>_` icon), then:
 
    ```
    git clone https://github.com/regatta-app/regatta-website.git   # first time; later: cd regatta-website && git pull
