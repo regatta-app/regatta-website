@@ -256,8 +256,6 @@ tr.in .rg-ev .bar i{transform:scaleX(1)}
 .line-input{width:100%;min-width:0;height:48px;padding:0;border:0;border-bottom:1px solid var(--light-40);border-radius:0;background:transparent;font-family:inherit;font-size:var(--fs-body);line-height:var(--lh-text);color:var(--light)}
 .line-input::placeholder{color:var(--muted);opacity:1}
 .line-input:focus{outline:none;border-bottom-color:var(--light)}
-.line-input:focus-visible{outline:2px solid var(--light);outline-offset:4px;border-radius:var(--r-inner)}
-.line-input.quiet-focus:focus-visible{outline:none} /* focus set by the hero button after a mouse click: the white underline is enough */
 .fa{display:flex;flex-direction:column;gap:var(--s12);align-items:flex-start}
 .pv{margin:0;font-size:var(--fs-note);line-height:var(--lh-text);color:var(--line)}
 /* form status line under the button: empty (one line tall) unless the receiver sent the visitor back with an error */
@@ -523,7 +521,6 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
   if(id==='s6'){
    try{ if(location.hash!=='#s6') history.pushState(null,'','#s6'); }catch(err){}   /* Back returns to the top */
    var f=document.getElementById('f-email'); if(f&&lastPointer!=='touch'){
-    if(lastPointer!=='key'){ f.classList.add('quiet-focus'); f.addEventListener('blur',function(){ f.classList.remove('quiet-focus'); },{once:true}); }   /* mouse click: cursor in the field, no box; keyboard keeps the ring */
     try{ f.focus({preventScroll:true}); }catch(err){ f.focus(); } }   /* not on touch: no surprise keyboard */
   }
  });
