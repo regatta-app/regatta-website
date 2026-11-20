@@ -129,6 +129,7 @@ Follow steps 1–3 above, with these differences:
 
   **Nothing else.** Any Modify, Remove or Replacement on an existing resource: **STOP**, delete the change set, ask for help (step 2's rules apply).
 - After **UPDATE_COMPLETE**, the stack's **Outputs** tab has a new line, **PublishRoleArn**.
+- **If the stack already has `PublishRole` and you apply the 20 Nov 2026 fix (token subject with organization and repository ids):** the change set must show exactly ONE row, `PublishRole`, **Modify**, Replacement **False**, and nothing else.
 
 ### 6c. Create the four repository variables
 
@@ -150,7 +151,7 @@ Variables, not secrets: none of these is a password, and nobody can use them wit
 3. Leave **dry_run** ticked → **Run workflow**.
 4. Open the run when it turns green. Its summary must show the sha, **dry run (nothing was changed)**, "Pre-flight OK", a list of `(dryrun) upload:` lines (every file: a fresh checkout looks new to `aws s3 sync`) and "Dry run: would invalidate: /*".
 
-If it fails at **Sign in to AWS**: the variable `AWS_PUBLISH_ROLE_ARN` is wrong, or the run was not on `main`. If it fails with "bucket … not accessible" or "distribution … not accessible": check `SITE_BUCKET` and `CLOUDFRONT_DISTRIBUTION_ID` against the Outputs tab.
+If it fails at **Sign in to AWS**: the variable `AWS_PUBLISH_ROLE_ARN` is wrong, or the run was not on `main`. If it fails there with "Not authorized to perform sts:AssumeRoleWithWebIdentity", compare the subject GitHub sent (CloudTrail → event AssumeRoleWithWebIdentity → userName) with the one in the role's trust policy (`PublishRole`, condition `token.actions.githubusercontent.com:sub`). If it fails with "bucket … not accessible" or "distribution … not accessible": check `SITE_BUCKET` and `CLOUDFRONT_DISTRIBUTION_ID` against the Outputs tab.
 
 A real publish is the same run with **dry_run** unticked, on Daniela's word.
 
