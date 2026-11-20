@@ -8,7 +8,7 @@
 :root{
  /* colours: brand palette only */
  --navy:#0D3769;--cream:#F5EEE3;--gold:#CAA229;--orange:#F05910;--deep:#071833;
- --light:#F3F6FB;--grey:#4E5A6B;--line:#C3CFDF;--muted:#8397B3;--white:#FFFFFF;
+ --light:#F3F6FB;--grey:#4E5A6B;--line:#C3CFDF;--muted:#8397B3;
  --tone:var(--cream);
  --line-dk:var(--grey);                 /* divider on deep blue */
  --ring:var(--navy);
@@ -75,6 +75,6 @@ header.bar .wrap{height:100%;display:flex;align-items:center;justify-content:spa
 .foot nav{display:flex;flex-wrap:wrap;gap:var(--s4) var(--s24);align-items:center}
 .foot a{position:relative;padding:0;display:inline-block}
 .foot a::before{content:"";position:absolute;left:0;right:0;top:calc((1lh - 44px) / 2);bottom:calc((1lh - 44px) / 2)}
-.foot .wm{font:var(--fw-regular) var(--fs-lead)/var(--lh-display) var(--ff-mark);letter-spacing:.14em;color:var(--white)}
+.foot .wm{font:var(--fw-regular) var(--fs-lead)/var(--lh-display) var(--ff-mark);letter-spacing:.14em;color:var(--light)}
 @media (max-width:720px){.foot-in{padding-block:var(--s24)}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
