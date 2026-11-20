@@ -56,9 +56,10 @@ header.bar .wrap{height:100%;display:flex;align-items:center;justify-content:spa
 .nav{display:flex;align-items:center}
 .nav a{color:var(--navy);text-decoration:none;font-size:var(--fs-small);font-weight:var(--fw-regular);transition:opacity .15s ease;padding:0;min-height:44px;display:inline-flex;align-items:center}
 .nav a:hover{color:var(--navy);opacity:.65}
-.nav .si-icon{padding:0;min-width:44px;justify-content:center;margin-right:calc((24px - 44px) / 2)}
-.nav .si-icon svg{display:block;width:24px;height:24px}
-.nav .si-icon:focus-visible{outline-offset:-3px} /* ring drawn inside the 44px link, so the top of the window never clips it */
+/* "Open Regatta": outline pill to the app (Austin's note and Daniela's choice, 20 Nov 2026). 44px tap area, 32px pill drawn inside it */
+.nav .open-app{position:relative;padding:0 var(--s16);font-weight:var(--fw-bold);white-space:nowrap}
+.nav .open-app::before{content:"";position:absolute;inset:6px 0;border:1px solid var(--navy);border-radius:var(--r-pill);pointer-events:none}
+.nav .open-app:focus-visible{outline-offset:-3px} /* ring drawn inside the 44px link, so the top of the window never clips it */
 
 /* buttons and quiet links */
 .btn-light{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 var(--s24);border-radius:var(--r-pill);background:var(--cream);color:var(--navy);font-family:inherit;font-size:var(--fs-small);font-weight:var(--fw-bold);line-height:var(--lh-text);text-decoration:none;border:0;cursor:pointer;transition:opacity .15s ease}
