@@ -85,6 +85,13 @@ h2.t{font-size:var(--fs-title);line-height:var(--lh-head);color:var(--navy);max-
 .scrim{position:absolute;inset:0;background:linear-gradient(90deg,var(--deep-82) 0,var(--deep-55) 50%,var(--deep-12) 100%),linear-gradient(0deg,var(--deep-40),var(--deep-0) 35%)}
 .hbody{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-top:var(--s24);padding-bottom:96px}
 .hero h1{max-width:13em;font-size:var(--fs-hero);line-height:var(--lh-display);letter-spacing:-.01em;color:var(--light);text-shadow:0 1px 18px var(--deep-45)}
+/* hero title: "Regatta machines" stays, the capability under it changes every few seconds (Austin, 20 Nov 2026).
+   All capabilities sit in one grid cell, so the title keeps the height of the longest one and nothing below moves. */
+.vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.cyc-w{display:grid}
+.cyc-w>span{grid-area:1/1;opacity:0;transform:translateY(12px);transition:opacity .5s var(--rv-ease),transform .5s var(--rv-ease)}
+.cyc-w>span.on{opacity:1;transform:none}
+.cyc-w>span.out{opacity:0;transform:translateY(-12px)}
 /* hero button: outline */
 .hero .btn-light{margin-top:var(--s32);background:transparent;color:var(--light);border:1px solid var(--light-45);font-weight:var(--fw-bold);transition:none}
 .hero .btn-light:hover{background:transparent;color:var(--light);border-color:var(--light);opacity:1}
@@ -317,7 +324,7 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
   <video id="film" autoplay muted loop playsinline preload="auto" poster="/assets/entry-poster.jpg" aria-hidden="true" tabindex="-1"><source src="/assets/entry-loop.mp4" type="video/mp4"></video>
   <div class="scrim"></div>
   <div class="wrap hbody">
-   <h1>Regatta machines decipher your data to inform clinical decisions</h1>
+   <h1 class="cyc"><span class="vh">Regatta machines centralize your data, identify responsive patients, draft biomarkers, identify cryptic toxicity and monitor external clinical programs</span><span aria-hidden="true">Regatta machines</span> <span class="cyc-w" aria-hidden="true"><span class="on">centralize your data</span><span>identify responsive patients</span><span>draft biomarkers</span><span>identify cryptic toxicity</span><span>monitor external clinical programs</span></span></h1>
    <a class="btn-light" href="#s6" data-go="s6">Request access</a>
   </div>
   <button class="down chev" type="button" data-go="s2" aria-label="Go to the next section"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -491,6 +498,11 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
  var T='h2.t,.sub,.cl>li,.cmp tr,.person,.facts>div,.form>*';
  function order(sec){ var i=0, j=0; [].forEach.call(sec.querySelectorAll(T),function(el){ if(!el.getClientRects().length) return; var li=el.matches('.cl>li'); el.style.setProperty('--rv-d',(li?Math.min(160+(j++)*110,600):Math.min(120+i*70,500))+'ms'); if(!li) i++; }); }
  window.Regatta.reveals(order);
+ /* hero title: cycle the capabilities; still under reduced motion */
+ (function(){ var w=document.querySelector('.cyc-w'); if(!w||reduce) return; var it=[].slice.call(w.children), i=0;
+  setInterval(function(){ if(document.hidden) return; var a=it[i]; i=(i+1)%it.length; var b=it[i];
+   a.classList.remove('on'); a.classList.add('out'); setTimeout(function(){ a.classList.remove('out'); },500); b.classList.add('on'); },2800);
+ })();
  /* hero: start as soon as the fonts or the film/poster are ready (whichever comes first), 400 ms at most */
  (function(){ var done=false, need=1;
   function go(){ if(done) return; done=true; requestAnimationFrame(function(){ root.classList.add('hero-go'); setTimeout(function(){ root.classList.remove('js-hero','hero-go'); },1000); }); }
