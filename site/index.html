@@ -248,7 +248,7 @@ tr.in .rg-ev .bar i{transform:scaleX(1)}
 .big2{font:var(--fw-regular) var(--fs-sub)/var(--lh-head) var(--ff-head);color:var(--navy);margin-top:var(--s8)}
 .inv{list-style:none;padding:0;margin-top:var(--s8);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s8) var(--s24);font:var(--fw-regular) var(--fs-lead)/var(--lh-head) var(--ff-head);color:var(--navy)}
 .facts{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s32) var(--col-gap);margin-top:var(--s32);padding-top:var(--s32);border-top:1px solid var(--line)}
-@media (min-width:721px) and (max-width:1023px){.facts .big2{margin-right:calc(var(--s16) - var(--col-gap))}} /* lets "Five $10B+ partners" use the column gap so it keeps one line */
+@media (min-width:721px){.facts .big2{margin-right:calc(var(--s16) - var(--col-gap))}} /* lets "Five $10B+ partners" use the column gap so it keeps one line */
 /* section 6, the access form */
 .form{display:flex;flex-direction:column;gap:var(--s24);max-width:520px}
 .fl{display:flex;flex-direction:column;gap:var(--s6)}
@@ -256,7 +256,7 @@ tr.in .rg-ev .bar i{transform:scaleX(1)}
 .line-input{width:100%;min-width:0;height:48px;padding:0;border:0;border-bottom:1px solid var(--light-40);border-radius:0;background:transparent;font-family:inherit;font-size:var(--fs-body);line-height:var(--lh-text);color:var(--light)}
 .line-input::placeholder{color:var(--muted);opacity:1}
 .line-input:focus{outline:none;border-bottom-color:var(--light)}
-.line-input:focus-visible{outline:2px solid var(--light);outline-offset:4px;border-radius:var(--s2)}
+.line-input:focus-visible{outline:2px solid var(--light);outline-offset:4px;border-radius:var(--r-inner)}
 .line-input.quiet-focus:focus-visible{outline:none} /* focus set by the hero button after a mouse click: the white underline is enough */
 .fa{display:flex;flex-direction:column;gap:var(--s12);align-items:flex-start}
 .pv{margin:0;font-size:var(--fs-note);line-height:var(--lh-text);color:var(--line)}
