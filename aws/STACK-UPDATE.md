@@ -155,6 +155,8 @@ If it fails at **Sign in to AWS**: the variable `AWS_PUBLISH_ROLE_ARN` is wrong,
 
 A real publish is the same run with **dry_run** unticked, on Daniela's word.
 
+**Publish requests (README.md, way C) need nothing more.** They start the same workflow on `main` (a push that changes `publish/REQUEST.json`), so AWS sees the same `repo:regatta-app/regatta-website:ref:refs/heads/main` and the same `PublishRole` accepts it: no change set, no new variable. If you add the optional GitHub environment below, it applies to both ways.
+
 **Optional second key (recommended):** a GitHub *environment* with a required reviewer makes every run wait until Daniela presses *Approve* in GitHub. It needs a small change to the workflow (one line, `environment: <name>` on the job) and a change set that sets the parameter `GitHubEnvironment` to the same name, because AWS then sees the run as that environment instead of `main`. In the environment, also limit *Deployment branches* to `main`.
 
 **Rollback:** repeat steps 1–3 with the previous `aws/regatta-website.yaml`. `PublishRole` (and `GitHubOidcProvider`, if the stack created it) show as **Remove**, which is expected; the button then stops working and CloudShell remains.

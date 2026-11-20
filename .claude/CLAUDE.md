@@ -31,7 +31,15 @@ no keys, passwords or private notes in it.
    publishing happens on Daniela's word, by her or by a session she tells to. A session may also
    publish by starting the GitHub workflow "Publish" (`.github/workflows/publish.yml`), only after
    Daniela says ok in chat for that sha of `main` (passed as `confirm_sha`), always first with
-   `dry_run` ticked, reading its result before the real run. If the README on your
+   `dry_run` ticked, reading its result before the real run. A session that cannot start the
+   workflow publishes with **publish requests** (README.md, way C): a PR that changes only
+   `publish/REQUEST.json`, with `approved_sha` (the sha of `main` Daniela said ok to publish) and
+   her ok quoted word for word in `daniela_ok`. First a request with `dry_run: true`: merge it with
+   its head sha pinned and read the result comment the workflow writes on that PR; only if it is
+   clean, a second request with `dry_run: false` for the same sha, then read its comment (it
+   includes the live-site check) and report to Daniela in one line. **Daniela's ok to publish a sha
+   is the ok for both request PRs of that sha** (the one exception to point 4: they change nothing
+   but the request). Never put a request in a PR with any other change. If the README on your
    branch still describes Netlify, it predates PR #15: do not publish from it.
 6. **Check the live site after publishing** (the changed pages load, the form is there, no broken
    links) and report to Daniela in one line. Undoing a change is a revert PR, also on her word.
