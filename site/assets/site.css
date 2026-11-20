@@ -1,6 +1,6 @@
 /* regatta.tech shared styles: fonts, brand tokens (Regatta brand guide v1.0, web), base type,
    fixed cream bar, footer, buttons. Every page links this file; page-specific CSS stays in the page.
-   Changing this file? Give it a new name (browsers keep assets for a day) or accept a one-day delay. */
+   Changing this file? Change the ?v= in the <link> of every page that uses it (browsers keep assets for a day). */
 @font-face{font-family:"Tenor Sans";font-weight:400;font-display:swap;src:url(/assets/fonts/tenor-sans-latin-400.woff2) format("woff2")}
 @font-face{font-family:"Playfair Display SC";font-weight:400;font-display:swap;src:url(/assets/fonts/playfair-display-sc-400.woff2) format("woff2")}
 @font-face{font-family:"Inter";font-weight:400;font-display:swap;src:url(/assets/fonts/inter-latin-400.woff2) format("woff2")}
