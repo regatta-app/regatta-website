@@ -11,9 +11,25 @@ no keys, passwords or private notes in it.
 - **Momo owns the app repository.** Nothing in this file changes the app's rules: there, a merge or a
   deploy by a Claude session happens only on Momo's word.
 
+## The website board
+
+- **`board/TASKS.md`** is the list of open work for regatta.tech and this repository (Daniela, 20 Nov
+  2026). Website work goes there, not on the app board or the compliance board.
+- Account A (Daniela's central Claude account) reads and watches it. Every session that works on the
+  website runs `git pull`, reads the board at the start, and updates its rows at the end; account B
+  updates it at the end of every website work session. The rules for rows are at the top of the board.
+- The board is public like the rest of this repository: nothing from rule 7 of the board goes in it.
+- **Board commits go straight to `main`:** a commit that changes only files under `board/` needs no
+  PR. Its message starts with `BOARD:`; run `git pull --rebase` first; check with
+  `git diff --cached --name-only` that every file is under `board/`; never force-push. Everything
+  else still goes through a PR (below). A board commit moves `main`: an ok Daniela gave for an older
+  sha of `main` does not cover the new one (the "Publish" workflow stops on it), so do not commit to
+  the board between her ok and the publish, or ask her again for the new sha.
+
 ## How a change reaches the site
 
-1. **Branch from `main`, one PR per change.** No direct commits to `main`. Every PR has `main` as its
+1. **Branch from `main`, one PR per change.** No direct commits to `main`, except board commits (see
+   "The website board"). Every PR has `main` as its
    base and can merge alone; a PR is never stacked on another PR's branch.
 2. **Checks before the PR opens.** Every internal link and every file under `assets/` that a page uses
    resolves; the pilot form in `site/index.html` (the home; `/home/` only redirects to `/`) has the name `pilot`,

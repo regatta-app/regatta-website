@@ -7,6 +7,7 @@ site/       the files that are served (index.html at the top; home/, privacy/, t
 aws/        CloudFormation template for the hosting, the setup guide, and STACK-UPDATE.md
 scripts/    publish.sh: upload site/ to S3 and refresh CloudFront
 .github/    workflows/publish.yml: the "Publish" button (runs publish.sh from GitHub)
+board/      TASKS.md: the website board, open work for regatta.tech (not published; public in this repo)
 index.html  accidental duplicate of site/index.html (see Notes); not served
 ```
 
