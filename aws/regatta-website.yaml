@@ -497,10 +497,12 @@ Resources:
             Condition:
               StringEquals:
                 token.actions.githubusercontent.com:aud: sts.amazonaws.com
+                # GitHub now sends the subject with the numeric ids of the organization (342224938) and the
+                # repository (1438910638): repo:<org>@<org id>/<repo>@<repo id>:... Seen in CloudTrail on 20 Nov 2026.
                 token.actions.githubusercontent.com:sub: !If
                   - UsesGitHubEnvironment
-                  - !Sub "repo:regatta-app/regatta-website:environment:${GitHubEnvironment}"
-                  - repo:regatta-app/regatta-website:ref:refs/heads/main
+                  - !Sub "repo:regatta-app@342224938/regatta-website@1438910638:environment:${GitHubEnvironment}"
+                  - repo:regatta-app@342224938/regatta-website@1438910638:ref:refs/heads/main
       Policies:
         - PolicyName: publish-site
           PolicyDocument:
