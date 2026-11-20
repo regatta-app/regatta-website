@@ -1,0 +1,136 @@
+# Publish site/ to regatta.tech (S3 + CloudFront) from GitHub, with a button.
+#
+# Started ONLY by hand: GitHub -> Actions -> "Publish" -> "Run workflow".
+# Never runs on a push or a pull request.
+#
+# Publishing happens only on Daniela's word (see .claude/CLAUDE.md, point 5).
+# Always run it first with "dry_run" ticked and read the result.
+#
+# Inputs:
+#   confirm_sha  the full 40-character sha of main that Daniela approved. The
+#                job stops before touching AWS if main is not at that sha.
+#   dry_run      ticked (the default): show what would be uploaded and
+#                invalidated, change nothing.
+#
+# Needs four repository variables (Settings -> Secrets and variables ->
+# Actions -> Variables), see aws/STACK-UPDATE.md, "6. Publishing from GitHub":
+#   AWS_PUBLISH_ROLE_ARN        output PublishRoleArn of the regatta-website stack
+#   SITE_BUCKET                 output BucketName
+#   CLOUDFRONT_DISTRIBUTION_ID  output DistributionId
+#   AWS_REGION                  us-east-1 (used if empty)
+# No AWS keys are stored: GitHub signs in to AWS with OIDC, and AWS only
+# accepts this repository's main branch (the role's trust policy).
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_sha:
+        description: "Full sha of main that Daniela approved (40 characters)"
+        required: true
+        type: string
+      dry_run:
+        description: "Dry run: show what would change, change nothing"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  id-token: write   # to sign in to AWS with OIDC
+  contents: read    # to check out the repo
+
+concurrency:
+  group: publish-regatta-website
+  cancel-in-progress: false   # a second run waits; a running publish is never cut off
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CONFIRM_SHA: ${{ inputs.confirm_sha }}
+      DRY_RUN: ${{ inputs.dry_run }}
+      RUN_REF: ${{ github.ref }}
+      ROLE_ARN: ${{ vars.AWS_PUBLISH_ROLE_ARN }}
+      BUCKET: ${{ vars.SITE_BUCKET }}
+      DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+    steps:
+      - name: Check branch, sha format and settings
+        run: |
+          set -euo pipefail
+          if [ "$RUN_REF" != "refs/heads/main" ]; then
+            echo "::error::Publish runs only on main (this run is on '$RUN_REF'). Choose 'Use workflow from: Branch: main'."
+            exit 1
+          fi
+          if ! printf '%s' "$CONFIRM_SHA" | grep -qE '^[0-9a-f]{40}$'; then
+            echo "::error::confirm_sha must be the full 40-character sha of main (lowercase), not a short sha or a branch name."
+            exit 1
+          fi
+          case "$DRY_RUN" in true|false) ;; *) echo "::error::dry_run must be true or false (got '$DRY_RUN')."; exit 1 ;; esac
+          for v in ROLE_ARN BUCKET DISTRIBUTION_ID; do
+            if [ -z "${!v}" ]; then
+              echo "::error::Repository variable for $v is not set (see aws/STACK-UPDATE.md, section 6)."
+              exit 1
+            fi
+          done
+          # Repository variables are not hidden in logs like secrets are; this repo is public.
+          echo "::add-mask::$ROLE_ARN"
+          echo "::add-mask::$BUCKET"
+          echo "::add-mask::$DISTRIBUTION_ID"
+
+      - name: Check out main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1   # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check that main is at the approved sha
+        run: |
+          set -euo pipefail
+          HEAD_SHA="$(git rev-parse HEAD)"
+          if [ "$HEAD_SHA" != "$CONFIRM_SHA" ]; then
+            echo "::error::main is at $HEAD_SHA but confirm_sha is $CONFIRM_SHA. Nothing was published. Get Daniela's ok for the current sha and run again."
+            exit 1
+          fi
+          echo "main is at the approved sha $HEAD_SHA."
+
+      - name: Sign in to AWS (OIDC, no stored keys)
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd   # v6.3.0
+        with:
+          role-to-assume: ${{ vars.AWS_PUBLISH_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+          role-session-name: regatta-website-publish-${{ github.run_id }}
+          mask-aws-account-id: true
+
+      - name: Publish (scripts/publish.sh)
+        run: |
+          set -euo pipefail
+          OPTS=()
+          [ "$DRY_RUN" = "true" ] && OPTS+=(--dry-run)
+          set +e
+          bash scripts/publish.sh "${OPTS[@]}" "$BUCKET" "$DISTRIBUTION_ID" 2>&1 | tee "$RUNNER_TEMP/publish.log"
+          status=${PIPESTATUS[0]}
+          set -e
+          exit "$status"
+
+      - name: Summary
+        if: always()
+        run: |
+          set -uo pipefail
+          if [ "$DRY_RUN" = "true" ]; then mode="dry run (nothing was changed)"; else mode="real publish"; fi
+          {
+            echo "## Publish"
+            echo ""
+            echo "- sha: \`$(git rev-parse HEAD 2>/dev/null || echo 'not checked out')\` (confirm_sha \`$CONFIRM_SHA\`)"
+            echo "- mode: **$mode**"
+            echo "- result: **${JOB_STATUS}**"
+            if [ -s "$RUNNER_TEMP/publish.log" ]; then
+              echo ""
+              echo "Output of scripts/publish.sh (bucket and distribution id replaced):"
+              echo ""
+              echo '```'
+              sed -e "s#${BUCKET:-@@none@@}#BUCKET#g" -e "s#${DISTRIBUTION_ID:-@@none@@}#DISTRIBUTION_ID#g" "$RUNNER_TEMP/publish.log" | tail -n 200
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+        env:
+          JOB_STATUS: ${{ job.status }}

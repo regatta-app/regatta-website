@@ -26,10 +26,27 @@ Parameters:
     Type: String
     Default: ""
     Description: Optional third recipient. Leave empty for none.
+  GitHubOidcProviderArn:
+    Type: String
+    Default: ""
+    Description: >-
+      For the "Publish" button on GitHub. Leave EMPTY if this AWS account has no identity
+      provider for token.actions.githubusercontent.com yet (IAM -> Identity providers): the
+      stack then creates it. If one already exists, paste its ARN here (an account can hold
+      only one).
+  GitHubEnvironment:
+    Type: String
+    Default: ""
+    AllowedPattern: "^[A-Za-z0-9_.-]*$"
+    Description: >-
+      Leave EMPTY. Only if the Publish workflow is changed to use a GitHub environment
+      (a required reviewer, the optional second key), put the environment's name here.
 
 Conditions:
   HasSecondEmail: !Not [!Equals [!Ref PilotNotifyEmail2, ""]]
   HasThirdEmail: !Not [!Equals [!Ref PilotNotifyEmail3, ""]]
+  CreateGitHubOidcProvider: !Equals [!Ref GitHubOidcProviderArn, ""]
+  UsesGitHubEnvironment: !Not [!Equals [!Ref GitHubEnvironment, ""]]
 
 Resources:
 
@@ -447,6 +464,67 @@ Resources:
           SslSupportMethod: sni-only
           MinimumProtocolVersion: TLSv1.2_2021
 
+  # ---------- Publishing from GitHub (the "Publish" workflow) ----------
+  # GitHub Actions signs in with OIDC: no AWS keys are stored anywhere. AWS accepts only
+  # tokens for this repository's main branch (or, if GitHubEnvironment is set, for that
+  # environment). The role can only list and upload to the site bucket and clear the
+  # CloudFront cache. It cannot delete files (the workflow never passes --delete; deleting,
+  # if ever needed, stays a CloudShell task) and it touches nothing else in the account.
+  # No RoleName on purpose: a named role would need CAPABILITY_NAMED_IAM.
+  GitHubOidcProvider:
+    Type: AWS::IAM::OIDCProvider
+    Condition: CreateGitHubOidcProvider
+    Properties:
+      Url: https://token.actions.githubusercontent.com
+      ClientIdList:
+        - sts.amazonaws.com
+      ThumbprintList:   # GitHub's published thumbprints; AWS verifies GitHub through its own trusted CAs anyway
+        - 6938fd4d98bab03faadb97b34396831e3780aea1
+        - 1c58a3a8518e8759bf075b76b750d4f2df264fcd
+
+  PublishRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: Assumed by the Publish workflow of github.com/regatta-app/regatta-website (main only) to upload site/ and invalidate CloudFront.
+      MaxSessionDuration: 3600
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !If [CreateGitHubOidcProvider, !Ref GitHubOidcProvider, !Ref GitHubOidcProviderArn]
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                token.actions.githubusercontent.com:aud: sts.amazonaws.com
+                token.actions.githubusercontent.com:sub: !If
+                  - UsesGitHubEnvironment
+                  - !Sub "repo:regatta-app/regatta-website:environment:${GitHubEnvironment}"
+                  - repo:regatta-app/regatta-website:ref:refs/heads/main
+      Policies:
+        - PolicyName: publish-site
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: ListSiteBucket   # aws s3 sync and aws s3api head-bucket
+                Effect: Allow
+                Action:
+                  - s3:ListBucket
+                  - s3:GetBucketLocation
+                Resource: !GetAtt SiteBucket.Arn
+              - Sid: UploadSiteFiles   # no s3:DeleteObject: see the comment above
+                Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                Resource: !Sub "${SiteBucket.Arn}/*"
+              - Sid: RefreshCloudFront
+                Effect: Allow
+                Action:
+                  - cloudfront:GetDistribution
+                  - cloudfront:CreateInvalidation
+                Resource: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
+
 Outputs:
   BucketName:
     Description: Upload the site files here (index.html at the top level).
@@ -463,3 +541,6 @@ Outputs:
   PilotFormEndpoint:
     Description: Where the "Request a pilot" form posts (through CloudFront).
     Value: !Sub "https://${DomainName}/api/pilot"
+  PublishRoleArn:
+    Description: For the GitHub repository variable AWS_PUBLISH_ROLE_ARN (the Publish workflow signs in with it).
+    Value: !GetAtt PublishRole.Arn

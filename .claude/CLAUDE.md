@@ -28,7 +28,10 @@ no keys, passwords or private notes in it.
 5. **Publish.** The site is hosted on AWS (S3 behind CloudFront, stack `regatta-website`); Netlify is
    not used. Publishing is `scripts/publish.sh` (README.md, "Publishing a change"): run it with
    `--dry-run` first and read what it would upload. A merge is not live until it is published, and
-   publishing happens on Daniela's word, by her or by a session she tells to. If the README on your
+   publishing happens on Daniela's word, by her or by a session she tells to. A session may also
+   publish by starting the GitHub workflow "Publish" (`.github/workflows/publish.yml`), only after
+   Daniela says ok in chat for that sha of `main` (passed as `confirm_sha`), always first with
+   `dry_run` ticked, reading its result before the real run. If the README on your
    branch still describes Netlify, it predates PR #15: do not publish from it.
 6. **Check the live site after publishing** (the changed pages load, the form is there, no broken
    links) and report to Daniela in one line. Undoing a change is a revert PR, also on her word.

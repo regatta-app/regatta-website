@@ -102,6 +102,62 @@ Then **one real submission** on https://regatta.tech/#s6 with your own email: wa
 - **The update failed:** CloudFormation rolls back by itself to the previous state (status `UPDATE_ROLLBACK_COMPLETE`). Nothing to do except read the first red event in **Events** for the reason.
 - **The update succeeded but something is wrong** (e.g. the site looks broken because of the CSP): repeat steps 1–3 with the `live-template-<date>.yaml` you saved in step 0 (or the previous version of the file from GitHub → *History*). Review the change set the same way: this time `SecurityHeadersPolicy` shows as **Remove**, which is expected.
 
+## 6. Publishing from GitHub: the "Publish" button (set up once)
+
+This lets anyone with write access to the GitHub repo, or a Claude session, publish `main` with a button (GitHub → Actions → **Publish**) instead of CloudShell. Publishing still happens only on Daniela's word. About 20 minutes, done once. Nothing on the site changes during this setup.
+
+### 6a. Check whether the account already trusts GitHub
+
+AWS console → **IAM** → **Identity providers**. Is there one named `token.actions.githubusercontent.com`?
+
+- **No** → in 6b leave the parameter `GitHubOidcProviderArn` **empty**; the stack creates it.
+- **Yes** → open it and copy its **ARN**; in 6b paste it into `GitHubOidcProviderArn`. (An account can hold only one; creating a second fails and the update rolls back by itself, nothing broken.)
+
+### 6b. Apply the template with a change set
+
+Follow steps 1–3 above, with these differences:
+
+- **Parameters (step 1.4):** the existing ones keep their current values. Two new ones appear: `GitHubOidcProviderArn` (empty or the ARN from 6a) and `GitHubEnvironment` (leave **empty**).
+- **Options (step 1.5):** tick "I acknowledge that AWS CloudFormation might create IAM resources" (this time it does create a role).
+- Change set name: e.g. `publish-from-github-2026-11`.
+- **Expected in the change set (step 2):**
+
+| Resource (logical ID) | Action | Replacement | Why |
+|---|---|---|---|
+| `GitHubOidcProvider` | **Add** | — | Only if `GitHubOidcProviderArn` was left empty: lets AWS recognise GitHub |
+| `PublishRole` | **Add** | — | The role the Publish workflow uses: upload to the site bucket, clear the CloudFront cache, nothing else |
+
+  **Nothing else.** Any Modify, Remove or Replacement on an existing resource: **STOP**, delete the change set, ask for help (step 2's rules apply).
+- After **UPDATE_COMPLETE**, the stack's **Outputs** tab has a new line, **PublishRoleArn**.
+
+### 6c. Create the four repository variables
+
+GitHub → the repository → **Settings** → **Secrets and variables** → **Actions** → **Variables** tab → **New repository variable**, four times (names exactly as written):
+
+| Name | Value |
+|---|---|
+| `AWS_PUBLISH_ROLE_ARN` | Output **PublishRoleArn** of the stack |
+| `SITE_BUCKET` | Output **BucketName** |
+| `CLOUDFRONT_DISTRIBUTION_ID` | Output **DistributionId** |
+| `AWS_REGION` | `us-east-1` |
+
+Variables, not secrets: none of these is a password, and nobody can use them without being this repository's `main`. Never write them in a file of this repo or in a PR. The workflow hides them (`***`) in its public logs.
+
+### 6d. Test with a dry run
+
+1. GitHub → **Actions** → **Publish** → **Run workflow**. *Use workflow from:* **Branch: main**.
+2. **confirm_sha**: the full sha of the latest commit on `main` (GitHub → *Code* → *Commits* → the copy button next to the newest one).
+3. Leave **dry_run** ticked → **Run workflow**.
+4. Open the run when it turns green. Its summary must show the sha, **dry run (nothing was changed)**, "Pre-flight OK", a list of `(dryrun) upload:` lines (every file: a fresh checkout looks new to `aws s3 sync`) and "Dry run: would invalidate: /*".
+
+If it fails at **Sign in to AWS**: the variable `AWS_PUBLISH_ROLE_ARN` is wrong, or the run was not on `main`. If it fails with "bucket … not accessible" or "distribution … not accessible": check `SITE_BUCKET` and `CLOUDFRONT_DISTRIBUTION_ID` against the Outputs tab.
+
+A real publish is the same run with **dry_run** unticked, on Daniela's word.
+
+**Optional second key (recommended):** a GitHub *environment* with a required reviewer makes every run wait until Daniela presses *Approve* in GitHub. It needs a small change to the workflow (one line, `environment: <name>` on the job) and a change set that sets the parameter `GitHubEnvironment` to the same name, because AWS then sees the run as that environment instead of `main`. In the environment, also limit *Deployment branches* to `main`.
+
+**Rollback:** repeat steps 1–3 with the previous `aws/regatta-website.yaml`. `PublishRole` (and `GitHubOidcProvider`, if the stack created it) show as **Remove**, which is expected; the button then stops working and CloudShell remains.
+
 ## One-time steps outside the template
 
 **Log retention (30 days).** The form function's log group already exists (it was created the first time the function ran), so it is not declared in the template — declaring it would make every update fail with "already exists". Set its retention once, in CloudShell (us-east-1):
