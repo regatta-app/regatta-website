@@ -22,7 +22,7 @@ index.html  accidental duplicate of site/index.html (see Notes); not served
   - Test it locally, no AWS needed: `node aws/test-pilot-form.js`. The filter lives in the template, so it goes live only with a stack update (`aws/STACK-UPDATE.md`), not with `scripts/publish.sh`.
 - **Route 53** — the DNS records for regatta.tech.
 
-Caching is set per file when uploading (HTML 5 minutes, fonts one year, other assets one day); see "Caching and response headers" in [`aws/website-aws-hosting-2026-10-29.md`](aws/website-aws-hosting-2026-10-29.md).
+Caching is set per file when uploading (HTML, CSS and JS 5 minutes, fonts one year, images, video and icons one day); see "Caching and response headers" in [`aws/website-aws-hosting-2026-10-29.md`](aws/website-aws-hosting-2026-10-29.md).
 
 **Netlify is no longer used.** The old Netlify project was removed in November 2026 and no longer reacts to this repo.
 
@@ -45,12 +45,13 @@ Who may merge and publish: Daniela owns this repository; the rules are in `.clau
 What `scripts/publish.sh` does:
 
 - **Pre-flight, aborts before uploading anything** if the form `name="pilot"` in `site/index.html` does not POST to `action="/api/pilot"`, if any page or still has `data-netlify` / `netlify-honeypot` (a Netlify form on AWS silently loses every lead), or if the HTML or CSS references an `/assets/…` file that is not in `site/`.
-- **Uploads** with `aws s3 sync` in three passes, each with its own `Cache-Control`: fonts `public, max-age=31536000, immutable`; images, video, CSS, icons `public, max-age=86400`; HTML, `sitemap.xml`, `robots.txt` `public, max-age=300, must-revalidate` (last, so pages never point at assets not yet uploaded). Never uploads `_headers` or dotfiles.
+- **Uploads** with `aws s3 sync` in four passes, each with its own `Cache-Control`, in this order: fonts `public, max-age=31536000, immutable`; images, video, icons `public, max-age=86400`; CSS and JS (`site.css`, `site.js`) `public, max-age=300, must-revalidate`; HTML, `sitemap.xml`, `robots.txt` `public, max-age=300, must-revalidate` (last, so pages never point at assets not yet uploaded). Never uploads `_headers` or dotfiles.
+- **A new `Cache-Control` only reaches a file when it is uploaded again.** `aws s3 sync` skips a file whose size and date did not change, so a file already in the bucket keeps its old header until it is re-uploaded. A fresh clone (as in CloudShell above) uploads every file, because every file date is new; in an old clone, `touch` the files first. To check after publishing: `curl -sI https://regatta.tech/assets/site.css | grep -i cache-control` should show `max-age=300`.
 - **Does not delete** files from the bucket unless you pass `--delete`. Production pages, and copies of them that browsers and CloudFront still hold for a few minutes, can reference files that are no longer in the repo (for example a renamed photo); deleting them would break those pages. The bucket is versioned, so a file deleted by mistake can be restored (S3 → bucket → *Show versions*).
 - **Invalidates** in CloudFront the paths it uploaded (a page's `index.html` and its `/folder/` URL), or `/*` when more than 15 changed. Within a minute or two everyone gets the new version.
 - `--dry-run` shows all of this without changing anything.
 
-**Changed `site.css` or `site.js`?** Change the `?v=` after its name in every page that links it (`/assets/site.css?v=2026-11-20` in `site/index.html`, `site/privacy/index.html`, `site/thanks/index.html` and `site/404.html`; use the day of the change). Browsers keep these files for a day, so without a new `?v=` a returning visitor gets the new page with the old styles (20 Nov 2026: the "Open Regatta" button showed as plain text).
+**Changed `site.css` or `site.js`?** Change the `?v=` after its name in every page that links it (`/assets/site.css?v=2026-11-20` in `site/index.html`, `site/privacy/index.html`, `site/thanks/index.html` and `site/404.html`; use the day of the change). Without a new `?v=` a returning visitor can get the new page with the old styles (20 Nov 2026: the "Open Regatta" button showed as plain text for a day). Since `scripts/publish.sh` uploads CSS and JS with a 5-minute cache, a forgotten `?v=` now means up to 5 minutes of old styles instead of a day; still change it. (`site.js` is linked without `?v=` today, in `site/index.html` and `site/privacy/index.html`; add one when it changes.)
 
 **Changed an image, the video or a font?** Give it a new file name (e.g. `manish-sharma-2.jpg`) and update the HTML. Browsers keep assets for a day (fonts for a year) and do not ask again, so an overwritten file with the same name is not seen by returning visitors.
 

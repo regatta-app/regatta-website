@@ -27,11 +27,21 @@
 #        (on AWS a Netlify form silently loses every lead);
 #      - every /assets/... file referenced by the HTML or CSS exists in site/;
 #      - the AWS CLI works and the bucket is reachable.
-#   2. Uploads with per-type Cache-Control (HTML last, so new pages never
-#      point at assets that are not there yet). Never uploads _headers or
-#      dotfiles. Note: aws s3 sync skips files whose size and date did not
-#      change, so to change only the Cache-Control of files already in the
-#      bucket, touch them first (a fresh clone uploads everything anyway).
+#   2. Uploads in four passes, each with its own Cache-Control, in this order:
+#      a. fonts (*.woff2)                     public, max-age=31536000, immutable
+#      b. other files: images, video, icons,
+#         favicon.ico, font licences          public, max-age=86400
+#      c. CSS and JS (*.css, *.js)            public, max-age=300, must-revalidate
+#      d. pages (*.html), sitemap.xml,
+#         robots.txt                          public, max-age=300, must-revalidate
+#      CSS and JS keep their file names when they change, so browsers re-check
+#      them every 5 minutes (a same-name change reaches everyone within 5
+#      minutes even if the ?v= in the pages was forgotten). Pages go last, so
+#      new pages never point at files that are not there yet. Never uploads
+#      _headers or dotfiles. Note: aws s3 sync skips files whose size and date
+#      did not change, so a new Cache-Control only reaches files already in the
+#      bucket when they are uploaded again: touch them first (a fresh clone
+#      uploads everything anyway, because every file date is new).
 #   3. Creates one CloudFront invalidation for the files that changed
 #      (or /* when more than 15 paths changed).
 set -euo pipefail
@@ -110,8 +120,10 @@ sync_pass() { # $1 = Cache-Control, rest = filters
 
 echo "== Fonts (1 year, immutable)"
 sync_pass "public, max-age=31536000, immutable" --exclude "*" --include "assets/fonts/*.woff2"
-echo "== Other files: images, video, CSS, icons (1 day)"
-sync_pass "public, max-age=86400" --exclude "*.html" --exclude "sitemap.xml" --exclude "robots.txt" --exclude "assets/fonts/*.woff2"
+echo "== Other files: images, video, icons (1 day)"
+sync_pass "public, max-age=86400" --exclude "*.html" --exclude "sitemap.xml" --exclude "robots.txt" --exclude "assets/fonts/*.woff2" --exclude "*.css" --exclude "*.js"
+echo "== CSS and JS (5 minutes; same file name when they change)"
+sync_pass "public, max-age=300, must-revalidate" --exclude "*" --include "*.css" --include "*.js"
 echo "== Pages, sitemap.xml, robots.txt (5 minutes)"
 sync_pass "public, max-age=300, must-revalidate" --exclude "*" --include "*.html" --include "sitemap.xml" --include "robots.txt"
 
