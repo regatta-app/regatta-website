@@ -6,7 +6,9 @@ The public site at https://regatta.tech. This is **not** the Regatta app (that l
 site/       the files that are served (index.html at the top; home/, privacy/, thanks/, 404.html, assets/)
 aws/        CloudFormation template for the hosting, the setup guide, and STACK-UPDATE.md
 scripts/    publish.sh: upload site/ to S3 and refresh CloudFront
-.github/    workflows/publish.yml: the "Publish" button (runs publish.sh from GitHub)
+            check-publish-request.sh, check-live-site.sh: used by the Publish workflow
+.github/    workflows/publish.yml: the "Publish" button and publish requests (run publish.sh from GitHub)
+publish/    REQUEST.json: the latest publish request (way C below); created by the first request
 index.html  accidental duplicate of site/index.html (see Notes); not served
 ```
 
@@ -32,7 +34,7 @@ Caching is set per file when uploading (HTML, CSS and JS 5 minutes, fonts one ye
 Who may merge and publish: Daniela owns this repository; the rules are in `.claude/CLAUDE.md`.
 
 1. Edit the files in `site/`, open a pull request, merge to `main`.
-2. Publish `main`, **only on Daniela's word**, in one of two ways.
+2. Publish `main`, **only on Daniela's word**, in one of three ways.
 
 ### A. With the "Publish" button on GitHub (no computer or AWS console needed)
 
@@ -43,7 +45,45 @@ Set up once: [`aws/STACK-UPDATE.md`](aws/STACK-UPDATE.md), section 6 (a stack up
 3. Leave **dry_run** ticked and press **Run workflow**. Open the run: its summary shows the sha, "dry run" and what would be uploaded and invalidated. Read it.
 4. If it looks right, run it again with the same sha and **dry_run** unticked. The summary then says "real publish".
 
-Who can press the button: anyone with write access to this repository (GitHub only shows *Run workflow* to them), and a Claude session with that access. It runs only on `main`, only by hand (never on a push or a pull request), one run at a time, and signs in to AWS without any stored key: AWS accepts only this repository's `main` (the `PublishRole` in the stack). The role can upload to the site bucket and clear the CloudFront cache, nothing else; it cannot delete files, so the button never passes `--delete` (use CloudShell for that). Every run uploads every file, because a fresh checkout gives every file a new date (see "What `scripts/publish.sh` does"); that is harmless and also refreshes every `Cache-Control`. Run logs of this public repository are public: the bucket, distribution and role are hidden (`***`) in them.
+Who can press the button: anyone with write access to this repository (GitHub only shows *Run workflow* to them), and a Claude session with that access. It runs only on `main`, by hand or by a publish request (way C; never on a pull request, and never on a push that does not change `publish/REQUEST.json`), one run at a time, and signs in to AWS without any stored key: AWS accepts only this repository's `main` (the `PublishRole` in the stack). The role can upload to the site bucket and clear the CloudFront cache, nothing else; it cannot delete files, so the button never passes `--delete` (use CloudShell for that). Every run uploads every file, because a fresh checkout gives every file a new date (see "What `scripts/publish.sh` does"); that is harmless and also refreshes every `Cache-Control`. Run logs of this public repository are public: the bucket, distribution and role are hidden (`***`) in them.
+
+### C. With a publish request (a pull request; for Claude sessions in the cloud)
+
+A Claude session in the cloud cannot press the button in A, but it can open and merge pull requests. So it publishes by merging a small pull request that changes **only** the file `publish/REQUEST.json`. When that reaches `main`, the same "Publish" workflow starts by itself, checks the request, publishes, and writes the result as a comment on that pull request. Same AWS role, same rules: nothing changes in AWS.
+
+The file (an example; the real one only ever exists on `main`, written by a request pull request):
+
+```json
+{
+  "approved_sha": "0123456789abcdef0123456789abcdef01234567",
+  "dry_run": true,
+  "requested_on": "2026-11-21",
+  "daniela_ok": "ok, publica 0123456 (chat, 21 Nov 2026 10:05)"
+}
+```
+
+- `approved_sha`: the full sha of `main` that Daniela said ok to publish.
+- `dry_run`: `true` (look only) or `false` (really publish). Written without quotes.
+- `requested_on`: the day the request is written (UTC). An old request is refused.
+- `daniela_ok`: Daniela's ok, copied word for word from the chat, so anyone can see later who allowed it.
+
+How a publish works:
+
+1. Daniela says ok in the chat to publish a sha of `main`.
+2. The session opens a pull request that changes only `publish/REQUEST.json`, with that sha, `"dry_run": true` and her ok quoted, and merges it with its head sha pinned. Within a minute the workflow does a dry run and comments the result on that pull request.
+3. The session reads the comment. If anything looks wrong, it stops and tells Daniela.
+4. If the dry run is clean, the session opens a second request pull request: same sha, `"dry_run": false`, and merges it. The workflow publishes, waits for CloudFront, checks the live site (every page, CSS and JS file answers 200 and is exactly the file in `site/`; the home has the pilot form posting to `/api/pilot`) and comments the result.
+5. The session tells Daniela the result in one line.
+
+What the workflow refuses (it stops before touching AWS and says why in the comment):
+
+- a pull request that changes anything besides `publish/REQUEST.json` (merge the site change first, then request);
+- a file that is not exactly the four fields above, a short or uppercase sha, `"true"` in quotes, a field written twice;
+- an `approved_sha` that is not in the history of `main`, or a `main` whose files differ in anything (site, scripts, workflow) from `approved_sha`: what is published is byte for byte what Daniela approved;
+- a real publish (`false`) that does not come straight after a successful dry run of the same sha;
+- a request dated more than a day before or after today (for example an old one brought back by a revert).
+
+Good to know: a push to `main` that does not change `publish/REQUEST.json` never publishes. Removing the file publishes nothing. Requests wait for each other: merge one, wait for its comment, then the next. A merge commit whose message contains `[skip ci]` does not start the workflow. Who can publish this way: anyone who can merge to `main`, like the button in A; the workflow checks the request, but it cannot check that the quoted ok really came from Daniela.
 
 ### B. From AWS CloudShell (still valid)
 

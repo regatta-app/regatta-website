@@ -1,12 +1,21 @@
-# Publish site/ to regatta.tech (S3 + CloudFront) from GitHub, with a button.
+# Publish site/ to regatta.tech (S3 + CloudFront) from GitHub.
 #
-# Started ONLY by hand: GitHub -> Actions -> "Publish" -> "Run workflow".
-# Never runs on a push or a pull request.
+# Two ways to start it; both publish only on Daniela's word (.claude/CLAUDE.md,
+# point 5), always a dry run first, its result read before the real run:
 #
-# Publishing happens only on Daniela's word (see .claude/CLAUDE.md, point 5).
-# Always run it first with "dry_run" ticked and read the result.
+#   A. By hand: GitHub -> Actions -> "Publish" -> "Run workflow"
+#      (inputs confirm_sha and dry_run, below).
+#   B. By a publish request: a pull request that changes only
+#      publish/REQUEST.json is merged into main (README.md, "Publishing a
+#      change", way C). The push to main starts this workflow, which checks the
+#      request with scripts/check-publish-request.sh before touching AWS and
+#      writes the result as a comment on that pull request. A push to main that
+#      does not change publish/REQUEST.json never starts it (the "paths" filter).
 #
-# Inputs:
+# Never runs on a pull request. Runs on main only, so AWS accepts it
+# (the PublishRole trusts only this repository's main; unchanged).
+#
+# Inputs (way A):
 #   confirm_sha  the full 40-character sha of main that Daniela approved. The
 #                job stops before touching AWS if main is not at that sha.
 #   dry_run      ticked (the default): show what would be uploaded and
@@ -20,6 +29,11 @@
 #   AWS_REGION                  us-east-1 (used if empty)
 # No AWS keys are stored: GitHub signs in to AWS with OIDC, and AWS only
 # accepts this repository's main branch (the role's trust policy).
+#
+# Permissions are set per job, as small as possible: the job that signs in to
+# AWS cannot write to pull requests, and the job that comments on the pull
+# request never gets AWS access.
+
 name: Publish
 
 on:
@@ -34,10 +48,12 @@ on:
         required: true
         type: boolean
         default: true
+  push:
+    branches: [main]
+    paths:
+      - publish/REQUEST.json
 
-permissions:
-  id-token: write   # to sign in to AWS with OIDC
-  contents: read    # to check out the repo
+permissions: {}
 
 concurrency:
   group: publish-regatta-website
@@ -45,11 +61,20 @@ concurrency:
 
 jobs:
   publish:
+    name: publish   # the name of the check on the commit; check-publish-request.sh looks for it
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
+    permissions:
+      id-token: write   # to sign in to AWS with OIDC
+      contents: read    # to check out the repo
+      checks: read      # way B: to see that the dry run before a real publish succeeded
+    outputs:
+      report: ${{ steps.summary.outputs.report }}
     env:
+      EVENT: ${{ github.event_name }}
       CONFIRM_SHA: ${{ inputs.confirm_sha }}
-      DRY_RUN: ${{ inputs.dry_run }}
+      INPUT_DRY_RUN: ${{ inputs.dry_run }}
+      BEFORE_SHA: ${{ github.event.before }}
       RUN_REF: ${{ github.ref }}
       ROLE_ARN: ${{ vars.AWS_PUBLISH_ROLE_ARN }}
       BUCKET: ${{ vars.SITE_BUCKET }}
@@ -62,11 +87,13 @@ jobs:
             echo "::error::Publish runs only on main (this run is on '$RUN_REF'). Choose 'Use workflow from: Branch: main'."
             exit 1
           fi
-          if ! printf '%s' "$CONFIRM_SHA" | grep -qE '^[0-9a-f]{40}$'; then
-            echo "::error::confirm_sha must be the full 40-character sha of main (lowercase), not a short sha or a branch name."
-            exit 1
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            if ! printf '%s' "$CONFIRM_SHA" | grep -qE '^[0-9a-f]{40}$'; then
+              echo "::error::confirm_sha must be the full 40-character sha of main (lowercase), not a short sha or a branch name."
+              exit 1
+            fi
+            case "$INPUT_DRY_RUN" in true|false) ;; *) echo "::error::dry_run must be true or false (got '$INPUT_DRY_RUN')."; exit 1 ;; esac
           fi
-          case "$DRY_RUN" in true|false) ;; *) echo "::error::dry_run must be true or false (got '$DRY_RUN')."; exit 1 ;; esac
           for v in ROLE_ARN BUCKET DISTRIBUTION_ID; do
             if [ -z "${!v}" ]; then
               echo "::error::Repository variable for $v is not set (see aws/STACK-UPDATE.md, section 6)."
@@ -82,18 +109,28 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1   # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: 0   # all history: the request check compares commits
 
-      - name: Check that main is at the approved sha
+      - name: Decide what to publish
+        id: decide
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          HEAD_SHA="$(git rev-parse HEAD)"
-          if [ "$HEAD_SHA" != "$CONFIRM_SHA" ]; then
-            echo "::error::main is at $HEAD_SHA but confirm_sha is $CONFIRM_SHA. Nothing was published. Get Daniela's ok for the current sha and run again."
-            exit 1
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            HEAD_SHA="$(git rev-parse HEAD)"
+            if [ "$HEAD_SHA" != "$CONFIRM_SHA" ]; then
+              echo "::error::main is at $HEAD_SHA but confirm_sha is $CONFIRM_SHA. Nothing was published. Get Daniela's ok for the current sha and run again."
+              exit 1
+            fi
+            echo "main is at the approved sha $HEAD_SHA."
+            { echo "action=publish"; echo "approved_sha=$CONFIRM_SHA"; echo "dry_run=$INPUT_DRY_RUN"; } >> "$GITHUB_OUTPUT"
+          else
+            bash scripts/check-publish-request.sh "$BEFORE_SHA" "$GITHUB_SHA" 2>&1 | tee "$RUNNER_TEMP/request.log"
           fi
-          echo "main is at the approved sha $HEAD_SHA."
 
       - name: Sign in to AWS (OIDC, no stored keys)
+        if: steps.decide.outputs.action == 'publish'
         uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd   # v6.3.0
         with:
           role-to-assume: ${{ vars.AWS_PUBLISH_ROLE_ARN }}
@@ -102,8 +139,12 @@ jobs:
           mask-aws-account-id: true
 
       - name: Publish (scripts/publish.sh)
+        if: steps.decide.outputs.action == 'publish'
+        env:
+          DRY_RUN: ${{ steps.decide.outputs.dry_run }}
         run: |
           set -euo pipefail
+          case "$DRY_RUN" in true|false) ;; *) echo "::error::dry_run is '$DRY_RUN', not true or false."; exit 1 ;; esac
           OPTS=()
           [ "$DRY_RUN" = "true" ] && OPTS+=(--dry-run)
           set +e
@@ -112,25 +153,91 @@ jobs:
           set -e
           exit "$status"
 
-      - name: Summary
-        if: always()
+      - name: Check the live site
+        if: steps.decide.outputs.action == 'publish' && steps.decide.outputs.dry_run == 'false'
         run: |
           set -uo pipefail
-          if [ "$DRY_RUN" = "true" ]; then mode="dry run (nothing was changed)"; else mode="real publish"; fi
-          {
-            echo "## Publish"
-            echo ""
-            echo "- sha: \`$(git rev-parse HEAD 2>/dev/null || echo 'not checked out')\` (confirm_sha \`$CONFIRM_SHA\`)"
-            echo "- mode: **$mode**"
-            echo "- result: **${JOB_STATUS}**"
-            if [ -s "$RUNNER_TEMP/publish.log" ]; then
-              echo ""
-              echo "Output of scripts/publish.sh (bucket and distribution id replaced):"
-              echo ""
-              echo '```'
-              sed -e "s#${BUCKET:-@@none@@}#BUCKET#g" -e "s#${DISTRIBUTION_ID:-@@none@@}#DISTRIBUTION_ID#g" "$RUNNER_TEMP/publish.log" | tail -n 200
-              echo '```'
-            fi
-          } >> "$GITHUB_STEP_SUMMARY"
+          bash scripts/check-live-site.sh https://regatta.tech 2>&1 | tee "$RUNNER_TEMP/live.log"
+          exit "${PIPESTATUS[0]}"
+
+      - name: Summary
+        id: summary
+        if: always()
         env:
           JOB_STATUS: ${{ job.status }}
+          ACTION: ${{ steps.decide.outputs.action }}
+          APPROVED_SHA: ${{ steps.decide.outputs.approved_sha }}
+          DRY_RUN: ${{ steps.decide.outputs.dry_run }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -uo pipefail
+          hide() { # the repo is public: never show the bucket, distribution or role
+            sed -e "s#${BUCKET:-@@none@@}#BUCKET#g" -e "s#${DISTRIBUTION_ID:-@@none@@}#DISTRIBUTION_ID#g" -e "s#${ROLE_ARN:-@@none@@}#ROLE#g"
+          }
+          section() { # $1 title, $2 file
+            [ -s "$2" ] || return 0
+            echo ""; echo "$1"; echo ""; echo '```'; hide < "$2" | tail -n 150; echo '```'
+          }
+          case "$ACTION/$DRY_RUN" in
+            publish/true) mode="dry run (nothing was changed)" ;;
+            publish/false) mode="real publish" ;;
+            none/*) mode="nothing to publish (request removed)" ;;
+            *) mode="stopped before deciding (see below)" ;;
+          esac
+          if [ "$JOB_STATUS" = "success" ]; then result="success"; else result="FAILED ($JOB_STATUS)"; fi
+          {
+            echo "## Publish: $result"
+            echo ""
+            echo "- started by: \`$EVENT\`"
+            echo "- main: \`$(git rev-parse HEAD 2>/dev/null || echo 'not checked out')\`"
+            echo "- approved sha: \`${APPROVED_SHA:-${CONFIRM_SHA:-none}}\`"
+            echo "- mode: **$mode**"
+            echo "- result: **$result**"
+            echo "- run: $RUN_URL"
+            section "Request check (scripts/check-publish-request.sh):" "$RUNNER_TEMP/request.log"
+            section "Output of scripts/publish.sh (bucket and distribution id replaced):" "$RUNNER_TEMP/publish.log"
+            section "Live site check (scripts/check-live-site.sh):" "$RUNNER_TEMP/live.log"
+          } > "$RUNNER_TEMP/report.md"
+          cat "$RUNNER_TEMP/report.md" >> "$GITHUB_STEP_SUMMARY"
+          echo "report=$(head -c 60000 "$RUNNER_TEMP/report.md" | base64 -w0)" >> "$GITHUB_OUTPUT"
+
+  report:
+    # Way B only: put the result where a Claude session can read it (it cannot
+    # open Actions runs): a comment on the merged pull request that brought the
+    # request. This job has no AWS access.
+    name: report
+    needs: publish
+    if: always() && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read         # to find the pull request of the commit
+      pull-requests: write   # to comment on it
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      SHA: ${{ github.sha }}
+      REPORT: ${{ needs.publish.outputs.report }}
+      PUBLISH_RESULT: ${{ needs.publish.result }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Comment the result on the pull request
+        run: |
+          set -euo pipefail
+          if [ -n "$REPORT" ]; then
+            printf '%s' "$REPORT" | base64 -d > "$RUNNER_TEMP/body.md"
+          else
+            printf '## Publish: FAILED (%s)\n\nThe publish job stopped before writing its report. Run: %s\n' "$PUBLISH_RESULT" "$RUN_URL" > "$RUNNER_TEMP/body.md"
+          fi
+          PR=""
+          for i in 1 2 3; do
+            PR="$(gh api "repos/$REPO/commits/$SHA/pulls" \
+              --jq '[.[] | select(.merged_at != null and .base.ref == "main")] | .[0].number // empty' || true)"
+            [ -n "$PR" ] && break
+            sleep 10
+          done
+          if [ -z "$PR" ]; then
+            echo "::error::No merged pull request found for $SHA; the result is only in this run's summary."
+            exit 1
+          fi
+          gh api "repos/$REPO/issues/$PR/comments" -F body=@"$RUNNER_TEMP/body.md" --jq '.html_url'
