@@ -338,7 +338,7 @@ Resources:
       Name: !Sub "${AWS::StackName}-urls"
       AutoPublish: true
       FunctionConfig:
-        Comment: Redirect www to the apex domain, add the trailing slash to folder URLs and map them to index.html.
+        Comment: Redirect www to the apex domain and /home/ to /, add the trailing slash to folder URLs and map them to index.html.
         Runtime: cloudfront-js-2.0
       FunctionCode: |
         function handler(event) {
@@ -360,6 +360,16 @@ Resources:
           }
           var uri = request.uri;
           if (uri.indexOf('/api/') === 0) return request;
+          // The home moved from /home/ to / (Nov 2026): one permanent redirect, query kept
+          // (the form receiver sends ?error=... there). Browsers keep the #fragment; the home
+          // maps the old anchors (#meet -> #s6). site/home/index.html stays as a fallback.
+          if (uri === '/home' || uri === '/home/' || uri === '/home/index.html') {
+            return {
+              statusCode: 301,
+              statusDescription: 'Moved Permanently',
+              headers: { location: { value: '/' + qs } }
+            };
+          }
           if (uri.endsWith('/')) {
             request.uri = uri + 'index.html';
           } else if (uri.lastIndexOf('.') < uri.lastIndexOf('/')) {
@@ -378,6 +388,11 @@ Resources:
   # <style>, inline <script> and style="" attributes (hence 'unsafe-inline'),
   # self-hosted fonts and video, JSON-LD, and one form posting to /api/pilot.
   # Links out to app.regatta.tech are plain links, which CSP does not restrict.
+  # Analytics: Umami Cloud, EU region (site/assets/analytics.js) loads its script from
+  # cloud.umami.is (script-src) and sends events to gateway.umami.is/api/send (connect-src),
+  # as Umami's tracking code and script show (checked 25 Nov 2026). If Umami changes hosts, change both.
+  # Permissions-Policy: the site uses no camera, microphone or location; interest-cohort=()
+  # opts out of FLoC (retired by Chrome; harmless, newer browsers ignore it with a console note).
   # HSTS: one year, no preload, and NOT includeSubdomains, because not every
   # subdomain of regatta.tech is known to be served over HTTPS.
   SecurityHeadersPolicy:
@@ -401,8 +416,13 @@ Resources:
             ReferrerPolicy: strict-origin-when-cross-origin
             Override: true
           ContentSecurityPolicy:
-            ContentSecurityPolicy: "default-src 'self'; img-src 'self' data:; media-src 'self'; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+            ContentSecurityPolicy: "default-src 'self'; img-src 'self' data:; media-src 'self'; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://cloud.umami.is; connect-src 'self' https://gateway.umami.is; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
             Override: true
+        CustomHeadersConfig:
+          Items:
+            - Header: Permissions-Policy
+              Value: "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+              Override: true
 
   # ---------- CDN ----------
   Distribution:

@@ -53,12 +53,13 @@ The site stays online the whole time.
 From any computer (Terminal or CloudShell):
 
 ```
-curl -sI https://regatta.tech/home | grep -iE '^(HTTP|location)'
-#   HTTP/2 301   location: /home/
+curl -sI 'https://regatta.tech/home/?error=email' | grep -iE '^(HTTP|location)'
+#   HTTP/2 301   location: /?error=email      (the home moved to /; /home and /home/ redirect there)
 
-curl -sI https://regatta.tech/home/ | grep -iE '^(HTTP|strict-transport|content-security|x-frame|x-content-type|referrer-policy|cache-control)'
+curl -sI https://regatta.tech/ | grep -iE '^(HTTP|strict-transport|content-security|x-frame|x-content-type|referrer-policy|permissions-policy|cache-control)'
 #   HTTP/2 200, strict-transport-security: max-age=31536000, content-security-policy: default-src 'self'; ...,
 #   x-frame-options: DENY, x-content-type-options: nosniff, referrer-policy: strict-origin-when-cross-origin,
+#   permissions-policy: camera=(), microphone=(), geolocation=(), interest-cohort=(),
 #   cache-control: public, max-age=300, must-revalidate
 
 curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' -X POST -d 'email=not-an-email' https://regatta.tech/api/pilot
@@ -70,7 +71,7 @@ curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' https://regatta.tech/ap
 
 Then in a browser:
 
-1. Open https://regatta.tech/ and https://regatta.tech/home/. Open the browser's developer console (right-click → Inspect → Console): there must be **no** red "Refused to load / Refused to execute … Content Security Policy" messages. The cover video plays; fonts look right; the menu opens on a phone.
+1. Open https://regatta.tech/ and https://regatta.tech/home/ (it must land on /). Open the browser's developer console (right-click → Inspect → Console): there must be **no** red "Refused to load / Refused to execute … Content Security Policy" messages. The cover video plays; fonts look right; the menu opens on a phone.
 2. **One real form submission** on https://regatta.tech/home/#meet with your own email and an accented organization, e.g. `Société d’Études – Test`. You must land on `/thanks/`, and within a minute the recipients get an email titled `Pilot request: Societe d'Etudes - Test (you@…)` whose body shows the organization with its accents. No IP address or browser line in it.
 3. Lambda → Functions → `regatta-website-pilot-form` → *Runtime settings* shows **Node.js 24.x**.
 

@@ -25,6 +25,8 @@ index.html  accidental duplicate of site/index.html (see Notes); not served
   - Test it locally, no AWS needed: `node aws/test-pilot-form.js`. The filter lives in the template, so it goes live only with a stack update (`aws/STACK-UPDATE.md`), not with `scripts/publish.sh`.
 - **Route 53** — the DNS records for regatta.tech.
 
+Analytics (Umami Cloud, EU; off until the website id is set), the CSP and Permissions-Policy, the `/home/` 301, the sitemap and the structured data: see [`docs/analytics-and-seo.md`](docs/analytics-and-seo.md).
+
 Caching is set per file when uploading (HTML, CSS and JS 5 minutes, fonts one year, images, video and icons one day); see "Caching and response headers" in [`aws/website-aws-hosting-2026-10-29.md`](aws/website-aws-hosting-2026-10-29.md).
 
 **Netlify is no longer used.** The old Netlify project was removed in November 2026 and no longer reacts to this repo.
