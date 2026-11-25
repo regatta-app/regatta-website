@@ -33,14 +33,14 @@ Known limits:
 
 ## 2. Umami setup
 
-- Service: **Umami Cloud**, free plan, **EU data region**. The account is not created yet.
-- Script host: `https://eu.umami.is` (`site/assets/analytics.js:23`). Check it against the "Tracking code"
-  Umami shows for the website once the account exists. If it differs, change `HOST` and the CSP (section 3).
+- Service: **Umami Cloud**, free (Hobby) plan, **EU data region**. Account created 25 Nov 2026 by Daniela's session, owner daniela@iditarod.bio (sign-in with Google). Website "Regatta website" (regatta.tech). Hobby plan: 100k events a month, 1 website, 6 months of history.
+- Script host: `https://cloud.umami.is` (`site/assets/analytics.js:23`), as in the tracking code Umami shows.
+  Events are sent to `https://gateway.umami.is/api/send` (the script's default). Both hosts are in the CSP (section 3).
 - **Website id** goes in one place: `WEBSITE_ID` in `site/assets/analytics.js:22`.
-  Today it is the placeholder `UMAMI_WEBSITE_ID_TODO`.
+  Today: `857cf497-e110-4348-9437-b0a28ec8c3c4`. The id is not secret: it is in every page that loads Umami.
 - **Off by default.** While `WEBSITE_ID` is not a real id (a UUID), the script stops at once. No request
   goes to Umami. A merge by mistake sends nothing.
-- **Turn it off later:** put the placeholder back in `WEBSITE_ID` and publish.
+- **Turn it off later:** put any non-id text (e.g. `OFF`) in `WEBSITE_ID` and publish.
 - Also not loaded:
   - on any host other than `regatta.tech` (local copies, previews);
   - when the browser sends **Do Not Track** or **Global Privacy Control** (`analytics.js:29`).
@@ -51,16 +51,18 @@ Known limits:
   `/home/` does not: it only redirects.
 
 Order to switch it on:
-1. Update the stack first (`aws/STACK-UPDATE.md`), so the CSP allows `eu.umami.is`.
-2. Create the Umami website for `regatta.tech`. Put its id in `WEBSITE_ID`. PR, Daniela's ok, publish.
+1. Update the stack first (`aws/STACK-UPDATE.md`), so the CSP allows `cloud.umami.is` and `gateway.umami.is`.
+   Until then the CSP blocks the script: nothing is sent, nothing breaks.
+2. PR, Daniela's ok, publish.
 3. Publish the privacy page text at the same time, or before. It must say we use analytics.
 
 ## 3. Headers and CloudFront (aws/regatta-website.yaml)
 
 These change only with a **stack update**, not with `scripts/publish.sh`.
 
-- **CSP** (`aws/regatta-website.yaml:419`): `https://eu.umami.is` added to `script-src` and to a new
-  `connect-src`. Why: the Umami script loads from that host and sends events to it. Nothing else is allowed.
+- **CSP** (`aws/regatta-website.yaml:419`): `https://cloud.umami.is` added to `script-src` and
+  `https://gateway.umami.is` to a new `connect-src`. Why: the Umami script loads from the first and sends events
+  to the second. Nothing else is allowed.
 - **Permissions-Policy** (`aws/regatta-website.yaml:421-425`): `camera=(), microphone=(), geolocation=(), interest-cohort=()`.
   Why: the site uses none of these. `interest-cohort` opts out of FLoC. Chrome retired FLoC and may log a
   harmless console note about it.
@@ -114,14 +116,24 @@ Locally, before a PR:
    `typeof window.umami` in the console is `"undefined"`.
 
 After the stack update:
-2. `curl -sI https://regatta.tech/ | grep -iE 'content-security|permissions-policy'` shows `eu.umami.is` and the Permissions-Policy.
+2. `curl -sI https://regatta.tech/ | grep -iE 'content-security|permissions-policy'` shows `cloud.umami.is`, `gateway.umami.is` and the Permissions-Policy.
 3. `curl -sI 'https://regatta.tech/home/?error=email'` shows `301` and `location: /?error=email`.
 
 After the real id is published:
-4. Open https://regatta.tech/ in a private window **without** Do Not Track. Network tab: `eu.umami.is/script.js`
-   loads, then requests to `eu.umami.is` for the pageview. Console: no red CSP message.
+4. Open https://regatta.tech/ in a private window **without** Do Not Track. Network tab: `cloud.umami.is/script.js`
+   loads, then a request to `gateway.umami.is/api/send` for the pageview. Console: no red CSP message.
 5. Click the hero button, switch the chart, scroll to the form, click "Open Regatta". Umami's dashboard
    (Events) shows `request-access-hero`, `chart-switch`, `contact-section-seen`, `app-demo-seen`, `open-app`
    within a minute.
 6. Turn on Do Not Track and reload: no request to `umami.is`.
 7. Optional: open `https://regatta.tech/?utm_source=test` and check the source appears in Umami.
+
+## 8. Accounts and setup log (no passwords here)
+
+- **Umami Cloud:** created 25 Nov 2026, owner daniela@iditarod.bio (Continue with Google), EU region, Hobby plan.
+  Website "Regatta website", regatta.tech, id `857cf497-e110-4348-9437-b0a28ec8c3c4`.
+- **Google Search Console:** Domain property `regatta.tech` already existed and was verified (owner
+  daniela@iditarod.bio). Sitemap submitted 9 Nov 2026, status Success. No DNS change was needed.
+- **Bing Webmaster Tools:** set up 25 Nov 2026 by import from Search Console (signed in with Google as
+  daniela@iditarod.bio, view-only Search Console access). Sitemap submitted; Bing says up to 48 h to process.
+- **Route 53:** not changed.

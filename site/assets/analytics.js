@@ -19,8 +19,8 @@
    Clicks are sent with umami.track from one listener, not with data-umami-event: Umami's own link
    handling re-navigates same-page links (#s6), which would break the smooth scroll to the form. */
 (function(){
- var WEBSITE_ID='UMAMI_WEBSITE_ID_TODO';
- var HOST='https://eu.umami.is';
+ var WEBSITE_ID='857cf497-e110-4348-9437-b0a28ec8c3c4'; /* Umami Cloud, EU region, website "Regatta website" (account daniela@iditarod.bio) */
+ var HOST='https://cloud.umami.is'; /* script host from Umami's tracking code; events go to https://gateway.umami.is/api/send */
  var SITE='regatta.tech';
 
  if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(WEBSITE_ID)) return;

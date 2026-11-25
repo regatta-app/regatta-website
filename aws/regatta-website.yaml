@@ -389,8 +389,8 @@ Resources:
   # self-hosted fonts and video, JSON-LD, and one form posting to /api/pilot.
   # Links out to app.regatta.tech are plain links, which CSP does not restrict.
   # Analytics: Umami Cloud, EU region (site/assets/analytics.js) loads its script from
-  # eu.umami.is and sends events to it, so that one host is allowed in script-src and
-  # connect-src. If Umami's tracking code for the site shows another host, change both.
+  # cloud.umami.is (script-src) and sends events to gateway.umami.is/api/send (connect-src),
+  # as Umami's tracking code and script show (checked 25 Nov 2026). If Umami changes hosts, change both.
   # Permissions-Policy: the site uses no camera, microphone or location; interest-cohort=()
   # opts out of FLoC (retired by Chrome; harmless, newer browsers ignore it with a console note).
   # HSTS: one year, no preload, and NOT includeSubdomains, because not every
@@ -416,7 +416,7 @@ Resources:
             ReferrerPolicy: strict-origin-when-cross-origin
             Override: true
           ContentSecurityPolicy:
-            ContentSecurityPolicy: "default-src 'self'; img-src 'self' data:; media-src 'self'; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://eu.umami.is; connect-src 'self' https://eu.umami.is; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+            ContentSecurityPolicy: "default-src 'self'; img-src 'self' data:; media-src 'self'; font-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://cloud.umami.is; connect-src 'self' https://gateway.umami.is; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
             Override: true
         CustomHeadersConfig:
           Items:
