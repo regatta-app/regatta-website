@@ -18,8 +18,8 @@
  --navy-12:rgba(13,55,105,.12);--navy-35:rgba(13,55,105,.35);
  /* typefaces */
  --ff-head:"Tenor Sans",serif;--ff-body:"Inter",sans-serif;--ff-mark:"Playfair Display SC",serif;
- /* type scale (web, 7 sizes) */
- --fs-hero:64px;--fs-title:44px;--fs-sub:28px;--fs-lead:20px;--fs-body:17px;--fs-small:15px;--fs-note:13px;
+ /* type scale (web, 8 sizes) */
+ --fs-hero-home:83px;--fs-hero:64px;--fs-title:44px;--fs-sub:28px;--fs-lead:20px;--fs-body:17px;--fs-small:15px;--fs-note:13px;
  --fw-regular:400;--fw-bold:600;
  --lh-display:1.1;--lh-head:1.3;--lh-text:1.6;
  /* shape */
@@ -32,7 +32,7 @@
  /* motion */
  --chart-dur:520ms;--chart-ease:cubic-bezier(.4,0,.2,1);--rv-ease:cubic-bezier(.2,.7,.2,1);
  color-scheme:light}
-@media (max-width:720px){:root{--fs-hero:40px;--fs-title:32px;--fs-sub:24px;--sec-pad:64px;--pad-x:24px;--barh:44px;--bmark:26px;--fs-brand:var(--fs-small)}}
+@media (max-width:720px){:root{--fs-hero-home:40px;--fs-hero:40px;--fs-title:32px;--fs-sub:24px;--sec-pad:64px;--pad-x:24px;--barh:44px;--bmark:26px;--fs-brand:var(--fs-small)}}
 
 *{box-sizing:border-box}
 html{background:var(--deep);scroll-behavior:smooth}
