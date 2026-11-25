@@ -27,6 +27,7 @@
 <meta name="twitter:image" content="https://regatta.tech/assets/og.png">
 <link rel="preload" href="/assets/fonts/tenor-sans-latin-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css?v=2026-11-20b">
+<script src="/assets/analytics.js" defer></script>
 <script>
 /* animations: the hidden start state is set here, before first paint, only when motion is allowed */
 (function(){var d=document.documentElement;try{
@@ -83,7 +84,7 @@ html.js-anim .rv-z.rv-now>*{animation:none}
 <body>
 <header class="bar"><div class="wrap">
  <a class="brand" href="/" aria-label="Regatta home"><svg viewBox="30 0 790 560" aria-hidden="true"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z" fill="#CAA229"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z" fill="#F05910"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z" fill="#0D3769"/></svg><span>REGATTA</span></a>
- <nav class="nav" aria-label="Main"><a class="open-app" href="https://app.regatta.tech/" target="_blank" rel="noopener">Open Regatta</a></nav>
+ <nav class="nav" aria-label="Main"><a class="open-app" href="https://app.regatta.tech/" target="_blank" rel="noopener" data-ev="open-app" data-ev-place="nav">Open Regatta</a></nav>
 </div></header>
 <main class="pp">
 <article aria-labelledby="pp-title">
@@ -190,7 +191,7 @@ html.js-anim .rv-z.rv-now>*{animation:none}
 <footer class="foot" id="s7">
  <div class="wrap foot-in">
   <span class="wm">REGATTA</span>
-  <nav aria-label="Footer"><a class="quiet" href="https://app.regatta.tech/" target="_blank" rel="noopener">Open Regatta</a><a class="quiet" href="#pp-title">Privacy</a><span>&copy; 2026 Regatta</span></nav>
+  <nav aria-label="Footer"><a class="quiet" href="https://app.regatta.tech/" target="_blank" rel="noopener" data-ev="open-app" data-ev-place="footer">Open Regatta</a><a class="quiet" href="#pp-title">Privacy</a><span>&copy; 2026 Regatta</span></nav>
  </div>
 </footer>
 <script src="/assets/site.js"></script>

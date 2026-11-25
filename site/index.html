@@ -55,6 +55,7 @@
 <link rel="preload" href="/assets/fonts/tenor-sans-latin-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/entry-poster.webp" as="image" type="image/webp" fetchpriority="high">
 <link rel="stylesheet" href="/assets/site.css?v=2026-11-20b">
+<script src="/assets/analytics.js" defer></script>
 <script>
 /* section animations: the hidden start state is set here, before first paint, only when motion is allowed */
 (function(){var d=document.documentElement;d.classList.add('js');try{
@@ -317,7 +318,7 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
   <a class="brand" href="/" aria-label="Regatta home" data-top>
    <svg viewBox="30 0 790 560" aria-hidden="true"><path d="M440.642 338.206L40 548.687L525.249 1L440.642 338.206Z" fill="#CAA229"/><path d="M581.239 338.206L180.598 548.687L665.847 1L581.239 338.206Z" fill="#F05910"/><path d="M729.303 338.206L328.661 548.687L813.91 1L729.303 338.206Z" fill="#0D3769"/></svg>
    <span>REGATTA</span></a>
-  <nav class="nav" aria-label="Main"><a class="open-app" href="https://app.regatta.tech/" target="_blank" rel="noopener">Open Regatta</a></nav>
+  <nav class="nav" aria-label="Main"><a class="open-app" href="https://app.regatta.tech/" target="_blank" rel="noopener" data-ev="open-app" data-ev-place="nav">Open Regatta</a></nav>
  </div></header>
  <section class="hero" id="s1" aria-label="Regatta">
   <video id="film" autoplay muted loop playsinline preload="metadata" poster="/assets/entry-poster.webp" aria-hidden="true" tabindex="-1" data-src="/assets/entry-loop.mp4" data-src-phone="/assets/entry-loop-phone.mp4"></video>
@@ -334,7 +335,7 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
   <div class="scrim"></div>
   <div class="wrap hbody">
    <h1 class="cyc"><span class="vh">Regatta machines centralize your data, identify responsive patients, draft biomarkers, identify cryptic toxicity and monitor external clinical programs</span><span aria-hidden="true">Regatta machines</span> <span class="cyc-w" aria-hidden="true"><span class="on">centralize<br>your data</span><span>identify responsive<br>patients</span><span>draft<br>biomarkers</span><span>identify<br>cryptic toxicity</span><span>monitor external<br>clinical programs</span></span></h1>
-   <a class="btn-light" href="#s6" data-go="s6">Request access</a>
+   <a class="btn-light" href="#s6" data-go="s6" data-ev="request-access-hero">Request access</a>
   </div>
   <button class="down chev" type="button" data-go="s2" aria-label="Go to the next section"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
  </section>
@@ -352,8 +353,8 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
    </div>
    <p class="eg"><span class="key"><i></i>Responded</span><span>Example data</span></p>
    <div class="togrow" id="togrow"><div class="tog" role="tablist" aria-label="How the example patients are counted">
-    <button type="button" role="tab" id="tab-all" data-v="all" aria-selected="true" aria-controls="field" tabindex="0">Counted together</button>
-    <button type="button" role="tab" id="tab-marker" data-v="marker" aria-selected="false" aria-controls="field" tabindex="-1">Split by one biomarker</button>
+    <button type="button" role="tab" id="tab-all" data-v="all" data-ev="chart-switch" data-ev-view="all" aria-selected="true" aria-controls="field" tabindex="0">Counted together</button>
+    <button type="button" role="tab" id="tab-marker" data-v="marker" data-ev="chart-switch" data-ev-view="marker" aria-selected="false" aria-controls="field" tabindex="-1">Split by one biomarker</button>
    </div></div>
   </div>
  </div>
@@ -451,7 +452,7 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
    <label class="fl"><span>Work email</span><input class="line-input" id="f-email" type="email" name="email" placeholder="you@company.com" required autocomplete="email" autocapitalize="off" spellcheck="false"></label>
    <label class="fl"><span>Organization</span><input class="line-input" id="f-org" type="text" name="organization" placeholder="Company name" required autocomplete="organization"></label>
    <div class="fa">
-    <button class="btn-ghost" type="submit">Request access</button>
+    <button class="btn-ghost" type="submit" data-ev="request-access-form">Request access</button>
     <p class="fnote" id="form-error" role="alert"></p>
     <p class="pv">We collect only what you enter here, and use it solely to contact you about Regatta. <a class="quiet" href="/privacy/">Privacy policy</a></p>
    </div>
@@ -463,7 +464,7 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
 <footer class="foot">
  <div class="wrap foot-in">
   <span class="wm">REGATTA</span>
-  <nav aria-label="Footer"><a class="quiet" href="https://app.regatta.tech/" target="_blank" rel="noopener">Open Regatta</a><a class="quiet" href="/privacy/">Privacy</a><span>&copy; 2026 Regatta</span></nav>
+  <nav aria-label="Footer"><a class="quiet" href="https://app.regatta.tech/" target="_blank" rel="noopener" data-ev="open-app" data-ev-place="footer">Open Regatta</a><a class="quiet" href="/privacy/">Privacy</a><span>&copy; 2026 Regatta</span></nav>
  </div>
 </footer>
 
