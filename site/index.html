@@ -267,6 +267,8 @@ tr.in .rg-ev .bar i{transform:scaleX(1)}
 .line-input{width:100%;min-width:0;height:48px;padding:0;border:0;border-bottom:1px solid var(--light-40);border-radius:0;background:transparent;font-family:inherit;font-size:var(--fs-body);line-height:var(--lh-text);color:var(--light)}
 .line-input::placeholder{color:var(--muted);opacity:1}
 .line-input:focus{outline:none;border-bottom-color:var(--light)}
+/* browser autofill: keep the dark field and light text, only the bottom line shows (Chrome/Safari paint a light box otherwise) */
+.line-input:-webkit-autofill,.line-input:-webkit-autofill:hover,.line-input:-webkit-autofill:focus{-webkit-text-fill-color:var(--light);caret-color:var(--light);-webkit-box-shadow:0 0 0 1000px var(--deep) inset;box-shadow:0 0 0 1000px var(--deep) inset;transition:background-color 600000s 0s}
 .fa{display:flex;flex-direction:column;gap:var(--s12);align-items:flex-start}
 .pv{margin:0;font-size:var(--fs-note);line-height:var(--lh-text);color:var(--line)}
 /* form status line under the button: empty (one line tall) unless the receiver sent the visitor back with an error */
