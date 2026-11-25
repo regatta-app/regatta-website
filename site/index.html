@@ -428,8 +428,8 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
   <div class="two" style="align-items:start">
    <h2 class="t" id="t5">Team</h2>
    <div class="people">
-    <div class="person"><img src="/assets/austin-cole.jpg" alt="Austin Cole" width="132" height="132"><div><h3>Austin Cole, PhD</h3><p>Founder-CEO, prior protein design</p><p>Algorithms deployed in $100B+ pharma teams</p></div></div>
-    <div class="person"><img src="/assets/manish-sharma.jpg" alt="Manish Sharma" width="132" height="132"><div><h3>Manish Sharma, PhD</h3><p>Co-Founder &amp; CTO, architect of enterprise-scale therapeutic enzyme design platform</p><p>10+ years of experience</p></div></div>
+    <div class="person"><img src="/assets/austin-cole.jpg" alt="Austin Cole" width="132" height="132" loading="lazy" decoding="async"><div><h3>Austin Cole, PhD</h3><p>Founder-CEO, prior protein design</p><p>Algorithms deployed in $100B+ pharma teams</p></div></div>
+    <div class="person"><img src="/assets/manish-sharma.jpg" alt="Manish Sharma" width="132" height="132" loading="lazy" decoding="async"><div><h3>Manish Sharma, PhD</h3><p>Co-Founder &amp; CTO, architect of enterprise-scale therapeutic enzyme design platform</p><p>10+ years of experience</p></div></div>
    </div>
   </div>
   <div class="facts">
@@ -549,6 +549,12 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
  /* form: send how long the page was open before submitting (bots post within a second or two) */
  var pf=document.querySelector('form[name=pilot]'), t0=Date.now();
  if(pf){ pf.addEventListener('submit',function(){ var el=pf.querySelector('input[name=elapsed]'); if(el) el.value=String(Date.now()-t0); }); }
+
+ /* old anchors of the /home/ page (the form receiver still sends #meet; /home/ now redirects here with a 301 that keeps the #): land on the new section */
+ (function(){ var m={'#meet':'s6','#product':'s3','#how':'s3','#why':'s4','#company':'s5','#top':''}; var h=location.hash; if(!(h in m)) return;
+  try{ history.replaceState(null,'',location.pathname+location.search+(m[h]?'#'+m[h]:'')); }catch(err){}
+  var el=m[h]&&document.getElementById(m[h]); if(el) el.scrollIntoView({block:'start'}); else window.scrollTo(0,0);
+ })();
 
  /* form: the receiver (/api/pilot) sends a failed submission back to ?error=email#s6 (bad email) or ?error=send#s6 (could not deliver) */
  var fq=/[?&]error=(email|send)(&|$)/.exec(location.search);
