@@ -53,6 +53,7 @@
 }
 </script>
 <link rel="preload" href="/assets/fonts/tenor-sans-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/entry-poster.webp" as="image" type="image/webp" fetchpriority="high">
 <link rel="stylesheet" href="/assets/site.css?v=2026-11-20b">
 <script>
 /* section animations: the hidden start state is set here, before first paint, only when motion is allowed */
@@ -80,7 +81,7 @@ h2.t{font-size:var(--fs-title);line-height:var(--lh-head);color:var(--navy);max-
 .chev svg{animation:bob 2.4s ease-in-out infinite}
 /* first screen: the bar, then the film filling the rest of the screen */
 .first{height:100vh;height:100svh;display:flex;flex-direction:column;padding-top:var(--barh);background:var(--tone)}
-.hero{position:relative;flex:1 1 0;min-height:0;overflow:hidden;background:var(--deep) url(/assets/entry-poster.jpg) 50% 40%/cover no-repeat;color:var(--light)}
+.hero{position:relative;flex:1 1 0;min-height:0;overflow:hidden;background:var(--deep) url(/assets/entry-poster.jpg) 50% 40%/cover no-repeat;background-image:image-set(url(/assets/entry-poster.webp) type("image/webp"),url(/assets/entry-poster.jpg) type("image/jpeg"));color:var(--light)}
 .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .scrim{position:absolute;inset:0;background:linear-gradient(90deg,var(--deep-82) 0,var(--deep-55) 50%,var(--deep-12) 100%),linear-gradient(0deg,var(--deep-40),var(--deep-0) 35%)}
 .hbody{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-top:var(--s24);padding-bottom:96px}
@@ -319,7 +320,17 @@ html.js-anim .rv-z.rv-in.rv-now .cl>li,html.js-anim .rv-z.rv-now .cl>li::before,
   <nav class="nav" aria-label="Main"><a class="open-app" href="https://app.regatta.tech/" target="_blank" rel="noopener">Open Regatta</a></nav>
  </div></header>
  <section class="hero" id="s1" aria-label="Regatta">
-  <video id="film" autoplay muted loop playsinline preload="auto" poster="/assets/entry-poster.jpg" aria-hidden="true" tabindex="-1"><source src="/assets/entry-loop.mp4" type="video/mp4"></video>
+  <video id="film" autoplay muted loop playsinline preload="metadata" poster="/assets/entry-poster.webp" aria-hidden="true" tabindex="-1" data-src="/assets/entry-loop.mp4" data-src-phone="/assets/entry-loop-phone.mp4"></video>
+  <script>
+  /* film source: phones in portrait get a small centre-cut file (the part they show anyway); a very slow
+     connection (data saver, 2G) gets no film, so the photo stays. Runs before the browser picks a source. */
+  (function(){var v=document.getElementById('film');if(!v)return;var c=navigator.connection||{};
+   if(c.saveData||/(^|-)2g$/.test(c.effectiveType||''))return;
+   var mq=window.matchMedia&&matchMedia('(max-width:720px) and (max-aspect-ratio:3/4)');
+   function pick(){var s=v.getAttribute(mq&&mq.matches?'data-src-phone':'data-src');if(v.getAttribute('src')!==s){v.src=s;if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;var p=v.play();if(p&&p.catch)p.catch(function(){});}}
+   pick();if(mq){if(mq.addEventListener)mq.addEventListener('change',pick);else if(mq.addListener)mq.addListener(pick);}
+  })();
+  </script>
   <div class="scrim"></div>
   <div class="wrap hbody">
    <h1 class="cyc"><span class="vh">Regatta machines centralize your data, identify responsive patients, draft biomarkers, identify cryptic toxicity and monitor external clinical programs</span><span aria-hidden="true">Regatta machines</span> <span class="cyc-w" aria-hidden="true"><span class="on">centralize<br>your data</span><span>identify responsive<br>patients</span><span>draft<br>biomarkers</span><span>identify<br>cryptic toxicity</span><span>monitor external<br>clinical programs</span></span></h1>
