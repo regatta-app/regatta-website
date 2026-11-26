@@ -9,7 +9,10 @@
 # site/assets/site.css -> /assets/site.css, ...) and checks:
 #   - the answer is 200;
 #   - the bytes served are the same as the file (sha256);
-#   - the home (/) has the form name="pilot", method="POST", action="/api/pilot".
+#   - the home (/) has the form name="pilot", method="POST", action="/api/pilot";
+#   - /home/ is the old home: CloudFront answers it with a permanent redirect
+#     (301) to /, so it is checked for that, not for 200 (site/home/index.html
+#     stays only as a fallback).
 # CloudFront takes a minute or two to drop its old copies after a publish, so
 # it tries again every LIVE_WAIT seconds (default 20), LIVE_TRIES times
 # (default 30, about 10 minutes), until everything matches.
@@ -41,6 +44,16 @@ check_once() {
   : > "$TMP/report"
   for f in "${FILES[@]}"; do
     p="$(url_path "$f")"
+    if [ "$p" = "/home/" ]; then # old home: expect 301 to / (CloudFront function in aws/regatta-website.yaml)
+      loc="$(curl -sS -o /dev/null -w '%{http_code} %{redirect_url}' --max-time 20 \
+        -H 'Cache-Control: no-cache' "$BASE$p" 2>>"$TMP/curl.err" || true)"
+      if [ "${loc%% *}" = "301" ] && [ "${loc#* }" = "$BASE/" ]; then
+        echo "ok   $p: 301 to /" >> "$TMP/report"
+      else
+        echo "FAIL $p: expected 301 to /, got: $loc" >> "$TMP/report"; bad=1
+      fi
+      continue
+    fi
     code="$(curl -sS -o "$TMP/body" -w '%{http_code}' --max-time 20 \
       -H 'Cache-Control: no-cache' -H 'Pragma: no-cache' "$BASE$p" 2>>"$TMP/curl.err" || true)"
     want="$(sha256sum "$SITE/$f" | cut -c1-64)"
