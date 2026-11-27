@@ -19,7 +19,10 @@
 #        requested_on  date the request was written, YYYY-MM-DD (UTC, today or
 #                      one day off; an old request brought back by a revert
 #                      is refused)
-#        daniela_ok    Daniela's ok, copied word for word from the chat
+#        daniela_ok    Daniela's ok, copied word for word (said in the chat of the
+#                      session that merges, or written in Drive by a session of
+#                      account A or B with her words, date and time, PR and sha:
+#                      .claude/CLAUDE.md, point 4)
 #   3. approved_sha is a commit of main's history (an ancestor of HEAD_SHA).
 #   4. HEAD_SHA has exactly the same files as approved_sha, except
 #      publish/REQUEST.json: what gets published (site/, scripts/publish.sh, this
@@ -96,7 +99,7 @@ try: datetime.date.fromisoformat(r)
 except ValueError: bad("requested_on is not a real date")
 ok = d["daniela_ok"]
 if not isinstance(ok, str) or not ok.strip() or len(ok) > 1000:
-    bad("daniela_ok must be Daniela'"'"'s ok copied from the chat (1 to 1000 characters)")
+    bad("daniela_ok must be Daniela'"'"'s ok copied word for word (1 to 1000 characters)")
 print(s); print("true" if d["dry_run"] else "false"); print(r)
 '
 }
