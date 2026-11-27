@@ -34,8 +34,8 @@ Never force-push.
 ## Changing a rule: the fix protocol
 
 Agreed at the Team Sync of 18 Nov 2026, on Momo's suggestion, for everyone and every Claude session. The app repository
-has the same section in its `.claude/CLAUDE.md`. It covers any rule or standing instruction here: this file and the rules
-in `README.md`.
+has the same protocol in its `.claude/CLAUDE.md`; there, "How to write it" points to the Habit (D160) in its
+`CONTRIBUTING.md`. It covers any rule or standing instruction here: this file and the rules in `README.md`.
 
 Before you write or change a rule:
 
