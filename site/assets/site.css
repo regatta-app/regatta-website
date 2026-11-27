@@ -28,11 +28,11 @@
  --s2:2px;--s4:4px;--s6:6px;--s8:8px;--s12:12px;--s16:16px;--s24:24px;--s32:32px;
  --sec-pad:96px;--col-gap:64px;--title-gap:32px;--pad-x:32px;--wrap:1200px;
  /* compact bar */
- --barh:48px;--bmark:30px;--fs-brand:var(--fs-body);
+ --barh:52px;--bmark:35px;--fs-brand:var(--fs-lead);
  /* motion */
  --chart-dur:520ms;--chart-ease:cubic-bezier(.4,0,.2,1);--rv-ease:cubic-bezier(.2,.7,.2,1);
  color-scheme:light}
-@media (max-width:720px){:root{--fs-hero-home:40px;--fs-hero:40px;--fs-title:32px;--fs-sub:24px;--sec-pad:64px;--pad-x:24px;--barh:44px;--bmark:26px;--fs-brand:var(--fs-small)}}
+@media (max-width:720px){:root{--fs-hero-home:40px;--fs-hero:40px;--fs-title:32px;--fs-sub:24px;--sec-pad:64px;--pad-x:24px;--barh:48px;--bmark:30px;--fs-brand:var(--fs-body)}}
 
 *{box-sizing:border-box}
 html{background:var(--deep);scroll-behavior:smooth}
@@ -50,7 +50,7 @@ a{color:inherit}
 /* fixed cream bar: logo left, Sign in (icon) right */
 header.bar{position:fixed;top:0;left:0;right:0;z-index:40;height:var(--barh);background:var(--tone)}
 header.bar .wrap{height:100%;display:flex;align-items:center;justify-content:space-between}
-.brand{display:inline-flex;align-items:center;gap:var(--s12);text-decoration:none;color:var(--navy)}
+.brand{display:inline-flex;align-items:center;gap:var(--s16);text-decoration:none;color:var(--navy)}
 .brand svg{display:block;flex:none;width:var(--bmark);height:auto}
 .brand span{font:var(--fw-regular) var(--fs-brand)/var(--lh-display) var(--ff-mark);letter-spacing:.14em}
 .nav{display:flex;align-items:center}
