@@ -67,11 +67,11 @@ The file (an example; the real one only ever exists on `main`, written by a requ
 - `approved_sha`: the full sha of `main` that Daniela said ok to publish.
 - `dry_run`: `true` (look only) or `false` (really publish). Written without quotes.
 - `requested_on`: the day the request is written (UTC). An old request is refused.
-- `daniela_ok`: Daniela's ok, copied word for word from the chat, so anyone can see later who allowed it.
+- `daniela_ok`: Daniela's ok, copied word for word, so anyone can see later who allowed it. It counts only if she said it in the chat of the session that merges, or if a Claude session of account A or B that got it from her wrote it in Drive "Cuenta B" with her words quoted, the date and time, the PR number and the head sha she saw (`.claude/CLAUDE.md`, point 4). An ok written anywhere else does not count.
 
 How a publish works:
 
-1. Daniela says ok in the chat to publish a sha of `main`.
+1. Daniela says ok to publish a sha of `main`: in the chat of the session that will merge, or in the chat of a session of account A or B that writes it in Drive as `.claude/CLAUDE.md` point 4 says (her words, date and time, PR number and sha).
 2. The session opens a pull request that changes only `publish/REQUEST.json`, with that sha, `"dry_run": true` and her ok quoted, and merges it with its head sha pinned. Within a minute the workflow does a dry run and comments the result on that pull request.
 3. The session reads the comment. If anything looks wrong, it stops and tells Daniela.
 4. If the dry run is clean, the session opens a second request pull request: same sha, `"dry_run": false`, and merges it. The workflow publishes, waits for CloudFront, checks the live site (every page, CSS and JS file answers 200 and is exactly the file in `site/`; the home has the pilot form posting to `/api/pilot`) and comments the result.
