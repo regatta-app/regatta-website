@@ -54,3 +54,24 @@ no keys, passwords or private notes in it.
    links) and report to Daniela in one line. Undoing a change is a revert PR, also on her word.
 
 Never force-push.
+
+## Changing a rule: the fix protocol
+
+Agreed at the Team Sync of 18 Nov 2026, on Momo's suggestion, for everyone and every Claude session. The app repository
+has the same protocol in its `.claude/CLAUDE.md`; there, "How to write it" points to the Habit (D160) in its
+`CONTRIBUTING.md`. It covers any rule or standing instruction here: this file and the rules in `README.md`.
+
+Before you write or change a rule:
+
+1. Read the current text of the file you will change. Search the other rule files for the topic, in the same words and in others.
+2. Check whether the rule already exists, here or anywhere else.
+3. Look at the rules in the same category (merging, publishing, checks...). The new text goes next to them and must not contradict them.
+4. If the rule exists, find out why it did not work: not read, unclear, in the wrong place, contradicted by another rule, or
+   written twice. Then change it, or retire it and write a new one. Never add a second rule on top of one that fails.
+5. If no rule covers the topic, write a new one in its category.
+
+How to write it:
+
+- One owner per topic. A rule lives in one file. Other files name it in one line and do not copy it.
+- A new rule that replaces an old one removes the old one in the same change. No two versions side by side.
+- The PR says which existing rule it replaces, or that no rule covered the topic.
