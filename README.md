@@ -123,7 +123,7 @@ regatta.tech is registered at GoDaddy (since 10 Sep 2024, expires 10 Sep 2027); 
 
 ## Notes
 
-- **Root `index.html` is an accidental duplicate** of `site/index.html` (added by a GitHub web upload on 3 Nov 2026). Only `site/` is published, so it is never served. It should be deleted once nobody needs the two kept in sync; until then, edit `site/index.html` and copy it over.
+- **Root `index.html` is an accidental duplicate** of `site/index.html` (added by a GitHub web upload on 3 Nov 2026) and is now an old copy: it differs from `site/index.html` and nobody keeps it in sync. Only `site/` is published, so it is never served. Edit `site/index.html` only; do not copy it over the root file.
 - `site/_headers` is a Netlify-only file (cache rules for `assets/`), ignored on AWS and never uploaded. Those rules now live in `scripts/publish.sh`.
 - `site/assets/og.png` (1200×630) is the preview image used by Slack, LinkedIn and X when the site is linked; regenerate it if the app screenshot changes.
-- `site/privacy/index.html` is the privacy policy. It has no Contact section yet (company name, postal address, privacy email); a TODO comment marks where it goes.
+- `site/privacy/index.html` is the privacy policy (it has a Contact section).
